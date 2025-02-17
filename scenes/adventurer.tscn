@@ -1,0 +1,74 @@
+[gd_scene load_steps=3 format=3 uid="uid://pccsnhv7eskq"]
+
+[ext_resource type="Script" path="res://Scripts/adventurer.gd" id="1_nasmx"]
+[ext_resource type="Texture2D" uid="uid://dkfmujhr27pc3" path="res://icon.svg" id="1_t4auj"]
+
+[node name="Adventurer" type="Button" node_paths=PackedStringArray("nameLabel", "strLabel", "intLabel", "wisLabel", "chaLabel")]
+custom_minimum_size = Vector2(137, 186)
+anchors_preset = -1
+anchor_right = 0.071
+anchor_bottom = 0.171
+offset_right = 0.679993
+offset_bottom = 1.31999
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("1_nasmx")
+nameLabel = NodePath("VBoxContainer/AdventurerStats/StatContainer/NameLabel")
+strLabel = NodePath("VBoxContainer/AdventurerStats/StatContainer/StrengthLabel")
+intLabel = NodePath("VBoxContainer/AdventurerStats/StatContainer/IntelligenceLabel")
+wisLabel = NodePath("VBoxContainer/AdventurerStats/StatContainer/WisdomLabel")
+chaLabel = NodePath("VBoxContainer/AdventurerStats/StatContainer/CharismaLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AdventurerTexture" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_t4auj")
+expand_mode = 1
+
+[node name="AdventurerStats" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatContainer" type="VBoxContainer" parent="VBoxContainer/AdventurerStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/AdventurerStats/StatContainer"]
+layout_mode = 2
+text = "NAME HERE"
+horizontal_alignment = 1
+
+[node name="StrengthLabel" type="Label" parent="VBoxContainer/AdventurerStats/StatContainer"]
+layout_mode = 2
+text = "Strength : 0"
+horizontal_alignment = 1
+
+[node name="IntelligenceLabel" type="Label" parent="VBoxContainer/AdventurerStats/StatContainer"]
+layout_mode = 2
+text = "Intelligence : 0"
+horizontal_alignment = 1
+
+[node name="WisdomLabel" type="Label" parent="VBoxContainer/AdventurerStats/StatContainer"]
+layout_mode = 2
+text = "Wisdom : 0"
+horizontal_alignment = 1
+
+[node name="CharismaLabel" type="Label" parent="VBoxContainer/AdventurerStats/StatContainer"]
+layout_mode = 2
+text = "Charisma : 0"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

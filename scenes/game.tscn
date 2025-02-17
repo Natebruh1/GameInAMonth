@@ -1,0 +1,295 @@
+[gd_scene load_steps=8 format=3 uid="uid://dfua8nd3qp0fr"]
+
+[ext_resource type="Script" path="res://Scripts/province.gd" id="1_wgkm6"]
+[ext_resource type="Script" path="res://Scripts/Nation.gd" id="2_5bhou"]
+[ext_resource type="Script" path="res://Scripts/PlayerController.gd" id="3_ryhga"]
+[ext_resource type="PackedScene" uid="uid://urirnikyn1n3" path="res://scenes/hud_layer.tscn" id="4_upoi3"]
+[ext_resource type="Script" path="res://Scripts/GameMode.gd" id="5_ojht8"]
+[ext_resource type="Script" path="res://Scripts/adventurer.gd" id="6_glmga"]
+[ext_resource type="Script" path="res://Scripts/EventsController.gd" id="7_ygju6"]
+
+[node name="Game" type="Node2D"]
+position = Vector2(358, 269)
+
+[node name="GameMode" type="Node" parent="." node_paths=PackedStringArray("HUD", "DateTimer")]
+script = ExtResource("5_ojht8")
+chosen_nation = 2
+HUD = NodePath("../PlayerController/HUDLayer")
+DateTimer = NodePath("DateTimer")
+
+[node name="DateTimer" type="Timer" parent="GameMode"]
+wait_time = 0.5
+
+[node name="Nations" type="Node" parent="."]
+
+[node name="Toar" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0, 0.854902, 0.815686, 1)
+nation_name = "Toar"
+owned_provinces = [NodePath("../../Map/Toarine"), NodePath("../../Map/Havensfield")]
+startingAdventurers = [NodePath("../../Adventurers/Trade Prince Marre")]
+ai_complexity = 2
+ai_adminEfficiency = 4.0
+
+[node name="Whispine" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
+script = ExtResource("2_5bhou")
+NationColor = Color(1, 0.745098, 0.360784, 1)
+nation_name = "Whispine"
+influence = 2.0
+magic_ratio = 0.25
+owned_provinces = [NodePath("../../Map/Chip"), NodePath("../../Map/Whisperia South")]
+ProduceEfficiency = [1.0, 1.1, 1.0, 1.1, 1.0, 1.0]
+startingAdventurers = [NodePath("../../Adventurers/King Franky")]
+
+[node name="The Call of Bone" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0.784314, 0.784314, 0.784314, 1)
+nation_name = "The Call of Bone"
+influence = 4.0
+magic_ratio = 0.28
+owned_provinces = [NodePath("../../Map/Palmevire")]
+ProduceEfficiency = [1.0, 1.0, 1.0, 1.0, 1.0, 2.2]
+startingAdventurers = [NodePath("../../Adventurers/Bonelord Arrys")]
+aiBias = [3, 4, 3, 4]
+
+[node name="Map" type="Node" parent="."]
+
+[node name="Alatir" type="Polygon2D" parent="Map"]
+position = Vector2(358, 269)
+color = Color(0, 0.541176, 0.0784314, 1)
+polygon = PackedVector2Array(-27, 22, -2, 58, -26, 86, -52, 83, -45, 62, -46, 37, -53, 23, -36, 14)
+script = ExtResource("1_wgkm6")
+province_name = "Alatir"
+neighbours = Array[NodePath]([NodePath("../Sea of Sarys"), NodePath("../Jade Strip"), NodePath("../Whisperia Heart"), NodePath("../Whisperia North"), NodePath("../Empty Bay"), NodePath("../Havensfield")])
+province_terrain = 3
+province_produce = 3
+startIndex = 4
+endIndex = 1
+
+[node name="Sea of Sarys" type="Polygon2D" parent="Map"]
+position = Vector2(358, 269)
+color = Color(0, 0.643137, 1, 1)
+polygon = PackedVector2Array(-52, 83, -45, 62, -46, 37, -53, 23, -88, 8, -124, 23, -114, 83, -85, 101)
+script = ExtResource("1_wgkm6")
+province_name = "Sea of Sarys"
+neighbours = Array[NodePath]([NodePath("../Alatir"), NodePath("../Empty Bay"), NodePath("../Jade Strip")])
+province_terrain = 5
+startIndex = 6
+endIndex = 3
+
+[node name="Jade Strip" type="Polygon2D" parent="Map"]
+color = Color(0.658824, 0.686275, 0, 1)
+polygon = PackedVector2Array(332, 355, 306, 352, 273, 370, 265, 391, 269, 428, 266, 462, 282, 468, 293, 443, 295, 415, 307, 409, 328, 395, 335, 368)
+script = ExtResource("1_wgkm6")
+province_name = "The Jade Strip"
+neighbours = Array[NodePath]([NodePath("../Alatir"), NodePath("../Sea of Sarys"), NodePath("../Whisperia Heart"), NodePath("../Chip")])
+province_produce = 1
+startIndex = 3
+endIndex = 11
+
+[node name="Whisperia Heart" type="Polygon2D" parent="Map"]
+color = Color(0, 0.462745, 0.184314, 1)
+polygon = PackedVector2Array(356, 327, 332, 355, 335, 368, 347, 373, 364, 361, 365, 332)
+script = ExtResource("1_wgkm6")
+province_name = "Whisperia Heart"
+neighbours = Array[NodePath]([NodePath("../Whisperia North"), NodePath("../Alatir"), NodePath("../Jade Strip"), NodePath("../Chip"), NodePath("../Whisperia South"), NodePath("../Whisperia East")])
+province_terrain = 3
+province_produce = 3
+startIndex = 2
+endIndex = 5
+
+[node name="Whisperia North" type="Polygon2D" parent="Map"]
+color = Color(0, 0.376471, 0.0784314, 1)
+polygon = PackedVector2Array(342, 307, 356, 327, 365, 332, 375, 326, 385, 328, 389, 311, 375, 302)
+script = ExtResource("1_wgkm6")
+province_name = "Whisperia North"
+neighbours = Array[NodePath]([NodePath("../Whisperia Heart"), NodePath("../Meadshill"), NodePath("../Havensfield"), NodePath("../Alatir"), NodePath("../Whisperia East"), NodePath("../Palmtip"), NodePath("../Palmresin")])
+province_terrain = 3
+province_produce = 3
+
+[node name="Havensfield" type="Polygon2D" parent="Map"]
+color = Color(1, 1, 0.447059, 1)
+polygon = PackedVector2Array(322, 283, 331, 291, 342, 307, 353.988, 305.156, 353, 291)
+script = ExtResource("1_wgkm6")
+province_name = "Havensfield"
+neighbours = Array[NodePath]([NodePath("../Toarine"), NodePath("../Garak\'Tur"), NodePath("../Meadshill"), NodePath("../Alatir"), NodePath("../Whisperia North")])
+province_produce = 2
+owner_id = 1
+base_industry = 1
+base_vigor = 1
+startIndex = 1
+endIndex = 3
+
+[node name="Empty Bay" type="Polygon2D" parent="Map"]
+color = Color(0.337255, 0.47451, 1, 1)
+polygon = PackedVector2Array(270, 277, 305, 292, 322, 283, 326, 260, 315, 232, 271, 238)
+script = ExtResource("1_wgkm6")
+province_name = "Empty Bay"
+province_terrain = 5
+startIndex = 5
+endIndex = 2
+
+[node name="Toarine" type="Polygon2D" parent="Map"]
+color = Color(0.639216, 1, 0.580392, 1)
+polygon = PackedVector2Array(322, 283, 326, 260, 334, 247, 337, 255, 337, 287)
+script = ExtResource("1_wgkm6")
+province_name = "Toarine"
+neighbours = Array[NodePath]([NodePath("../Garak\'Tur"), NodePath("../Empty Bay"), NodePath("../Havensfield"), NodePath("../Honey Strait")])
+province_produce = 4
+base_wealth = 1
+base_vigor = 1
+startIndex = 1
+
+[node name="Garak\'Tur" type="Polygon2D" parent="Map"]
+color = Color(0.145098, 0.0941176, 0, 1)
+polygon = PackedVector2Array(337, 277, 337, 287, 353, 291, 359, 285, 356, 277)
+script = ExtResource("1_wgkm6")
+province_name = "Garak'Tur"
+neighbours = Array[NodePath]([NodePath("../Toarine"), NodePath("../Honey Strait"), NodePath("../Meadshill"), NodePath("../Cutlet Bay")])
+province_terrain = 6
+base_industry = 2
+startIndex = 1
+
+[node name="Meadshill" type="Polygon2D" parent="Map"]
+color = Color(0.164706, 0.0313726, 0, 1)
+polygon = PackedVector2Array(353, 291, 359, 285, 369, 286, 375, 302, 354.01, 305.105)
+script = ExtResource("1_wgkm6")
+province_name = "Meadshill"
+neighbours = Array[NodePath]([NodePath("../Garak\'Tur"), NodePath("../Havensfield"), NodePath("../Whisperia North"), NodePath("../Cutlet Bay"), NodePath("../Palmtip")])
+province_terrain = 6
+province_produce = 2
+base_wealth = 1
+base_industry = 1
+endIndex = 3
+
+[node name="Honey Strait" type="Polygon2D" parent="Map"]
+color = Color(0.32549, 0.364706, 0.937255, 1)
+polygon = PackedVector2Array(314, 210, 315, 232, 326, 260, 334, 247, 337, 255, 337, 277, 356, 277, 364, 231, 349, 204, 336, 202, 333, 234, 325, 230, 322, 216)
+script = ExtResource("1_wgkm6")
+province_name = "Honey Strait"
+neighbours = Array[NodePath]([NodePath("../Garak\'Tur"), NodePath("../Toarine"), NodePath("../Empty Bay"), NodePath("../Cutlet Bay")])
+province_terrain = 5
+startIndex = 1
+endIndex = 7
+
+[node name="Chip" type="Polygon2D" parent="Map"]
+color = Color(0.207843, 0.207843, 0.207843, 1)
+polygon = PackedVector2Array(335.043, 368.052, 328.008, 394.992, 347.07, 372.952, 340.796, 370.396)
+script = ExtResource("1_wgkm6")
+province_name = "The Chip"
+neighbours = Array[NodePath]([NodePath("../Jade Strip"), NodePath("../Whisperia Heart")])
+province_terrain = 6
+province_produce = 1
+owner_id = 2
+base_industry = 2
+magic_ratio = 1.5
+startIndex = 1
+endIndex = 3
+
+[node name="Whisperia South" type="Polygon2D" parent="Map"]
+color = Color(0, 0.666667, 0.117647, 1)
+polygon = PackedVector2Array(363.977, 360.984, 347.039, 372.961, 328, 395, 335.076, 408.145, 362.13, 393.577, 374.765, 370.239)
+script = ExtResource("1_wgkm6")
+province_name = "Whisperia South"
+neighbours = Array[NodePath]([NodePath("../Chip"), NodePath("../Whisperia Heart"), NodePath("../Whisperia East")])
+province_terrain = 3
+province_produce = 3
+owner_id = 2
+base_industry = 1
+startIndex = 2
+endIndex = 5
+
+[node name="Whisperia East" type="Polygon2D" parent="Map"]
+color = Color(0.192157, 0.403922, 0.231373, 1)
+polygon = PackedVector2Array(365, 332, 375, 326, 385, 328, 391, 344, 374.766, 370.243, 364, 361)
+script = ExtResource("1_wgkm6")
+province_name = "Whisperia East"
+neighbours = Array[NodePath]([NodePath("../Whisperia North"), NodePath("../Whisperia Heart"), NodePath("../Whisperia South"), NodePath("../Palmresin")])
+province_terrain = 3
+province_produce = 3
+base_wealth = 1
+startIndex = 5
+endIndex = 2
+
+[node name="Cutlet Bay" type="Polygon2D" parent="Map"]
+color = Color(0.160784, 0.443137, 0.807843, 1)
+polygon = PackedVector2Array(356, 277, 359, 285, 369, 286, 401, 271, 404, 247, 382, 224, 364, 231)
+script = ExtResource("1_wgkm6")
+province_name = "Cutlet Bay"
+neighbours = Array[NodePath]([NodePath("../Honey Strait"), NodePath("../Garak\'Tur"), NodePath("../Meadshill"), NodePath("../Palmtip")])
+province_terrain = 5
+startIndex = 1
+
+[node name="Palmtip" type="Polygon2D" parent="Map"]
+color = Color(1, 1, 0.611765, 1)
+polygon = PackedVector2Array(369, 286, 401, 271, 433, 264, 421, 283, 389, 311, 375, 302)
+script = ExtResource("1_wgkm6")
+province_name = "Palmtip"
+neighbours = Array[NodePath]([NodePath("../Cutlet Bay"), NodePath("../Meadshill"), NodePath("../Whisperia North"), NodePath("../Palmresin"), NodePath("../Palmevire")])
+province_produce = 2
+base_magic = 1
+startIndex = 5
+endIndex = 2
+
+[node name="Palmresin" type="Polygon2D" parent="Map"]
+position = Vector2(358, 269)
+color = Color(0.764706, 1, 0.745098, 1)
+polygon = PackedVector2Array(33, 75, 27, 59, 31, 42, 63, 14, 71, 25, 69, 44, 55, 67)
+script = ExtResource("1_wgkm6")
+province_name = "Palmresin"
+neighbours = Array[NodePath]([NodePath("../Palmtip"), NodePath("../Whisperia North"), NodePath("../Whisperia East"), NodePath("../Palmevire")])
+province_produce = 4
+base_industry = 1
+base_magic = 1
+magic_ratio = 1.5
+startIndex = 1
+
+[node name="Palmevire" type="Polygon2D" parent="Map"]
+color = Color(1, 0.886275, 0.513726, 1)
+polygon = PackedVector2Array(421, 283, 433, 264, 436, 262, 438, 264, 445, 287, 434, 294, 429, 294)
+script = ExtResource("1_wgkm6")
+province_name = "Palmevire"
+neighbours = Array[NodePath]([NodePath("../Palmresin"), NodePath("../Palmtip")])
+province_produce = 5
+owner_id = 3
+
+[node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("HUD", "cam")]
+script = ExtResource("3_ryhga")
+HUD = NodePath("HUDLayer")
+cam = NodePath("PlayerCamera")
+
+[node name="PlayerCamera" type="Camera2D" parent="PlayerController"]
+
+[node name="HUDLayer" parent="PlayerController" instance=ExtResource("4_upoi3")]
+
+[node name="Adventurers" type="Node2D" parent="."]
+visible = false
+position = Vector2(50000, 0)
+
+[node name="King Franky" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+strength = 2
+adventurer_name = "King Franky"
+
+[node name="Trade Prince Marre" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+strength = -1
+intelligence = 2
+wisdom = 2
+adventurer_name = "Trade Prince Marre"
+
+[node name="Bonelord Arrys" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+strength = 1
+intelligence = 1
+wisdom = 1
+adventurer_name = "Bonelord Arrys"
+
+[node name="Events" type="Node" parent="."]
+script = ExtResource("7_ygju6")

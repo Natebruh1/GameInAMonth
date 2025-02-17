@@ -1,0 +1,759 @@
+[gd_scene load_steps=26 format=3 uid="uid://urirnikyn1n3"]
+
+[ext_resource type="Texture2D" uid="uid://bsr5cwbf4w3rx" path="res://assets/coin.png" id="1_3p4xs"]
+[ext_resource type="Script" path="res://Scripts/HudLayer.gd" id="1_kul7a"]
+[ext_resource type="Texture2D" uid="uid://cevbybf71hjgl" path="res://assets/Influence.png" id="3_0f8yo"]
+[ext_resource type="Texture2D" uid="uid://bfwqgmpi4pbsb" path="res://assets/field.jpg" id="3_ihmww"]
+[ext_resource type="Texture2D" uid="uid://cqhnlg8eqat0m" path="res://assets/Admin.png" id="4_wdnd1"]
+[ext_resource type="Texture2D" uid="uid://bkssybla06fnb" path="res://assets/wood.png" id="5_0ethc"]
+[ext_resource type="Texture2D" uid="uid://bng2u8iaj61sk" path="res://assets/Compass.png" id="5_q3mfa"]
+[ext_resource type="Texture2D" uid="uid://rwxdxav5j7hj" path="res://assets/Blood.png" id="6_38foi"]
+[ext_resource type="Texture2D" uid="uid://crvd8sqq2mxi7" path="res://assets/Pause.png" id="6_hptxg"]
+[ext_resource type="Texture2D" uid="uid://n0khahk8on4h" path="res://assets/Play.png" id="7_pnv0h"]
+[ext_resource type="Texture2D" uid="uid://b78d07j22a1wp" path="res://assets/manaResource.png" id="7_x46cs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_www6n"]
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_usn37"]
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 3
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ulhr6"]
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_e6qrl"]
+font_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yomc"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2781p"]
+bg_color = Color(0.113725, 0.113725, 0.113725, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw7jv"]
+bg_color = Color(0.364706, 0.364706, 0.364706, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_q23j4"]
+font_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2bgl"]
+content_margin_left = 8.0
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_x1wht"]
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="InputEventKey" id="InputEventKey_5ttkt"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="Shortcut" id="Shortcut_ci5f4"]
+events = [SubResource("InputEventKey_5ttkt")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bbkfd"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 1)
+border_width_left = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wsqgn"]
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[node name="HUDLayer" type="CanvasLayer" node_paths=PackedStringArray("nationNameNode", "totalGoldNode", "totalInfluenceNode", "nationAdmin", "nationDiplo", "nationMilit", "nationMana", "provinceNameNode", "localWealthNode", "localIndustryNode", "localVigorNode", "localMagicNode", "localWealthButton", "localIndustryButton", "localVigorButton", "localMagicButton", "colonyNameNode", "colonizeButton", "terrainName", "terrainTex", "colonyTerrainName", "colonyTerrainTex", "produceName", "produceTex", "industryProduceGoldLabel", "wealthProduceGoldLabel", "totalProduceGoldLabel", "vigorProduceInfluenceLabel", "wealthProduceInfluenceLabel", "totalProduceInfluenceLabel", "provinceNameEventNode", "eventNameNode", "eventDescNode", "eventButtonNode", "loadupLogLabels", "tabControl", "dateLabel", "JobTabs", "adventurerPool", "advisorPool", "explorerPool")]
+script = ExtResource("1_kul7a")
+nationNameNode = NodePath("Frame/TopPanel/TopBar/NationName")
+totalGoldNode = NodePath("Frame/TopPanel/TopBar/GoldTotal")
+totalInfluenceNode = NodePath("Frame/TopPanel/TopBar/InfluenceTotal")
+nationAdmin = NodePath("Frame/TopPanel/TopBar/AdminLabel")
+nationDiplo = NodePath("Frame/TopPanel/TopBar/DiplomacyLabel")
+nationMilit = NodePath("Frame/TopPanel/TopBar/MilitaryLabel")
+nationMana = NodePath("Frame/TopPanel/TopBar/ManaLabel")
+provinceNameNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceName")
+localWealthNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/TotalWealthLabel")
+localIndustryNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/TotalIndustryLabel")
+localVigorNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/TotalVigorLabel")
+localMagicNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/TotalMagicLabel")
+localWealthButton = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseWealthButton")
+localIndustryButton = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseIndustryButton")
+localVigorButton = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseVigorButton")
+localMagicButton = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseMagicButton")
+colonyNameNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/ProvinceName")
+colonizeButton = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/Colonize Button")
+terrainName = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType/TerrainName")
+terrainTex = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType/TerrainRect")
+colonyTerrainName = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/ProvinceTerrainType/TerrainName")
+colonyTerrainTex = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/ProvinceTerrainType/TerrainRect")
+produceName = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType/ProduceBox/ProduceName")
+produceTex = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType/ProduceBox/ProduceRect")
+industryProduceGoldLabel = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd/Ind Produced")
+wealthProduceGoldLabel = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd/Wealth Gold")
+totalProduceGoldLabel = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd/TotalGold")
+vigorProduceInfluenceLabel = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd/VigorProduced")
+wealthProduceInfluenceLabel = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd/WealthInfluence")
+totalProduceInfluenceLabel = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd/TotalInfluence")
+provinceNameEventNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/ProvinceName")
+eventNameNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/EventName")
+eventDescNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/EventDesc")
+eventButtonNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/RunEventButton")
+loadupLogLabels = [NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel1"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel2"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel3"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel4"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel5"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel6"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel7"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel8"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel9"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel10")]
+tabControl = NodePath("Frame/ProvincePanel/ProvincePanelTabs")
+dateLabel = NodePath("Frame/PlayButton/DatePanel/DateLabel")
+JobTabs = NodePath("Frame/AdventurerPanel/VertSplit/TopScroll/AdventurerJobs")
+adventurerPool = NodePath("Frame/AdventurerPanel/VertSplit/BottomScroll/AdventurerPool")
+advisorPool = NodePath("Frame/AdventurerPanel/VertSplit/TopScroll/AdventurerJobs/Advisors")
+explorerPool = NodePath("Frame/AdventurerPanel/VertSplit/TopScroll/AdventurerJobs/Explorers")
+
+[node name="Frame" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="TopPanel" type="Panel" parent="Frame"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 63.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_www6n")
+
+[node name="TopBar" type="HBoxContainer" parent="Frame/TopPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="SPACING_1" type="Control" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="NationName" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Nation Name
+"
+mouse_filter = 1
+text = "Name"
+
+[node name="VSeparator_1" type="VSeparator" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_usn37")
+
+[node name="TextureRect" type="TextureRect" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Total Gold, gold is used for army upkeep and creating buildings"
+texture = ExtResource("1_3p4xs")
+stretch_mode = 3
+
+[node name="GoldTotal" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Gold Last month
+"
+mouse_filter = 1
+text = "0.0"
+
+[node name="VSeparator_2" type="VSeparator" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_usn37")
+
+[node name="InfluenceRect" type="TextureRect" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Total Influence, High Influence attracts adventurers and can be spent on getting new provinces."
+texture = ExtResource("3_0f8yo")
+stretch_mode = 3
+
+[node name="InfluenceTotal" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Influence last month
+"
+mouse_filter = 1
+text = "0.0"
+
+[node name="VSeparator_3" type="VSeparator" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_usn37")
+
+[node name="VSeparator_4" type="VSeparator" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_usn37")
+
+[node name="AdminIcon" type="TextureRect" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+tooltip_text = "Total Administrative Points
+"
+texture = ExtResource("4_wdnd1")
+expand_mode = 2
+
+[node name="AdminLabel" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "0"
+
+[node name="DiplomacyIcon" type="TextureRect" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+tooltip_text = "Total Diplomatic Points"
+texture = ExtResource("5_q3mfa")
+expand_mode = 2
+
+[node name="DiplomacyLabel" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "0"
+
+[node name="MilitaryIcon" type="TextureRect" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+tooltip_text = "Total Military Points"
+texture = ExtResource("6_38foi")
+expand_mode = 2
+
+[node name="MilitaryLabel" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "0"
+
+[node name="ManaIcon" type="TextureRect" parent="Frame/TopPanel/TopBar"]
+layout_mode = 2
+tooltip_text = "Total Mana Points
+"
+texture = ExtResource("7_x46cs")
+expand_mode = 2
+
+[node name="ManaLabel" type="Label" parent="Frame/TopPanel/TopBar"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "0"
+
+[node name="ProvincePanel" type="Panel" parent="Frame"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 32.0
+offset_top = -60.0
+offset_right = 352.0
+offset_bottom = 320.0
+grow_vertical = 2
+
+[node name="ProvincePanelTabs" type="TabContainer" parent="Frame/ProvincePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/side_margin = 0
+current_tab = 2
+clip_tabs = false
+tabs_visible = false
+
+[node name="ProvinceVerticalLayout" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ProvinceName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Province Name"
+horizontal_alignment = 1
+
+[node name="VSeparator_1" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="ProvinceDevelopment" type="HBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="SPACING_1" type="Control" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TotalWealthLabel" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Increases Gold and Influence
+Worse at higher level"
+mouse_filter = 1
+text = "Wealth : "
+label_settings = SubResource("LabelSettings_e6qrl")
+
+[node name="IncreaseWealthButton" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_7yomc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2781p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vw7jv")
+text = " + "
+
+[node name="TotalIndustryLabel" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Increases Gold generated, Better at higher levels"
+mouse_filter = 1
+text = "Industry : "
+label_settings = SubResource("LabelSettings_q23j4")
+
+[node name="IncreaseIndustryButton" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_7yomc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2781p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vw7jv")
+text = " + "
+
+[node name="TotalVigorLabel" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Increases influence, Decreases Army cost"
+mouse_filter = 1
+text = "Vigor : "
+label_settings = SubResource("LabelSettings_q23j4")
+
+[node name="IncreaseVigorButton" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_7yomc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2781p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vw7jv")
+text = " + "
+
+[node name="TotalMagicLabel" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Increases all development by a fraction in province"
+mouse_filter = 1
+text = "Magic : "
+label_settings = SubResource("LabelSettings_q23j4")
+
+[node name="IncreaseMagicButton" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_7yomc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2781p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vw7jv")
+text = " + "
+
+[node name="SPACING_2" type="Control" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment"]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSeparator_2" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="ProvinceTerrainType" type="HBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout"]
+layout_mode = 2
+
+[node name="TerrainName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Terrain"
+vertical_alignment = 1
+clip_text = true
+
+[node name="TerrainRect" type="TextureRect" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType"]
+clip_contents = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("3_ihmww")
+expand_mode = 1
+
+[node name="ProduceBox" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType"]
+layout_mode = 2
+
+[node name="ProduceRect" type="TextureRect" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType/ProduceBox"]
+custom_minimum_size = Vector2(116, 116)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Produced in this province"
+texture = ExtResource("5_0ethc")
+
+[node name="ProduceName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceTerrainType/ProduceBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Produce"
+horizontal_alignment = 1
+
+[node name="ProductionScroll" type="ScrollContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_i2bgl")
+
+[node name="GoldProd" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll"]
+layout_mode = 2
+
+[node name="Ind Produced" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd"]
+layout_mode = 2
+tooltip_text = "Gold produced by this provinces industry each month"
+mouse_filter = 1
+text = "Industry Gold"
+
+[node name="Wealth Gold" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd"]
+layout_mode = 2
+tooltip_text = "Gold produced by this provinces wealth each month"
+mouse_filter = 1
+text = "Wealth Gold"
+
+[node name="TotalGold" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd"]
+layout_mode = 2
+tooltip_text = "Total Gold produced by this province each month"
+mouse_filter = 1
+text = "Total Gold
+"
+
+[node name="VigorProduced" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd"]
+layout_mode = 2
+tooltip_text = "Influence produced by this provinces vigor each month"
+mouse_filter = 1
+text = "Vigor Influence"
+
+[node name="WealthInfluence" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd"]
+layout_mode = 2
+tooltip_text = "Influence produced by this provinces wealth each month"
+mouse_filter = 1
+text = "Wealth Influence"
+
+[node name="TotalInfluence" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProductionScroll/GoldProd"]
+layout_mode = 2
+tooltip_text = "Total influence produced by this province each month"
+mouse_filter = 1
+text = "Total Influence"
+
+[node name="ProvinceVerticalLayout_Colonize" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ProvinceName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Province Name"
+horizontal_alignment = 1
+
+[node name="VSeparator_1" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="ProvinceTerrainType" type="HBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TerrainName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/ProvinceTerrainType"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Terrain"
+vertical_alignment = 1
+
+[node name="TerrainRect" type="TextureRect" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/ProvinceTerrainType"]
+clip_contents = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("3_ihmww")
+expand_mode = 1
+
+[node name="VSeparator_2" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="Colonize Button" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize"]
+layout_mode = 2
+text = "Colonize :"
+icon = ExtResource("3_0f8yo")
+icon_alignment = 2
+expand_icon = true
+
+[node name="Separator" type="Control" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="ProvinceVerticalLayout_Event" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ProvinceName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Province Name"
+horizontal_alignment = 1
+
+[node name="VSeparator_1" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="EventName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Event Name"
+label_settings = SubResource("LabelSettings_x1wht")
+horizontal_alignment = 1
+
+[node name="VSeparator_2" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="EventDesc" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event"]
+custom_minimum_size = Vector2(320, 240)
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Event Description"
+autowrap_mode = 2
+
+[node name="RunEventButton" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event"]
+layout_mode = 2
+toggle_mode = true
+text = "Event Button
+"
+
+[node name="PlayButton" type="TextureButton" parent="Frame"]
+layout_mode = 0
+offset_left = 1762.0
+offset_top = 1.0
+offset_right = 1890.0
+offset_bottom = 129.0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_pressed = true
+action_mode = 0
+shortcut = SubResource("Shortcut_ci5f4")
+texture_normal = ExtResource("6_hptxg")
+texture_pressed = ExtResource("7_pnv0h")
+stretch_mode = 0
+
+[node name="DatePanel" type="Panel" parent="Frame/PlayButton"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 128.0
+offset_right = 117.0
+offset_bottom = 151.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bbkfd")
+
+[node name="DateLabel" type="Label" parent="Frame/PlayButton/DatePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_right = 108.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 22
+text = "31 Annen(12) 1444"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="AdventurerPanel" type="Panel" parent="Frame"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1560.0
+offset_top = -60.0
+offset_right = 1880.0
+offset_bottom = 320.0
+grow_vertical = 2
+mouse_default_cursor_shape = 7
+
+[node name="VertSplit" type="VBoxContainer" parent="Frame/AdventurerPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopScroll" type="ScrollContainer" parent="Frame/AdventurerPanel/VertSplit"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+
+[node name="AdventurerJobs" type="TabContainer" parent="Frame/AdventurerPanel/VertSplit/TopScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Advisors" type="HBoxContainer" parent="Frame/AdventurerPanel/VertSplit/TopScroll/AdventurerJobs"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Explorers" type="HBoxContainer" parent="Frame/AdventurerPanel/VertSplit/TopScroll/AdventurerJobs"]
+visible = false
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Frame/AdventurerPanel/VertSplit"]
+layout_mode = 2
+
+[node name="BottomScroll" type="ScrollContainer" parent="Frame/AdventurerPanel/VertSplit"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+
+[node name="AdventurerPool" type="HBoxContainer" parent="Frame/AdventurerPanel/VertSplit/BottomScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LogPanel" type="Panel" parent="Frame"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 72.0
+offset_right = 512.0
+offset_bottom = 247.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wsqgn")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Frame/LogPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_right = 506.0
+offset_bottom = 174.0
+
+[node name="LogLabelContainer" type="VBoxContainer" parent="Frame/LogPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LogLabel1" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_1" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel2" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_2" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel3" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_3" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel4" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_4" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel5" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_5" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel6" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_6" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel7" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_7" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel8" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_8" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel9" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[node name="VSeparator_9" type="HSeparator" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="LogLabel10" type="Label" parent="Frame/LogPanel/ScrollContainer/LogLabelContainer"]
+layout_mode = 2
+clip_text = true
+
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseWealthButton" to="." method="_on_increase_wealth_button_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseIndustryButton" to="." method="_on_increase_industry_button_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseVigorButton" to="." method="_on_increase_vigor_button_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseMagicButton" to="." method="_on_increase_magic_button_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/Colonize Button" to="." method="_on_colonize_button_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/RunEventButton" to="." method="_on_run_event_button_pressed"]
+[connection signal="pressed" from="Frame/PlayButton" to="." method="_on_play_button_pressed"]
