@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://67ty2a8d07be"]
+
+[ext_resource type="Shader" path="res://Materials/ownedNation.gdshader" id="1_g2l3v"]
+
+[resource]
+shader = ExtResource("1_g2l3v")
+shader_parameter/provColour = Vector4(0, 0, 0, 1)

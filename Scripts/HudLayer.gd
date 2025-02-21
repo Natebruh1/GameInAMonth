@@ -9,7 +9,11 @@ class_name GAME_HUD
 var nationDisplayName="Name"
 var totalGold=0.0
 var goldLastMonth=0.0
-var playerNation:int
+var playerNation:int:
+	set(val):
+		playerNation=val
+		if val!=0 and Nation.Nations.has(val):
+			nationDisplayName=Nation.Nations[val].name
 @export var totalInfluenceNode:Label
 var totalInfluence=0.0
 var influenceLastMonth=0.0
@@ -84,6 +88,9 @@ var provinceHUD_visible=false
 @export var eventDescNode:Label
 @export var eventButtonNode:Button
 
+@export var provinceNameBuildingNode:Label
+
+
 @export var loadupLogLabels:Array[Label]=[]
 static var LogLabels:Array[Label]=[]
 
@@ -98,11 +105,11 @@ var paused=true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	nationNameNode.text=nationDisplayName
-	totalGoldNode.text=str(totalGold)
+	nationNameNode.text=Nation.Nations[playerNation].nation_name
+	totalGoldNode.text=str(Nation.Nations[playerNation].gold)
 	totalGoldNode.tooltip_text="Gold last month : " + str(goldLastMonth)
 	
-	totalInfluenceNode.text=str(totalInfluence)
+	totalInfluenceNode.text=str(Nation.Nations[playerNation].influence)
 	totalInfluenceNode.tooltip_text="Influence last month : " + str(influenceLastMonth)
 	
 	#Update Date
@@ -157,14 +164,15 @@ func _process(delta):
 		if !targetedProvince.hasEvent:
 			if targetedProvince.owner_id==0:
 				tabControl.current_tab=1
-			else:
-				tabControl.current_tab=0
+			
 		#Update HUD Province Name
 		provinceNameNode.text=targetedProvince.province_name
 			#and for colonize screen
 		colonyNameNode.text=targetedProvince.province_name
 			#amd for event tab
 		provinceNameEventNode.text=targetedProvince.province_name
+			#amd for buildings tab
+		provinceNameBuildingNode.text=targetedProvince.province_name
 		
 		# Update Event information
 		if targetedProvince.hasEvent:
@@ -335,3 +343,11 @@ static func LogNewMessage(s:String):
 			prevMessage=tempCopy
 				
 				
+
+
+func _on_infantry_pressed():
+	targetedProvince.BuyTroop("Infantry")
+
+
+func _on_artillery_pressed():
+	targetedProvince.BuyTroop("Artillery")

@@ -34,13 +34,14 @@ static var month:=0:
 		
 #Year
 static var year:=1444
-
+static var this:GameMode
 func _ready():
+	this=self
 	player_nation=chosen_nation
 	DateTimer.timeout.connect(incrementDay)
 	HUD.playerNation=player_nation
 	Settings.game_gamemode=self
-
+	
 var paused=true
 
 #Add 1 day to the date
@@ -49,6 +50,8 @@ func incrementDay():
 		day+=1
 		HUD.date=[day,month,year]
 		for i in Nation.Nations.values():
+			i.incrementDay()
+		for i in Province.Provinces.values():
 			i.incrementDay()
 	
 func _process(delta):
@@ -60,6 +63,8 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("DecreaseDateSpeed"):
 		currentSpeedIndex-=1
-		
+
+
+static var cameraRef:Camera2D		
 func _getHUD()->Node:
 	return HUD

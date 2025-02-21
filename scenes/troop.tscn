@@ -1,0 +1,112 @@
+[gd_scene load_steps=10 format=3 uid="uid://bpfq0e6l4jgqj"]
+
+[ext_resource type="Script" path="res://Scripts/troop.gd" id="1_nlmyj"]
+[ext_resource type="Texture2D" uid="uid://dkfmujhr27pc3" path="res://icon.svg" id="1_ywm63"]
+[ext_resource type="Material" uid="uid://cspc7y5dlv7ne" path="res://Materials/healthMaterial.tres" id="2_rm1dd"]
+[ext_resource type="Material" uid="uid://dw5gfp13m6arf" path="res://Materials/flag.tres" id="3_xtxle"]
+[ext_resource type="Texture2D" uid="uid://clrkxwm1rj2wl" path="res://assets/UnitSelector.png" id="5_13jea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mn40b"]
+bg_color = Color(0.196078, 0.196078, 0.196078, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jp32o"]
+size = Vector2(42.4242, 42.4242)
+
+[sub_resource type="Gradient" id="Gradient_kwhbj"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5mf3o"]
+gradient = SubResource("Gradient_kwhbj")
+width = 1
+height = 1
+
+[node name="Troop" type="Node2D" node_paths=PackedStringArray("TroopSprite", "flag", "healthBar")]
+scale = Vector2(0.33, 0.33)
+script = ExtResource("1_nlmyj")
+TroopSprite = NodePath("TroopSprite")
+flag = NodePath("Flag")
+healthBar = NodePath("Healthbar")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -54.0
+offset_top = 17.0
+offset_right = 54.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mn40b")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 108.0
+offset_bottom = 22.0
+text = "Infantry"
+horizontal_alignment = 1
+
+[node name="TroopSprite" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_ywm63")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-1.08372e-06, 6.06061)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_jp32o")
+
+[node name="Healthbar" type="Sprite2D" parent="."]
+material = ExtResource("2_rm1dd")
+position = Vector2(-4.76837e-07, -20)
+scale = Vector2(0.378788, 0.046875)
+texture = ExtResource("1_ywm63")
+
+[node name="Flag" type="Sprite2D" parent="."]
+material = ExtResource("3_xtxle")
+position = Vector2(26, -4)
+scale = Vector2(12, 12)
+texture = SubResource("GradientTexture2D_5mf3o")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 19.0
+offset_top = -11.0
+offset_right = 21.0
+offset_bottom = 11.0
+color = Color(0.172549, 0.027451, 0, 1)
+
+[node name="SelectorSprite" type="Sprite2D" parent="."]
+texture = ExtResource("5_13jea")
+
+[node name="TroopCountPanel" type="Panel" parent="."]
+visible = false
+offset_left = -33.3333
+offset_top = -12.1212
+offset_right = 33.6667
+offset_bottom = 10.8788
+theme_override_styles/panel = SubResource("StyleBoxFlat_mn40b")
+
+[node name="TroopCountLabel" type="Label" parent="TroopCountPanel"]
+layout_mode = 0
+offset_right = 67.0
+offset_bottom = 23.0
+text = "0"
+horizontal_alignment = 1
+
+[node name="TroopIndexPanel" type="Panel" parent="TroopCountPanel"]
+offset_left = 18.1818
+offset_top = -36.3636
+offset_right = 48.1818
+offset_bottom = -13.3636
+theme_override_styles/panel = SubResource("StyleBoxFlat_mn40b")
+
+[node name="TroopIndexLabel" type="Label" parent="TroopCountPanel/TroopIndexPanel"]
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 23.0
+text = "0"
+horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

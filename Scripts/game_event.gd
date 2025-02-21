@@ -114,7 +114,7 @@ func startEvent(prov=-1):
 						#In future we should give a function to the nation getting the event
 						randomNation[i].addEvent(self)
 		
-const totalEvents=8
+const totalEvents=13
 static func factoryEvent(idx:int) -> Event:
 	var retVal:=Event.new()
 	match idx:
@@ -242,6 +242,62 @@ static func factoryEvent(idx:int) -> Event:
 			retVal.total_charisma=300+(1.2*(GameMode.year-1444))
 			retVal.reward_args=[2]
 			retVal.reward="improveRandomAdventurer"
-			
+		9:
+			retVal.event_name="Rumour : Dragon"
+			retVal.event_description="Potential Dragon sightings have thrown the nation into turmoil! We must investigate immediately"
+			retVal.event_button="Lets slay this foul beast!"
+			retVal.total_strength=300+(1.2*(GameMode.year-1444))
+			retVal.total_wisdom=300+(1.2*(GameMode.year-1444))
+			retVal.total_intelligence=300+(1.2*(GameMode.year-1444))
+			retVal.total_charisma=300+(1.2*(GameMode.year-1444))
+			var reward=randi_range(0,8)
+			retVal.reward_args=[reward]
+			retVal.reward="slayDragon"
+			if reward==8:
+				retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+		10:
+			retVal.event_name="Rally the Barbarians"
+			retVal.event_description="Our adventurers have grown weak!"
+			retVal.event_button="Rally the Barbarians!"
+			retVal.total_strength=50+(2.2*(GameMode.year-1444))
+			retVal.total_wisdom=0
+			retVal.total_intelligence=0
+			retVal.total_charisma=0
+			var reward=(randi_range(0,2)<1)
+			retVal.reward_args=[reward]
+			retVal.reward="increaseNationalStrengthModifier"
+		11:
+			retVal.event_name="Rally the Druids"
+			retVal.event_description="Our adventurers have grown foolish!"
+			retVal.event_button="Rally the Druids!"
+			retVal.total_strength=0
+			retVal.total_wisdom=50+(2.2*(GameMode.year-1444))
+			retVal.total_intelligence=0
+			retVal.total_charisma=0
+			var reward=(randi_range(0,2)<1)
+			retVal.reward_args=[reward]
+			retVal.reward="increaseNationalWisdomModifier"
+		12:
+			retVal.event_name="Rally the Bards"
+			retVal.event_description="Our adventurers have grown repulsive!"
+			retVal.event_button="Rally the Bards!"
+			retVal.total_strength=0
+			retVal.total_wisdom=0
+			retVal.total_intelligence=0
+			retVal.total_charisma=50+(2.2*(GameMode.year-1444))
+			var reward=(randi_range(0,2)<1)
+			retVal.reward_args=[reward]
+			retVal.reward="increaseNationalCharismaModifier"
+		13:
+			retVal.event_name="Rally the Wizards"
+			retVal.event_description="Our adventurers have grown stupid!"
+			retVal.event_button="Rally the Wizards!"
+			retVal.total_strength=0
+			retVal.total_wisdom=0
+			retVal.total_intelligence=50+(2.2*(GameMode.year-1444))
+			retVal.total_charisma=0
+			var reward=(randi_range(0,2)<1)
+			retVal.reward_args=[reward]
+			retVal.reward="increaseNationalIntelligenceModifier"
 	retVal.eventID=idx
 	return retVal

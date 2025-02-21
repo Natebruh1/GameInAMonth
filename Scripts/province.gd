@@ -14,7 +14,7 @@ var offset_rand:RandomNumberGenerator
 var offset_range:=0.1
 #Game
 enum PRODUCE {FISH, IRON, WHEAT, WOOD, WOOL, BONE}
-static var ProduceEfficiency=[1.0,1.0,1.0,1.0,1.0,1.0]
+var ProduceEfficiency=[1.0,1.0,1.0,1.0,1.0,1.0]
 enum TERRAIN {PLAINS,HILL,DESERT,FOREST,BONEFIELD,OCEAN,MOUNTAIN}
 @export_category("World")
 @export var province_name:String
@@ -22,9 +22,16 @@ enum TERRAIN {PLAINS,HILL,DESERT,FOREST,BONEFIELD,OCEAN,MOUNTAIN}
 var potentialNeighbours=[]
 @export var province_terrain:TERRAIN
 @export var province_produce:PRODUCE
-
+@export var province_extra_cost:=0.0
 @export_category("Nation")
-@export var owner_id:=0
+@export var owner_id:=0:
+	set(val):
+		owner_id=val
+		if val==GameMode.player_nation:
+			#Set Material so we know what we are
+			material=preload("res://Materials/ownedNation.tres")
+		else:
+			material=null
 
 @export_category("Developments")
 @export var base_wealth:int:
@@ -60,7 +67,7 @@ var total_magic:float
 @export var magic_ratio:=1.0 #Effect that magic has on total development
 #WIP BASE BUILDINGS#
 
-#WIP BASE EVENTS#
+
 
 @export_category("Graphics")
 @export var startIndex=0
@@ -88,6 +95,26 @@ var hasEvent=false:
 		hasEvent=val
 		displayEvent=val
 var displayEvent=false
+
+#Troops
+var troopList:Array[troop]:
+	set(val):
+		troopList=val
+		if val.size()==0:
+			siegeMonths=0
+			beingSieged=false
+		var currentSieger=null
+		for i in val:
+			if currentSieger==null and i.owning_nation!=Nation.Nations[owner_id]:
+				currentSieger=i.owning_nation
+				beingSieged=true
+			if i.owning_nation!=currentSieger and currentSieger!=null:
+				#There are armies from multiple nations here
+				beingSieged=false
+				currentSieger=null
+				break
+var siegeMonths=0
+var beingSieged=false
 func _ready():
 	
 	#Add the collision shape and the callback
@@ -175,7 +202,7 @@ func _draw():
 	var textStartPoint=lerp(startPoint,endPoint,0.1)
 	var ang=startPoint.angle_to_point(endPoint)
 	draw_set_transform(textStartPoint,ang,Vector2(1.0,1.0)/z_level)
-	if (startPoint.distance_to(endPoint)>3.0*24.0*(1.0/z_level)):
+	if (startPoint.distance_to(endPoint)>3.4*24.0*(1.0/z_level)):
 		#(province_name.length()*0.11)
 		
 		if !displayEvent:
@@ -198,11 +225,16 @@ func calculateTotalDevelopment():
 	
 	total_industry=base_industry+magicBonus
 	if owner_id!=0 and Nation.Nations.size()>=owner_id:
-		localIndustryGold=(0.1*self.total_industry*log(self.total_industry+1.0))*Nation.Nations[owner_id].ProduceEfficiency[self.province_produce]*self.ProduceEfficiency[self.province_produce]
+		localIndustryGold=(0.1*self.total_industry*log(self.total_industry+1.0))
+		var nat=Nation.Nations[owner_id]
+		localIndustryGold=localIndustryGold*nat.ProduceEfficiency[self.province_produce]
+		localIndustryGold=localIndustryGold*self.ProduceEfficiency[self.province_produce]
+		
 		localIndustryGold=(floor(localIndustryGold*100.0))/100.0
 	
 	total_vigor=base_vigor+magicBonus
 	total_magic=base_magic
+	return total_industry+total_magic+total_vigor+total_wealth
 #---Signal Callback---#
 var mouseIn=false
 func _mouseIn():
@@ -231,6 +263,49 @@ func getTextureForResource()->Texture:
 			texPath="res://assets/bone.png"
 	return load(texPath)
 
+
+func incrementDay():
+	for Troop in troopList:
+		Troop.incrementDay()
+		
+	#Create 'teams' of troops belonging to the same nation
+	var troopTeams={}
+	for Troop in troopList:
+		if troopTeams.has(Troop.owning_nation):
+			troopTeams[Troop.owning_nation].append(Troop)
+		else:
+			#Create the team array
+			troopTeams[Troop.owning_nation]=[Troop]
+	if troopTeams.keys().size()>1:
+		#multiple teams
+		var teamDamage={}
+		for team in troopTeams.keys():
+			teamDamage[team]=0.0
+			for tr in troopTeams[team]:
+				teamDamage[team]+=tr.baseDamageRange[0] + tr.bonusDamage
+			#Have total damage, now split between other units
+			var totalOtherUnits=0
+			for otherTeam in troopTeams.keys():
+				if otherTeam!=team:
+					totalOtherUnits+=troopTeams[otherTeam].size()
+			#Split damage
+			teamDamage[team]=teamDamage[team]/totalOtherUnits
+			#Now deal damage
+			for otherTeam in troopTeams.keys():
+				if otherTeam!=team:
+					for tr in troopTeams[otherTeam]:
+						tr.health-= max(1,teamDamage[team]-tr.armour)
+		for team in troopTeams.keys():
+			for tr in troopTeams[team]:
+				if tr.health<=0:
+					troopList.erase(tr)
+					tr.owning_nation.troopList.erase(tr)
+					tr.queue_free()
+	else:
+		#Heal non fighting units
+		for Troop in troopList:
+			Troop.health+=calculateTotalDevelopment()/4.0
+			
 
 
 func generateProvinceEvent():
@@ -262,4 +337,72 @@ func increaseProvinceWoodProduceEfficiency(x:float):
 func changeProvinceProduce(x):
 	if owner_id==GameMode.player_nation: GAME_HUD.LogNewMessage(str(name)+" has changed its produce to "+str(PRODUCE.keys()[x]))
 	province_produce=x
+
+func slayDragon(x:int):
+	#1 in 8 chance to capture the dragon instead
+	GAME_HUD.LogNewMessage(str(Nation.Nations[owner_id])+" has captured a dragon in "+str(province_name))
+	BuyTroop("Dragon")
+
+# # # Troops # # #
+func BuyTroop(template:String):
 	
+	var nat:Nation=Nation.Nations[owner_id]
+	
+	
+	var cost =0.0
+	match template:
+		"Infantry":
+			cost=nat.infantryBaseCost
+		"Artillery":
+			cost=nat.artilleryBaseCost
+		"Dragon":
+			cost=0.0
+	if nat.gold>=cost:
+		nat.gold-=cost
+		var newTroop=troop.Factory()
+		match template:
+			"Infantry":
+				newTroop.monthlyCost=nat.infantryBaseUpkeep
+				newTroop.baseDamageRange=nat.infantryBaseDamage
+				newTroop.bonusDamage=nat.troopBonusDamage+nat.infantryBonusDamage
+				newTroop.maxHealth=nat.infantryBaseMaxHealth
+				#DOn't set current health so that the troop regenerates some health
+				newTroop.armour=nat.infantryBaseArmour
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Infantry"
+				newTroop.TroopSprite.texture=preload("res://assets/knight.png")
+				newTroop.TroopSprite.scale=Vector2(1.0,1.0)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)
+			"Artillery":
+				newTroop.monthlyCost=nat.artilleryBaseUpkeep
+				newTroop.baseDamageRange=nat.artilleryBaseDamage
+				newTroop.bonusDamage=nat.troopBonusDamage+nat.artilleryBonusDamage
+				newTroop.maxHealth=nat.artilleryBaseMaxHealth
+				#DOn't set current health so that the troop regenerates some health
+				newTroop.armour=nat.artilleryBaseArmour
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Artillery"
+				newTroop.TroopSprite.texture=preload("res://assets/artillery.png")
+				newTroop.TroopSprite.scale=Vector2(0.5,0.5)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)
+			"Dragon": #A special troop, available only via events
+				newTroop.monthlyCost=50.0
+				newTroop.baseDamageRange=[8,24]
+				newTroop.bonusDamage=0
+				newTroop.maxHealth=120
+				newTroop.armour=10.0
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Dragon"
+				newTroop.TroopSprite.texture=preload("res://assets/flying_dragon-gold.png")
+				newTroop.TroopSprite.hframes=6
+				newTroop.TroopSprite.scale=Vector2(0.8,0.8)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)

@@ -13,7 +13,7 @@ position = Vector2(358, 269)
 
 [node name="GameMode" type="Node" parent="." node_paths=PackedStringArray("HUD", "DateTimer")]
 script = ExtResource("5_ojht8")
-chosen_nation = 2
+chosen_nation = 3
 HUD = NodePath("../PlayerController/HUDLayer")
 DateTimer = NodePath("DateTimer")
 
@@ -45,19 +45,21 @@ startingAdventurers = [NodePath("../../Adventurers/King Franky")]
 script = ExtResource("2_5bhou")
 NationColor = Color(0.784314, 0.784314, 0.784314, 1)
 nation_name = "The Call of Bone"
+portraitStyles = "Human_Female"
 influence = 4.0
 magic_ratio = 0.28
 owned_provinces = [NodePath("../../Map/Palmevire")]
 ProduceEfficiency = [1.0, 1.0, 1.0, 1.0, 1.0, 2.2]
 startingAdventurers = [NodePath("../../Adventurers/Bonelord Arrys")]
+ai_level = 8
+ai_adminEfficiency = 3.0
 aiBias = [3, 4, 3, 4]
 
 [node name="Map" type="Node" parent="."]
 
 [node name="Alatir" type="Polygon2D" parent="Map"]
-position = Vector2(358, 269)
 color = Color(0, 0.541176, 0.0784314, 1)
-polygon = PackedVector2Array(-27, 22, -2, 58, -26, 86, -52, 83, -45, 62, -46, 37, -53, 23, -36, 14)
+polygon = PackedVector2Array(331, 291, 356, 327, 332, 355, 306, 352, 313, 331, 312, 306, 305, 292, 322, 283)
 script = ExtResource("1_wgkm6")
 province_name = "Alatir"
 neighbours = Array[NodePath]([NodePath("../Sea of Sarys"), NodePath("../Jade Strip"), NodePath("../Whisperia Heart"), NodePath("../Whisperia North"), NodePath("../Empty Bay"), NodePath("../Havensfield")])
@@ -67,9 +69,8 @@ startIndex = 4
 endIndex = 1
 
 [node name="Sea of Sarys" type="Polygon2D" parent="Map"]
-position = Vector2(358, 269)
 color = Color(0, 0.643137, 1, 1)
-polygon = PackedVector2Array(-52, 83, -45, 62, -46, 37, -53, 23, -88, 8, -124, 23, -114, 83, -85, 101)
+polygon = PackedVector2Array(306, 352, 313, 331, 312, 306, 305, 292, 270, 277, 234, 292, 244, 352, 273, 370)
 script = ExtResource("1_wgkm6")
 province_name = "Sea of Sarys"
 neighbours = Array[NodePath]([NodePath("../Alatir"), NodePath("../Empty Bay"), NodePath("../Jade Strip")])
@@ -145,8 +146,9 @@ color = Color(0.145098, 0.0941176, 0, 1)
 polygon = PackedVector2Array(337, 277, 337, 287, 353, 291, 359, 285, 356, 277)
 script = ExtResource("1_wgkm6")
 province_name = "Garak'Tur"
-neighbours = Array[NodePath]([NodePath("../Toarine"), NodePath("../Honey Strait"), NodePath("../Meadshill"), NodePath("../Cutlet Bay")])
+neighbours = Array[NodePath]([NodePath("../Toarine"), NodePath("../Honey Strait"), NodePath("../Meadshill"), NodePath("../Cutlet Bay"), NodePath("../Havensfield")])
 province_terrain = 6
+province_extra_cost = 2.0
 base_industry = 2
 startIndex = 1
 
@@ -158,6 +160,7 @@ province_name = "Meadshill"
 neighbours = Array[NodePath]([NodePath("../Garak\'Tur"), NodePath("../Havensfield"), NodePath("../Whisperia North"), NodePath("../Cutlet Bay"), NodePath("../Palmtip")])
 province_terrain = 6
 province_produce = 2
+province_extra_cost = 2.0
 base_wealth = 1
 base_industry = 1
 endIndex = 3
@@ -191,7 +194,7 @@ color = Color(0, 0.666667, 0.117647, 1)
 polygon = PackedVector2Array(363.977, 360.984, 347.039, 372.961, 328, 395, 335.076, 408.145, 362.13, 393.577, 374.765, 370.239)
 script = ExtResource("1_wgkm6")
 province_name = "Whisperia South"
-neighbours = Array[NodePath]([NodePath("../Chip"), NodePath("../Whisperia Heart"), NodePath("../Whisperia East")])
+neighbours = Array[NodePath]([NodePath("../Chip"), NodePath("../Whisperia Heart"), NodePath("../Whisperia East"), NodePath("../Mauna Hekili Westcliff")])
 province_terrain = 3
 province_produce = 3
 owner_id = 2
@@ -204,7 +207,7 @@ color = Color(0.192157, 0.403922, 0.231373, 1)
 polygon = PackedVector2Array(365, 332, 375, 326, 385, 328, 391, 344, 374.766, 370.243, 364, 361)
 script = ExtResource("1_wgkm6")
 province_name = "Whisperia East"
-neighbours = Array[NodePath]([NodePath("../Whisperia North"), NodePath("../Whisperia Heart"), NodePath("../Whisperia South"), NodePath("../Palmresin")])
+neighbours = Array[NodePath]([NodePath("../Whisperia North"), NodePath("../Whisperia Heart"), NodePath("../Whisperia South"), NodePath("../Palmresin"), NodePath("../Mauna Hekili Westcliff")])
 province_terrain = 3
 province_produce = 3
 base_wealth = 1
@@ -225,19 +228,18 @@ color = Color(1, 1, 0.611765, 1)
 polygon = PackedVector2Array(369, 286, 401, 271, 433, 264, 421, 283, 389, 311, 375, 302)
 script = ExtResource("1_wgkm6")
 province_name = "Palmtip"
-neighbours = Array[NodePath]([NodePath("../Cutlet Bay"), NodePath("../Meadshill"), NodePath("../Whisperia North"), NodePath("../Palmresin"), NodePath("../Palmevire")])
+neighbours = Array[NodePath]([NodePath("../Cutlet Bay"), NodePath("../Meadshill"), NodePath("../Whisperia North"), NodePath("../Palmresin"), NodePath("../Palmevire"), NodePath("../Creeksarm")])
 province_produce = 2
 base_magic = 1
 startIndex = 5
 endIndex = 2
 
 [node name="Palmresin" type="Polygon2D" parent="Map"]
-position = Vector2(358, 269)
 color = Color(0.764706, 1, 0.745098, 1)
-polygon = PackedVector2Array(33, 75, 27, 59, 31, 42, 63, 14, 71, 25, 69, 44, 55, 67)
+polygon = PackedVector2Array(391, 344, 385, 328, 389, 311, 421, 283, 429, 294, 427, 313, 413, 336)
 script = ExtResource("1_wgkm6")
 province_name = "Palmresin"
-neighbours = Array[NodePath]([NodePath("../Palmtip"), NodePath("../Whisperia North"), NodePath("../Whisperia East"), NodePath("../Palmevire")])
+neighbours = Array[NodePath]([NodePath("../Palmtip"), NodePath("../Whisperia North"), NodePath("../Whisperia East"), NodePath("../Palmevire"), NodePath("../Creekscusp"), NodePath("../Mauna Hekili Westcliff")])
 province_produce = 4
 base_industry = 1
 base_magic = 1
@@ -249,9 +251,109 @@ color = Color(1, 0.886275, 0.513726, 1)
 polygon = PackedVector2Array(421, 283, 433, 264, 436, 262, 438, 264, 445, 287, 434, 294, 429, 294)
 script = ExtResource("1_wgkm6")
 province_name = "Palmevire"
-neighbours = Array[NodePath]([NodePath("../Palmresin"), NodePath("../Palmtip")])
+neighbours = Array[NodePath]([NodePath("../Palmresin"), NodePath("../Palmtip"), NodePath("../Creeksflank"), NodePath("../Creeksarm"), NodePath("../Creekscusp")])
 province_produce = 5
 owner_id = 3
+
+[node name="Creeksarm" type="Polygon2D" parent="Map"]
+color = Color(0.294118, 0.0196078, 0, 1)
+polygon = PackedVector2Array(401, 271, 404, 247, 382, 224, 443, 221, 431, 247, 436, 262, 433, 264)
+script = ExtResource("1_wgkm6")
+province_name = "Creeksarm"
+neighbours = Array[NodePath]([NodePath("../Cutlet Bay"), NodePath("../Palmtip"), NodePath("../Palmevire"), NodePath("../Creeksflank")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 4.0
+base_wealth = 2
+base_vigor = 2
+endIndex = 3
+
+[node name="Creeksflank" type="Polygon2D" parent="Map"]
+color = Color(0.133333, 0.0196078, 0.0117647, 1)
+polygon = PackedVector2Array(445, 287, 438, 264, 436, 262, 431, 247, 443, 221, 452, 203, 457, 222, 448, 245)
+script = ExtResource("1_wgkm6")
+province_name = "Creeksflank"
+neighbours = Array[NodePath]([NodePath("../Creeksarm"), NodePath("../Palmevire"), NodePath("../Hovey\'s Folley")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 25.0
+base_wealth = 2
+base_industry = 2
+base_vigor = 2
+magic_ratio = 1.2
+startIndex = 3
+endIndex = 6
+
+[node name="Creekscusp" type="Polygon2D" parent="Map"]
+color = Color(0.184314, 0.0235294, 0, 1)
+polygon = PackedVector2Array(445, 287, 434, 294, 429, 294, 427, 313, 429, 321, 437, 304)
+script = ExtResource("1_wgkm6")
+province_name = "Creekscusp"
+neighbours = Array[NodePath]([NodePath("../Palmresin"), NodePath("../Palmevire"), NodePath("../Mauna Hekili Westcliff"), NodePath("../Daisyvile")])
+province_terrain = 6
+province_produce = 4
+province_extra_cost = 25.0
+base_wealth = 4
+magic_ratio = 0.4
+startIndex = 3
+endIndex = 0
+
+[node name="Mauna Hekili Westcliff" type="Polygon2D" parent="Map"]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(334.996, 408.135, 362.056, 393.635, 374.734, 370.266, 391, 344, 413, 336, 427, 313, 429, 321, 429, 338, 411, 354, 388, 369, 371, 393)
+script = ExtResource("1_wgkm6")
+province_name = "Mauna Hekili Westcliff"
+neighbours = Array[NodePath]([NodePath("../Creekscusp"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Palmresin"), NodePath("../Whisperia East"), NodePath("../Whisperia South")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 100.0
+base_wealth = 5
+base_industry = 5
+base_vigor = 5
+base_magic = 5
+magic_ratio = 4.0
+startIndex = 1
+endIndex = 6
+
+[node name="Mauna Hekili Northcliff" type="Polygon2D" parent="Map"]
+color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+polygon = PackedVector2Array(429, 321, 429, 338, 441, 343, 472, 350, 493, 361, 502, 380, 506, 350, 482, 325)
+script = ExtResource("1_wgkm6")
+province_name = "Mauna Hekili Northcliff"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Daisyvile")])
+province_terrain = 6
+province_produce = 5
+province_extra_cost = 100.0
+base_wealth = 4
+base_industry = 4
+base_vigor = 4
+base_magic = 4
+magic_ratio = 5.0
+startIndex = 1
+endIndex = 6
+
+[node name="Daisyvile" type="Polygon2D" parent="Map"]
+color = Color(0.87451, 1, 0.894118, 1)
+polygon = PackedVector2Array(429, 321, 445, 287, 462, 301, 454, 323)
+script = ExtResource("1_wgkm6")
+province_name = "Daisyvile"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Northcliff"), NodePath("../Creekscusp")])
+province_produce = 4
+base_magic = 2
+magic_ratio = 1.2
+endIndex = 2
+
+[node name="Hovey\'s Folley" type="Polygon2D" parent="Map"]
+color = Color(0.568627, 0.87451, 0.392157, 1)
+polygon = PackedVector2Array(445, 287, 446, 268, 447, 261, 466, 263, 468, 281, 462, 289)
+script = ExtResource("1_wgkm6")
+province_name = "Hovey's Folley"
+neighbours = Array[NodePath]([NodePath("../Creeksflank")])
+province_produce = 3
+base_wealth = 2
+base_industry = 2
+base_vigor = 2
+endIndex = 3
 
 [node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("HUD", "cam")]
 script = ExtResource("3_ryhga")
@@ -289,7 +391,9 @@ script = ExtResource("6_glmga")
 strength = 1
 intelligence = 1
 wisdom = 1
-adventurer_name = "Bonelord Arrys"
+adventurer_name = "Bonelady Arrys"
 
 [node name="Events" type="Node" parent="."]
 script = ExtResource("7_ygju6")
+
+[node name="Troops" type="Node" parent="."]

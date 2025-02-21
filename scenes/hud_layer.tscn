@@ -76,7 +76,7 @@ corner_detail = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wsqgn"]
 bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
 
-[node name="HUDLayer" type="CanvasLayer" node_paths=PackedStringArray("nationNameNode", "totalGoldNode", "totalInfluenceNode", "nationAdmin", "nationDiplo", "nationMilit", "nationMana", "provinceNameNode", "localWealthNode", "localIndustryNode", "localVigorNode", "localMagicNode", "localWealthButton", "localIndustryButton", "localVigorButton", "localMagicButton", "colonyNameNode", "colonizeButton", "terrainName", "terrainTex", "colonyTerrainName", "colonyTerrainTex", "produceName", "produceTex", "industryProduceGoldLabel", "wealthProduceGoldLabel", "totalProduceGoldLabel", "vigorProduceInfluenceLabel", "wealthProduceInfluenceLabel", "totalProduceInfluenceLabel", "provinceNameEventNode", "eventNameNode", "eventDescNode", "eventButtonNode", "loadupLogLabels", "tabControl", "dateLabel", "JobTabs", "adventurerPool", "advisorPool", "explorerPool")]
+[node name="HUDLayer" type="CanvasLayer" node_paths=PackedStringArray("nationNameNode", "totalGoldNode", "totalInfluenceNode", "nationAdmin", "nationDiplo", "nationMilit", "nationMana", "provinceNameNode", "localWealthNode", "localIndustryNode", "localVigorNode", "localMagicNode", "localWealthButton", "localIndustryButton", "localVigorButton", "localMagicButton", "colonyNameNode", "colonizeButton", "terrainName", "terrainTex", "colonyTerrainName", "colonyTerrainTex", "produceName", "produceTex", "industryProduceGoldLabel", "wealthProduceGoldLabel", "totalProduceGoldLabel", "vigorProduceInfluenceLabel", "wealthProduceInfluenceLabel", "totalProduceInfluenceLabel", "provinceNameEventNode", "eventNameNode", "eventDescNode", "eventButtonNode", "provinceNameBuildingNode", "loadupLogLabels", "tabControl", "dateLabel", "JobTabs", "adventurerPool", "advisorPool", "explorerPool")]
 script = ExtResource("1_kul7a")
 nationNameNode = NodePath("Frame/TopPanel/TopBar/NationName")
 totalGoldNode = NodePath("Frame/TopPanel/TopBar/GoldTotal")
@@ -112,6 +112,7 @@ provinceNameEventNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/Province
 eventNameNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/EventName")
 eventDescNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/EventDesc")
 eventButtonNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/RunEventButton")
+provinceNameBuildingNode = NodePath("Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/ProvinceName")
 loadupLogLabels = [NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel1"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel2"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel3"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel4"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel5"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel6"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel7"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel8"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel9"), NodePath("Frame/LogPanel/ScrollContainer/LogLabelContainer/LogLabel10")]
 tabControl = NodePath("Frame/ProvincePanel/ProvincePanelTabs")
 dateLabel = NodePath("Frame/PlayButton/DatePanel/DateLabel")
@@ -276,7 +277,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/side_margin = 0
-current_tab = 2
+current_tab = 3
 clip_tabs = false
 tabs_visible = false
 
@@ -518,6 +519,7 @@ custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
 [node name="ProvinceVerticalLayout_Event" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 6
 
@@ -560,6 +562,75 @@ layout_mode = 2
 toggle_mode = true
 text = "Event Button
 "
+
+[node name="ProvinceVerticalLayout_Build" type="VBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ProvinceName" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Province Name"
+horizontal_alignment = 1
+
+[node name="VSeparator_1" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="BuildingLabel" type="Label" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Province Name"
+mouse_filter = 1
+text = "Build Menu
+"
+label_settings = SubResource("LabelSettings_x1wht")
+horizontal_alignment = 1
+
+[node name="VSeparator_2" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="Scroll_Buildings" type="ScrollContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Buildings"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Workshop" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Buildings/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Cost 100 Gold : Increase industry gold by 30% in this province"
+disabled = true
+text = "Workshop
+"
+
+[node name="VSeparator_3" type="HSeparator" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ulhr6")
+
+[node name="Scroll_Troops" type="ScrollContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Infantry" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "A basic Troop. Costs 10.0 gold and has an upkeep of 1.0 gold per month. Takes 12 days to build."
+text = "Infantry"
+
+[node name="Artillery" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "A basic Troop. Costs 50.0 gold and has an upkeep of 3.5 gold per month. Takes 12 days to build."
+text = "Artillery"
 
 [node name="PlayButton" type="TextureButton" parent="Frame"]
 layout_mode = 0
@@ -756,4 +827,6 @@ clip_text = true
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout/ProvinceDevelopment/IncreaseMagicButton" to="." method="_on_increase_magic_button_pressed"]
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/Colonize Button" to="." method="_on_colonize_button_pressed"]
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/RunEventButton" to="." method="_on_run_event_button_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer/Infantry" to="." method="_on_infantry_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer/Artillery" to="." method="_on_artillery_pressed"]
 [connection signal="pressed" from="Frame/PlayButton" to="." method="_on_play_button_pressed"]

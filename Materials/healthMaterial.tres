@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cspc7y5dlv7ne"]
+
+[ext_resource type="Shader" path="res://Materials/healthMaterial.gdshader" id="1_8cw5x"]
+
+[resource]
+shader = ExtResource("1_8cw5x")
+shader_parameter/healthPercentage = 1.0
+shader_parameter/barColour = Vector4(0, 0, 0, 0)

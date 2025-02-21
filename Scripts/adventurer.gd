@@ -32,7 +32,7 @@ var HUDref=null
 	set(val):
 		if nameLabel: nameLabel.text = val
 		adventurer_name=val
-
+@export var adventurerTexture:TextureRect
 func _on_pressed():
 	print("Adventurer Pressed")
 	

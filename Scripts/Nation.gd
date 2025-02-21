@@ -7,6 +7,7 @@ static var Nations={} # Key [int], Value [Nation]
 @export_category("Graphics")
 @export var NationColor:=Color(1.0,1.0,1.0,1.0)
 @export var nation_name:String
+@export var portraitStyles:="Human_Male"
 
 @export_category("Stats")
 #Certain Nations might have certain starting gold
@@ -15,6 +16,9 @@ var goldIncomeLastMonth=0.0
 #Certain Nations might have certain starting influence
 @export var influence:=0.0
 var influenceIncomeLastMonth=0.0
+
+var armyStationedMultiplier=0.7
+
 
 #Points which can be spent on improving provinces
 @export var adminPoints:=0:
@@ -44,6 +48,23 @@ var influenceIncomeLastMonth=0.0
 
 #Magic Ratio, increases the effectiveness that Magic has on improving a province
 @export var magic_ratio:=0.15
+
+@export var troopBonusDamage=0
+
+@export var infantryBaseCost=10.0
+@export var infantryBaseUpkeep=1.0
+@export var infantryBaseDamage=[1,4]
+@export var infantryBonusDamage=0
+@export var infantryBaseMaxHealth=24
+@export var infantryBaseArmour=0
+
+@export var artilleryBaseCost=50.0
+@export var artilleryBaseUpkeep=3.5
+@export var artilleryBaseDamage=[1,8]
+@export var artilleryBonusDamage=0
+@export var artilleryBaseMaxHealth=24
+@export var artilleryBaseArmour=16
+
 
 @export_category("Missions")
 
@@ -93,7 +114,8 @@ var total_intelligence=0
 var total_wisdom=0
 var total_charisma=0
 
-
+#Troops
+var troopList:Array[troop]=[]
 
 func _ready():
 	totalNations+=1
@@ -119,6 +141,10 @@ func _ready():
 		adv.charisma=i.charisma
 		adv.adventurer_name=i.adventurer_name
 		adventurerPool.append(adv)
+		#Get a random texture
+		var idx=randi_range(0,NationGraphics.portrait_library[portraitStyles].size()-1)
+		adv.adventurerTexture.texture=NationGraphics.portrait_library[portraitStyles][idx]
+		
 		if GameMode.player_nation==id:
 			Settings.game_gamemode.HUD.add_adventurer(adv) #Add starting adventurers to the HUD
 		i.queue_free()
@@ -126,14 +152,15 @@ func _ready():
 	startingAdventurers.clear()
 	
 	#WIP REMOVE AUTO UPDATE ON READY
-	monthUpdate()
+	#monthUpdate()
 	
 
 var withIncomeLogging:bool=false
+
 func monthUpdate():
 	#Income
-	var totalGoldIncome=0.0
-	var totalInfluenceIncome=0.0
+	var totalGoldIncome=goldIncomeLastMonth
+	var totalInfluenceIncome=influenceIncomeLastMonth
 	
 	var productionIncome=0.0
 	var wealthGoldIncome=0.0
@@ -146,26 +173,52 @@ func monthUpdate():
 		
 		#Production Income [Gold]
 		# 0.1*prov[industry]*ln(prov[industry]+1)*nation[ProvinceEfficiency]*prov[ProvinceEfficiency]
-		productionIncome+=i.localIndustryGold
-		#(0.1*i.total_industry*log(i.total_industry+1.0))*ProduceEfficiency[i.province_produce]*i.ProduceEfficiency[i.province_produce]
-		
-		#Wealth Income [Gold/Influence]
-		#var x =max(i.total_wealth,1.0)
-		#wealthGoldIncome+=(1.0/x)+sqrt(x-1.0) - 0.8
-		wealthGoldIncome+=i.localWealthGold
-		wealthInfluenceIncome+=sqrt(sqrt(i.total_wealth*i.total_wealth*i.total_wealth))
-		
-		#Vigor Income [Influence/Army Reduction]
-		armyReductionPercentage+=(1+(i.total_vigor/(log(i.total_vigor)-100)))
-		vigorInfluenceIncome+=sqrt(sqrt(i.total_vigor*i.total_vigor*i.total_vigor))
-		
-		
+		if i.beingSieged: #Steal income
+			print(name + " being sieged!")
+			var pilferGold=0.0
+			var pilferInfluence=0.0
+			var siegeLerp = lerp(0.1,0.7,float(min(i.siegeMonths,5.0))/5.0)
+			productionIncome+=i.localIndustryGold*siegeLerp
+			pilferGold+=i.localIndustryGold*(1.0-siegeLerp)
+			#(0.1*i.total_industry*log(i.total_industry+1.0))*ProduceEfficiency[i.province_produce]*i.ProduceEfficiency[i.province_produce]
+			
+			#Wealth Income [Gold/Influence]
+			#var x =max(i.total_wealth,1.0)
+			#wealthGoldIncome+=(1.0/x)+sqrt(x-1.0) - 0.8
+			wealthGoldIncome+=i.localWealthGold*siegeLerp
+			pilferGold+=i.localWealthGold*(1.0-siegeLerp)
+			wealthInfluenceIncome+=sqrt(sqrt(i.total_wealth*i.total_wealth*i.total_wealth))*siegeLerp
+			pilferInfluence+=sqrt(sqrt(i.total_wealth*i.total_wealth*i.total_wealth))*(1.0-siegeLerp)
+			#Vigor Income [Influence/Army Reduction]
+			armyReductionPercentage+=(1+(i.total_vigor/(log(i.total_vigor)-100)))
+			vigorInfluenceIncome+=sqrt(sqrt(i.total_vigor*i.total_vigor*i.total_vigor))*siegeLerp
+			pilferInfluence+=sqrt(sqrt(i.total_vigor*i.total_vigor*i.total_vigor))*(1.0-siegeLerp)
+			i.siegeMonths+=1
+			
+			#Give the pilfered money and influence to the other nation
+			i.troopList[0].owning_nation.goldIncomeLastMonth+=pilferGold
+			i.troopList[0].owning_nation.influenceIncomeLastMonth+=pilferInfluence*0.05
+			i.troopList[0].owning_nation.gold+=pilferGold
+			i.troopList[0].owning_nation.influence+=pilferInfluence*0.05
+		else:
+			productionIncome+=i.localIndustryGold
+			#(0.1*i.total_industry*log(i.total_industry+1.0))*ProduceEfficiency[i.province_produce]*i.ProduceEfficiency[i.province_produce]
+			
+			#Wealth Income [Gold/Influence]
+			#var x =max(i.total_wealth,1.0)
+			#wealthGoldIncome+=(1.0/x)+sqrt(x-1.0) - 0.8
+			wealthGoldIncome+=i.localWealthGold
+			wealthInfluenceIncome+=sqrt(sqrt(i.total_wealth*i.total_wealth*i.total_wealth))
+			
+			#Vigor Income [Influence/Army Reduction]
+			armyReductionPercentage+=(1+(i.total_vigor/(log(i.total_vigor)-100)))
+			vigorInfluenceIncome+=sqrt(sqrt(i.total_vigor*i.total_vigor*i.total_vigor))
 	armyReductionPercentage=armyReductionPercentage/owned_provinces.size()
 	
-	totalGoldIncome=wealthGoldIncome+productionIncome
+	totalGoldIncome+=wealthGoldIncome+productionIncome
 	#goldIncomeLastMonth=totalGoldIncome
 	
-	totalInfluenceIncome=(wealthInfluenceIncome+vigorInfluenceIncome)*0.05
+	totalInfluenceIncome+=(wealthInfluenceIncome+vigorInfluenceIncome)*0.05
 	#influenceIncomeLastMonth=totalInfluenceIncome
 	if (withIncomeLogging):
 		print("Industry Gold : "+str(productionIncome)+" || Wealth Gold : "+str(wealthGoldIncome))
@@ -204,7 +257,13 @@ func monthUpdate():
 	totalInfluenceIncome-=advisorCost
 	totalInfluenceIncome-=explorerCost
 		#Army Costs
-		
+	var troopCost=0.0
+	for Troop in troopList:
+		troopCost+=Troop.monthlyCost
+	#Reduce the cost based upon vigor
+	troopCost=troopCost*armyReductionPercentage
+	totalGoldIncome-=troopCost
+	
 		#Building Costs
 	
 	#Attracted any Adventurers
@@ -250,6 +309,10 @@ func monthUpdate():
 	goldIncomeLastMonth = goldIncomeLastMonth * 100.0
 	goldIncomeLastMonth = floor(goldIncomeLastMonth)
 	goldIncomeLastMonth = goldIncomeLastMonth / 100.0
+	PlayerController.this.updateHUD()
+	goldIncomeLastMonth=0.0
+	influenceIncomeLastMonth=0.0
+	#Remove raided gold and influence
 	
 	
 	# # # Remove Unworked events # # #
@@ -272,6 +335,7 @@ func buyProvince(prov:Province):
 		owned_provinces.append(prov)
 		prov.owner_id=id
 		prov.updateDisplay(Settings.mapmode)
+		GAME_HUD.LogNewMessage(str(name)+" has colonized "+str(prov.province_name))
 		
 func improveProvince(prov:Province, improvementType:int):
 	var cost=calcImproveProvince(prov,improvementType)
@@ -299,6 +363,7 @@ func improveProvince(prov:Province, improvementType:int):
 func calcImproveProvince(prov:Province, improvementType:int)->int:
 	var base_cost=calcProvinceCost(prov)-(owned_provinces.size()*0.85)
 	base_cost=base_cost*0.5
+	
 	match improvementType:
 		0:
 			base_cost+=log(prov.base_wealth)
@@ -315,6 +380,7 @@ func calcProvinceCost(prov:Province)->float:
 	var provCost=float(owned_provinces.size()*log(owned_provinces.size()))+1.0
 	var provDev=prov.base_industry+prov.base_magic+prov.base_vigor+prov.base_wealth+1
 	provCost+=provDev*log(provDev)*prov.ProduceEfficiency[prov.province_produce]
+	provCost+=prov.province_extra_cost
 	provCost=floor(provCost*100.0)/100.0
 	return provCost
 
@@ -334,10 +400,21 @@ func add_adventurer(ad:adventurer=null):
 		
 		var advRes=load("res://scenes/adventurer.tscn")
 		var adv:adventurer=advRes.instantiate()
+		#Set Stats
 		adv.strength=randi_range(-1+national_adventurer_bonus,1+national_adventurer_bonus) + national_strength_modifier
 		adv.charisma=randi_range(-1+national_adventurer_bonus,1+national_adventurer_bonus) + national_charisma_modifier
 		adv.intelligence=randi_range(-1+national_adventurer_bonus,1+national_adventurer_bonus) + national_intelligence_modifier
 		adv.wisdom=randi_range(-1+national_adventurer_bonus,1+national_adventurer_bonus) + national_wisdom_modifier
+		#Set Portrait
+		var idx=randi_range(0,NationGraphics.portrait_library[portraitStyles].size()-1)
+		adv.adventurerTexture.texture=NationGraphics.portrait_library[portraitStyles][idx]
+		#Set Name
+		idx=randi_range(0,NationGraphics.adventurer_titles[portraitStyles].size()-1)
+		var advName=NationGraphics.adventurer_titles[portraitStyles][idx] + " "
+		idx=randi_range(0,NationGraphics.adventurer_names[portraitStyles].size()-1)
+		advName+=NationGraphics.adventurer_names[portraitStyles][idx]
+		adv.adventurer_name=advName
+		
 		adventurerPool.append(adv)
 		if GameMode.player_nation==id:
 			Settings.game_gamemode.HUD.add_adventurer(adv)
@@ -416,16 +493,28 @@ func startCompletingEvent(prov:Province):
 
 func increaseNationalStrengthModifier(x:int):
 	national_strength_modifier+=x
-	GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Strength Modifier by "+str(x))
+	if x>0:
+		GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Strength Modifier by "+str(x))
+	else:
+		GAME_HUD.LogNewMessage(str(name)+" failed to increase their Adventurer Strength Modifier")
 func increaseNationalWisdomModifier(x:int):
 	national_wisdom_modifier+=x
-	GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Wisdom Modifier by "+str(x))
-func increaseNationIntelligenceModifier(x:int):
+	if x>0:
+		GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Wisdom Modifier by "+str(x))
+	else:
+		GAME_HUD.LogNewMessage(str(name)+" failed to increase their Adventurer Wisdom Modifier")
+func increaseNationalIntelligenceModifier(x:int):
 	national_intelligence_modifier+=x
-	GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Intelligence Modifier by "+str(x))
-func increaseNationCharismaModifier(x:int):
+	if x>0:
+		GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Intelligence Modifier by "+str(x))
+	else:
+		GAME_HUD.LogNewMessage(str(name)+" failed to increase their Adventurer Intelligence Modifier")
+func increaseNationalCharismaModifier(x:int):
 	national_charisma_modifier+=x
-	GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Charisma Modifier by "+str(x))
+	if x>0:
+		GAME_HUD.LogNewMessage(str(name)+" increased their Adventurer Charisma Modifier by "+str(x))
+	else:
+		GAME_HUD.LogNewMessage(str(name)+" failed to increase their Adventurer Charisma Modifier")
 
 func increaseAdventurerBonus(x:int):
 	national_adventurer_bonus+=x
@@ -442,7 +531,7 @@ func adjustMarketsFail(x:float, y:float, z:float):
 	ProduceEfficiency[y]-=(z/2.0)
 	GAME_HUD.LogNewMessage(str(name)+" has lost confidence in their "+str(Province.PRODUCE.keys()[x]).capitalize() + " market")
 
-func improveRandomAdventurer(x:int):
+func improveRandomAdventurer(x:int, trainingMessage=" has levelled!"):
 	var selectedAdventurer:adventurer
 	var allAdventurersSize=adventurerPool.size()+explorerPool.size()+advisorPool.size()
 	var randIDX=randi_range(0,allAdventurersSize-1)
@@ -460,9 +549,32 @@ func improveRandomAdventurer(x:int):
 				selectedAdventurer.intelligence+=1
 			2:
 				selectedAdventurer.wisdom+=1
-			0:
+			3:
 				selectedAdventurer.charisma+=1
-					
+	GAME_HUD.LogNewMessage(selectedAdventurer.adventurer_name+trainingMessage)	
+func slayDragon(x:int):
+	match x:
+		0:
+			GAME_HUD.LogNewMessage(name+" has increased its infantry strength whilst searching for a dragon!")
+			infantryBonusDamage+=1
+		1:
+			GAME_HUD.LogNewMessage(name+" has increased its infantry strength whilst searching for a dragon!")
+			artilleryBonusDamage+=1
+		2:
+			improveRandomAdventurer(4, " has trained from killing a dragon!")
+		3:
+			improveRandomAdventurer(1, " has trained from skirmishing a dragon!")
+		4:
+			improveRandomAdventurer(1, " has trained from skirmishing a dragon!")
+		5:
+			improveRandomAdventurer(1, " has trained from skirmishing a dragon!")
+		6:
+			gold+=100.0
+			GAME_HUD.LogNewMessage(name+" has turned a profit, selling dragon meat!")
+		7:
+			influence+=20.0
+			GAME_HUD.LogNewMessage(name+" has inspired the other nations, by killing a dragon!")
+
 
 enum FOCUS {EXPAND,FIGHT,DEVELOP,ADMINISTRATE}
 var ai_focus:FOCUS=FOCUS.EXPAND
