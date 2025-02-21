@@ -4,19 +4,33 @@ class_name troop
 # # # Troop Stats # # #
 var maxHealth=24:
 	set(val):
-		var healthPercent=health/maxHealth
+		var healthPercent=float(health)/float(maxHealth)
 		maxHealth=val
 		health=val*healthPercent
 var health=2:
 	set(val):
 		health=min(val,maxHealth)
-var armour=0
+var armour=0:
+	get:
+		return armour+spawnBonus
+var maxArmour=0
 var baseDamageRange=[1,4]:
 	get:
+		if troopName=="Dragon":
+			#Dragons deal extra damage for each unit in province
+			return [randi_range(baseDamageRange[0],baseDamageRange[1])+inProvince.troopList.size()]
 		return [randi_range(baseDamageRange[0],baseDamageRange[1])]
-var bonusDamage=0
+var bonusDamage=0:
+	set(val):
+		match troopName:
+			"Orc":
+				bonusDamage=val+armour
+			_:
+				bonusDamage=val
+	get:
+		return bonusDamage+spawnBonus
 
-
+var spawnBonus=3
 @export var owning_nation:Nation:
 	set(val):
 		if val==null:
@@ -74,7 +88,12 @@ var moveDays=0:
 		moveDays=val
 		if moveDays==0 and movingToProvince!=null:
 			actuallyMove(movingToProvince)
+			
 			movingToProvince=null
+			
+			if movingToProvinceSecondary!=null:
+				moveToNewProvince(movingToProvinceSecondary)
+			movingToProvinceSecondary=null
 @export var movingToProvince:Province=null:
 	set(val):
 		if val!=null:
@@ -83,7 +102,7 @@ var moveDays=0:
 			position=Vector2((inProvince.polygon[inProvince.startIndex]+inProvince.polygon[inProvince.endIndex])/2.0)
 			position=lerp(position,Vector2((val.polygon[startPoint]+val.polygon[endPoint])/2.0),0.3)
 		movingToProvince=val
-
+var movingToProvinceSecondary:Province=null
 
 @export var TroopSprite:Sprite2D
 
@@ -181,7 +200,7 @@ func _process(delta):
 	if (troopSplitProvince==inProvince):
 		$TroopCountPanel/TroopIndexPanel.visible=true
 		$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.text=str(troopSplitIndex)
-		if inProvince.troopList.size()>=troopSplitIndex:
+		if inProvince.troopList.size()>=troopSplitIndex-1:
 			if inProvince.troopList[troopSplitIndex].owning_nation.id==GameMode.player_nation:
 				$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.modulate=Color(0, 0.29019609093666, 1)
 			else:
@@ -194,15 +213,34 @@ func moveToNewProvince(prov:Province):
 	if prov.province_terrain==Province.TERRAIN.OCEAN: return
 	if prov==inProvince and movingToProvince!=null:
 		movingToProvince=null
+		movingToProvinceSecondary=null
 		inProvince=prov
 	for i in inProvince.neighbours:
 		if inProvince.get_node(i)==prov:
 			#Found in neighbours, move
 			movingToProvince=prov
 			moveDays=floor(prov.calculateTotalDevelopment()*3.0+12.0)
-			break
+			return
+	for i in inProvince.neighbours:	
+		for n in inProvince.get_node(i).neighbours:
+			if inProvince.get_node(i).get_node(n)==prov:
+				movingToProvince=inProvince.get_node(i)
+				movingToProvinceSecondary=prov
+				moveDays=floor(prov.calculateTotalDevelopment()*3.0+12.0)
+				return
+					
 func incrementDay():
 	moveDays-=1
+	spawnBonus=max(spawnBonus-1,0)
+	match troopName:
+		"Cavalry":
+			#Cavalry moves twice as fast
+			moveDays-=1
+		"Troll":
+			health+=randi_range(0,1)
+		_:
+			pass
+	
 func actuallyMove(prov:Province):
 	inProvince=prov
 func _on_area_2d_mouse_entered():

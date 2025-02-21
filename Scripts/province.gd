@@ -115,6 +115,11 @@ var troopList:Array[troop]:
 				break
 var siegeMonths=0
 var beingSieged=false
+var provinceMaxHealth=80.0:
+	set(val):
+		provinceMaxHealth=val+calculateTotalDevelopment()
+var provinceHealth=80.0
+
 func _ready():
 	
 	#Add the collision shape and the callback
@@ -301,11 +306,18 @@ func incrementDay():
 					troopList.erase(tr)
 					tr.owning_nation.troopList.erase(tr)
 					tr.queue_free()
+		for Troop in troopList:
+			#Now add attrition (reduce armor by 1)
+			Troop.armour-=1
+			Troop.armour=max(Troop.armour,0)
 	else:
 		#Heal non fighting units
 		for Troop in troopList:
 			Troop.health+=calculateTotalDevelopment()/4.0
-			
+			Troop.armour=Troop.maxArmour
+		
+		
+		
 
 
 func generateProvinceEvent():
@@ -368,6 +380,7 @@ func BuyTroop(template:String):
 				newTroop.maxHealth=nat.infantryBaseMaxHealth
 				#DOn't set current health so that the troop regenerates some health
 				newTroop.armour=nat.infantryBaseArmour
+				newTroop.maxArmour=nat.infantryBaseArmour
 				#Set Owner and Province
 				newTroop.owning_nation=nat
 				newTroop.inProvince=self
@@ -383,6 +396,7 @@ func BuyTroop(template:String):
 				newTroop.maxHealth=nat.artilleryBaseMaxHealth
 				#DOn't set current health so that the troop regenerates some health
 				newTroop.armour=nat.artilleryBaseArmour
+				newTroop.maxArmour=nat.artilleryBaseArmour
 				#Set Owner and Province
 				newTroop.owning_nation=nat
 				newTroop.inProvince=self
@@ -397,6 +411,7 @@ func BuyTroop(template:String):
 				newTroop.bonusDamage=0
 				newTroop.maxHealth=120
 				newTroop.armour=10.0
+				newTroop.maxArmour=10.0
 				#Set Owner and Province
 				newTroop.owning_nation=nat
 				newTroop.inProvince=self

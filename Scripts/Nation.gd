@@ -170,7 +170,8 @@ func monthUpdate():
 	for i in owned_provinces:
 		i.magic_ratio=magic_ratio #Update the magic ratio to the nations magic ratio
 		i.calculateTotalDevelopment()
-		
+		#Heal this province
+		i.provinceHealth=min(i.provinceHealth+3.0/max(i.troopList.size(),1.0),i.provinceMaxHealth)
 		#Production Income [Gold]
 		# 0.1*prov[industry]*ln(prov[industry]+1)*nation[ProvinceEfficiency]*prov[ProvinceEfficiency]
 		if i.beingSieged: #Steal income
@@ -200,6 +201,20 @@ func monthUpdate():
 			i.troopList[0].owning_nation.influenceIncomeLastMonth+=pilferInfluence*0.05
 			i.troopList[0].owning_nation.gold+=pilferGold
 			i.troopList[0].owning_nation.influence+=pilferInfluence*0.05
+			
+			var neighbouringNations=[]
+			for n in i.neighbours:
+				var neighProv=i.get_node(n)
+				if neighProv.owner_id!=0 and !neighbouringNations.has(neighProv.owner_id):
+					neighbouringNations.append(neighProv.owner_id)
+			if neighbouringNations.has(i.troopList[0].owning_nation.id):
+				var totalDamage=0.0
+				for Troop in i.troopList:
+					totalDamage+=Troop.baseDamageRange[0]
+				i.provinceHealth-=totalDamage
+				if i.provinceHealth<=0.0:
+					call_deferred("transferProvinceToNewNation",i,i.troopList[0].owning_nation)
+				
 		else:
 			productionIncome+=i.localIndustryGold
 			#(0.1*i.total_industry*log(i.total_industry+1.0))*ProduceEfficiency[i.province_produce]*i.ProduceEfficiency[i.province_produce]
@@ -310,6 +325,7 @@ func monthUpdate():
 	goldIncomeLastMonth = floor(goldIncomeLastMonth)
 	goldIncomeLastMonth = goldIncomeLastMonth / 100.0
 	PlayerController.this.updateHUD()
+	miltiaryGoldLastMonth=goldIncomeLastMonth
 	goldIncomeLastMonth=0.0
 	influenceIncomeLastMonth=0.0
 	#Remove raided gold and influence
@@ -322,8 +338,15 @@ func monthUpdate():
 			#We're not a currently active event so remove
 			eventProvinces[i].hasEvent=false
 			i.queue_free()
-	
-	
+		
+func transferProvinceToNewNation(prov:Province,nat:Nation):
+	owned_provinces.erase(prov)
+	prov.owner_id=nat.id
+	nat.owned_provinces.append(prov)
+	prov.updateDisplay(Settings.mapmode)
+	GAME_HUD.LogNewMessage(str(nat.nation_name)+" has conquered "+str(prov.province_name)+ " from "+str(nation_name))
+
+var miltiaryGoldLastMonth=0.0
 func buyProvince(prov:Province):
 	var cost=calcProvinceCost(prov)
 	#Deduct Influence
@@ -339,6 +362,7 @@ func buyProvince(prov:Province):
 		
 func improveProvince(prov:Province, improvementType:int):
 	var cost=calcImproveProvince(prov,improvementType)
+	prov.provinceMaxHealth=80
 	match improvementType:
 		0:
 			if cost<=adminPoints:
@@ -577,11 +601,14 @@ func slayDragon(x:int):
 
 
 enum FOCUS {EXPAND,FIGHT,DEVELOP,ADMINISTRATE}
+enum MILTYPE{DEFENCE,OFFENCE,PIRATE,BARBARIAN}
+
 var ai_focus:FOCUS=FOCUS.EXPAND
 @export_category("AI")
 @export var ai_level:int=12 # Default they act once every 12 days
 @export var ai_complexity:int=1
 @export var ai_adminEfficiency=2.0 # How often we focus on admin and how frequent we take admin actions (this being high can be a blessing and curse)
+@export var militaryType:MILTYPE
 var ai_action_cd=ai_level: #How many days before the AI tries to take an action
 	set(val):
 		ai_action_cd=val
@@ -601,6 +628,7 @@ var ai_action_cd=ai_level: #How many days before the AI tries to take an action
 # # # # # GAME AI # # # # #
 var runningChangesWithoutSwitchingFocus=0
 func aiChangeFocus(newFocus:FOCUS):
+	if owned_provinces.size()==0: return
 	runningChangesWithoutSwitchingFocus+=1
 	if ai_focus!=newFocus: 
 		ai_focus=newFocus
@@ -615,7 +643,46 @@ func aiChangeFocus(newFocus:FOCUS):
 				advisorPool.erase(adv)
 				adventurerPool.append(adv)
 		FOCUS.FIGHT:
-			pass
+			#Maximise Influence by reducing Advisors and Explorers
+			for adv in explorerPool:
+				explorerPool.erase(adv)
+				adventurerPool.append(adv)
+			for adv in advisorPool:
+				advisorPool.erase(adv)
+				adventurerPool.append(adv)
+			#This is a gold saving tactic
+			#Now check to see if we want to train any troops
+			match militaryType:
+				MILTYPE.DEFENCE:
+					#We want a target number of troops equal to our provinces with non friendly
+					#non ocean neighbour
+					var borderProvinces=encroachingNeighbours
+					
+					
+					#We prefer a large amount of infantry since we're not moving (cavalry)
+					#and we're not sieging (artillery)
+					if troopList.size()<borderProvinces+owned_provinces.size():
+						#We want to train more
+						if miltiaryGoldLastMonth>infantryBaseUpkeep:
+							owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+					#If income is high enough, produce more defensive troops
+					if miltiaryGoldLastMonth>infantryBaseUpkeep*2.0:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+				MILTYPE.OFFENCE:
+					if miltiaryGoldLastMonth>artilleryBaseUpkeep*1.0:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Artillery")
+					elif miltiaryGoldLastMonth>infantryBaseUpkeep*1.2:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+				MILTYPE.PIRATE:
+					if troopList.size()<owned_provinces.size()/2.0:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+					elif miltiaryGoldLastMonth>artilleryBaseUpkeep*1.2:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Artillery")
+				MILTYPE.BARBARIAN:
+					owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+			
+			
+			
 		FOCUS.DEVELOP:
 			#Maximise all 4 mana by Moving all adventurers and explorers to Advisor Roles
 			for adv in explorerPool:
@@ -633,61 +700,179 @@ func aiChangeFocus(newFocus:FOCUS):
 				adventurerPool.erase(adv)
 				explorerPool.append(adv)
 func aiAction():
-	match ai_focus:
-		FOCUS.EXPAND:
-			var lowestCost=10000000.0
-			var lowestCostProvince:Province
-			for prov in owned_provinces:
-				for provNeighbour in prov.neighbours:
-					var pNeighbour=prov.get_node(provNeighbour)
-					
-					if pNeighbour.owner_id==0 and pNeighbour.province_terrain!=Province.TERRAIN.OCEAN:
-						if calcProvinceCost(pNeighbour)<lowestCost:
-							lowestCost=calcProvinceCost(pNeighbour)
-							lowestCostProvince=pNeighbour
-			if lowestCost>influence:
-				aiChangeFocus(selectAIFocus())
-			else:
-				buyProvince(lowestCostProvince)
-		FOCUS.FIGHT:
-			pass
-		FOCUS.DEVELOP:
-			#We want to improve what we're likely to focus on next, we should also account for
-			#industry never being second so we check to see if its likely to come up again soon.
-			var secondChoice = selectAIFocus(1,0.3*runningChangesWithoutSwitchingFocus)
-			var randProvince=randi_range(0,owned_provinces.size()-1)
-			match secondChoice:
-				FOCUS.EXPAND:	#Improve Magic
-					if !(improveProvince(owned_provinces[randProvince],3)):
-						randProvince=randi_range(0,owned_provinces.size()-1)
-						if !(improveProvince(owned_provinces[randProvince],3)): #Try twice before changing AI Focus
-							aiChangeFocus(selectAIFocus())
-				FOCUS.FIGHT:	#Improve Vigor
-					if !(improveProvince(owned_provinces[randProvince],2)):
-						randProvince=randi_range(0,owned_provinces.size()-1)
-						if !(improveProvince(owned_provinces[randProvince],2)): #Try twice before changing AI Focus
-							aiChangeFocus(selectAIFocus())
-				FOCUS.DEVELOP:	#Improve Industry
-					if !(improveProvince(owned_provinces[randProvince],1)):
-						randProvince=randi_range(0,owned_provinces.size()-1)
-						if !(improveProvince(owned_provinces[randProvince],1)): #Try twice before changing AI Focus
-							aiChangeFocus(selectAIFocus())
-				FOCUS.ADMINISTRATE:	#Improve Wealth
-					if !(improveProvince(owned_provinces[randProvince],0)):
-						randProvince=randi_range(0,owned_provinces.size()-1)
-						if !(improveProvince(owned_provinces[randProvince],0)): #Try twice before changing AI Focus
-							aiChangeFocus(selectAIFocus())
+	if owned_provinces.size()>0:
+		match ai_focus:
+			FOCUS.EXPAND:
+				var lowestCost=10000000.0
+				var lowestCostProvince:Province
+				for prov in owned_provinces:
+					for provNeighbour in prov.neighbours:
+						var pNeighbour=prov.get_node(provNeighbour)
+						
+						if pNeighbour.owner_id==0 and pNeighbour.province_terrain!=Province.TERRAIN.OCEAN:
+							if calcProvinceCost(pNeighbour)<lowestCost:
+								lowestCost=calcProvinceCost(pNeighbour)
+								lowestCostProvince=pNeighbour
+				if lowestCost>influence:
+					aiChangeFocus(selectAIFocus())
+				else:
+					buyProvince(lowestCostProvince)
+			FOCUS.FIGHT:
+				match militaryType:
+					MILTYPE.DEFENCE:
+						var occupiedProvinces=[]
+						for i in owned_provinces:
+							for Troop in i.troopList:
+								if Troop.owning_nation!=self:
+									occupiedProvinces.append(i)
+						if occupiedProvinces.size()==0 or troopList.size()==0:
+							#Nothing to defend against so we definitely want to switch focus
+							aiChangeFocus(selectAIFocus(0,3.0))
+						else:
+							#Try move our troops into occupiedProvinces
+							for Troop in troopList:
+								Troop.moveToNewProvince(occupiedProvinces[0])
+					MILTYPE.OFFENCE:
+						var occupiedProvinces=[]
+						for i in owned_provinces:
+							for Troop in i.troopList:
+								if Troop.owning_nation!=self:
+									occupiedProvinces.append(i)
+						if borderProvinceList.size()==0 or troopList.size()==0:
+							#Nothing to fight against so we definitely want to switch focus
+							aiChangeFocus(selectAIFocus(0,3.0))
+						else:
+							#Find the focus borderProvince
+							var borderedProvince=null
+							if borderProvinceList.size()>0:
+								for i in borderProvinceList[0].neighbours:
+									if borderProvinceList[0].get_node(i).owner_id==id:
+										borderedProvince=borderProvinceList[0].get_node(i)
 							
-		FOCUS.ADMINISTRATE:
-			#See if there are any active events
-			for i in range(eventProvinces.keys().size()):
-				# if we can't find an available event in our currently active events
-				if !(currentlyActiveEvents.has(eventProvinces.keys()[i])):
-					startCompletingEvent(eventProvinces.values()[i]) #Start completing it
+							for Troop in troopList:
+								if borderedProvince!=null:
+									if Troop.inProvince==borderedProvince and Troop.inProvince.troopList.size()>3:
+										#Move troops to enemy neighbour province in groups of at least 3
+										Troop.moveToNewProvince(borderProvinceList[0])
+									else:
+										Troop.moveToNewProvince(borderedProvince)
+										if Troop.movingToProvince!=borderedProvince and Troop.movingToProvinceSecondary!=borderedProvince:
+											for i in borderedProvince.neighbours:
+												#If it's not an ocean neighbour
+												if borderedProvince.get_node(i).province_terrain!=Province.TERRAIN.OCEAN:
+													#Try move to our neighbour
+													Troop.moveToNewProvince(borderedProvince.get_node(i))
+									
+										
+								else:
+									#Move our troops towards a province with an edge
+									for prov in owned_provinces:
+										for neighbourProv in prov.neighbours:
+											var nP:Province=prov.get_node(neighbourProv)
+											if nP.province_terrain!=Province.TERRAIN.OCEAN and nP.owner_id!=id:
+												Troop.moveToNewProvince(prov)
+							aiChangeFocus(selectAIFocus())
+					MILTYPE.PIRATE:
+						for Troop in troopList:
+							if Troop.inProvince.siegeMonths>1:
+								#Move them back to this nation
+								for prov in owned_provinces:
+									Troop.moveToNewProvince(prov)
+							else:
+								for prov in borderProvinceList:
+									if prov.siegeMonths<1:
+										Troop.moveToNewProvince(prov)
+						if miltiaryGoldLastMonth<1.0:
+							aiChangeFocus(selectAIFocus(0,1.0))
+					MILTYPE.BARBARIAN:
+						var hordes={}
+						for Troop in troopList:
+							if hordes.has(Troop.inProvince):
+								#Add this to the horde
+								hordes[Troop.inProvince].append(Troop)
+							else:
+								#Create a horde of this troop
+								hordes[Troop.inProvince]=[Troop]
+						
+						#Now iterate through the hordes and decide what to do
+						for hordeProv in hordes.keys():
+							var hordeHasActioned=false
+							var hProvNeighbours=[]
+							#Get a list of neighbouring provinces to this horde
+							for n in hordeProv.neighbours:
+								hProvNeighbours.append(hordeProv.get_node(n))
+							for h in hordes.keys():
+								var horde=hordes[h]
+								#If a neighbouring province has a bigger horde
+								if (horde.size()>hordes[hordeProv].size() or hordes[hordeProv].size()==1) and hProvNeighbours.has(h): #If there is a horde that is bigger than us in our neighbours:
+									for Troop in hordes[hordeProv]:
+										Troop.moveToNewProvince(h)
+									hordeHasActioned=true
+									break
+							if !hordeHasActioned and hordes[hordeProv][0].movingToProvince==null:
+								#If we haven't actioned the current horde
+								if hordes[hordeProv].size()>owned_provinces.size():
+									#Move this horde, first try random and then try enemy troops
+									var randNeighbour = hordeProv.get_node(hordeProv.neighbours[randi_range(0,hordeProv.neighbours.size()-1)])
+									for Troop in hordes[hordeProv]:
+										Troop.moveToNewProvince(randNeighbour)
+									var flaggedProv:Province=null
+									for provPath in randNeighbour.neighbours:
+										var prov:Province=randNeighbour.get_node(provPath)
+										
+										if prov.troopList.size()>0:
+											for i in prov.troopList:
+												if i.owning_nation.id!=id:
+													flaggedProv=prov
+													break
+										if flaggedProv!=null:
+											for Troop in hordes[hordeProv]:
+												Troop.moveToNewProvince(prov)
+											hordeHasActioned=true
+											break
+							if !hordeHasActioned:
+								aiChangeFocus(selectAIFocus())
+							
+								
+									
+			FOCUS.DEVELOP:
+				#We want to improve what we're likely to focus on next, we should also account for
+				#industry never being second so we check to see if its likely to come up again soon.
+				var secondChoice = selectAIFocus(1,0.3*runningChangesWithoutSwitchingFocus)
+				var randProvince=randi_range(0,owned_provinces.size()-1)
+				match secondChoice:
+					FOCUS.EXPAND:	#Improve Magic
+						if !(improveProvince(owned_provinces[randProvince],3)):
+							randProvince=randi_range(0,owned_provinces.size()-1)
+							if !(improveProvince(owned_provinces[randProvince],3)): #Try twice before changing AI Focus
+								aiChangeFocus(selectAIFocus())
+					FOCUS.FIGHT:	#Improve Vigor
+						if !(improveProvince(owned_provinces[randProvince],2)):
+							randProvince=randi_range(0,owned_provinces.size()-1)
+							if !(improveProvince(owned_provinces[randProvince],2)): #Try twice before changing AI Focus
+								aiChangeFocus(selectAIFocus())
+					FOCUS.DEVELOP:	#Improve Industry
+						if !(improveProvince(owned_provinces[randProvince],1)):
+							randProvince=randi_range(0,owned_provinces.size()-1)
+							if !(improveProvince(owned_provinces[randProvince],1)): #Try twice before changing AI Focus
+								aiChangeFocus(selectAIFocus())
+					FOCUS.ADMINISTRATE:	#Improve Wealth
+						if !(improveProvince(owned_provinces[randProvince],0)):
+							randProvince=randi_range(0,owned_provinces.size()-1)
+							if !(improveProvince(owned_provinces[randProvince],0)): #Try twice before changing AI Focus
+								aiChangeFocus(selectAIFocus())
+								
+			FOCUS.ADMINISTRATE:
+				#See if there are any active events
+				for i in range(eventProvinces.keys().size()):
+					# if we can't find an available event in our currently active events
+					if !(currentlyActiveEvents.has(eventProvinces.keys()[i])):
+						startCompletingEvent(eventProvinces.values()[i]) #Start completing it
 			
 					
 				
-			
+var encroachingNeighbours=0
+var borderProvinceList:Array[Province]=[]
 @export var aiBias:Array=[1,1,1,1]
 func selectAIFocus(place:int=0, extraDecisiveness:=0.0): #Place is asking if we want 1st 2nd, 3rd most important focus
 	var normBias=aiBias
@@ -711,6 +896,37 @@ func selectAIFocus(place:int=0, extraDecisiveness:=0.0): #Place is asking if we 
 	aiValue[0]= normBias[0]/(owned_provinces.size())
 	#Fight
 	aiValue[1]=0.0
+	
+	encroachingNeighbours=0
+	borderProvinceList.clear()
+	var provincesBeingAttacked=0
+	var biggerArmies=0
+	for prov in owned_provinces:
+		for n in prov.neighbours:
+			var neighbour=prov.get_node(n)
+			if neighbour.owner_id!=0 and neighbour.owner_id!=id:
+				encroachingNeighbours+=1
+				borderProvinceList.append(neighbour)
+				break
+		for t in prov.troopList:
+			if t.owning_nation!=self:
+				provincesBeingAttacked+=1
+				break
+	for n in Nations.values():
+		if n.troopList.size()>troopList.size():
+			biggerArmies+=1
+	match militaryType:
+		MILTYPE.DEFENCE:
+			aiValue[1]=(1.5*provincesBeingAttacked+1.0*encroachingNeighbours)*normBias[1]
+		MILTYPE.OFFENCE:
+			aiValue[1]=(0.5*provincesBeingAttacked+1.0*encroachingNeighbours+1.0*biggerArmies)*normBias[1]
+		MILTYPE.PIRATE:
+			aiValue[1]=(2.5*encroachingNeighbours)*normBias[1]
+		MILTYPE.BARBARIAN:
+			aiValue[1]=(1.5*biggerArmies+1.0*encroachingNeighbours)*normBias[1]
+	
+			
+				
 	#Develop
 	aiValue[2]=((totalProvinceDevelopment()/4.0)) * normBias[2] 
 	#Administrate

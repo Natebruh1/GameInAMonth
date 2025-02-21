@@ -40,6 +40,7 @@ magic_ratio = 0.25
 owned_provinces = [NodePath("../../Map/Chip"), NodePath("../../Map/Whisperia South")]
 ProduceEfficiency = [1.0, 1.1, 1.0, 1.1, 1.0, 1.0]
 startingAdventurers = [NodePath("../../Adventurers/King Franky")]
+militaryType = 1
 
 [node name="The Call of Bone" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
 script = ExtResource("2_5bhou")

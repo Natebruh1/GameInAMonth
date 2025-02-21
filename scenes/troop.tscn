@@ -54,7 +54,6 @@ texture = ExtResource("1_ywm63")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-1.08372e-06, 6.06061)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_jp32o")
 
 [node name="Healthbar" type="Sprite2D" parent="."]
@@ -62,6 +61,12 @@ material = ExtResource("2_rm1dd")
 position = Vector2(-4.76837e-07, -20)
 scale = Vector2(0.378788, 0.046875)
 texture = ExtResource("1_ywm63")
+
+[node name="FlagBack" type="Sprite2D" parent="."]
+material = ExtResource("3_xtxle")
+position = Vector2(26, -4)
+scale = Vector2(14, 14)
+texture = SubResource("GradientTexture2D_5mf3o")
 
 [node name="Flag" type="Sprite2D" parent="."]
 material = ExtResource("3_xtxle")
@@ -95,6 +100,7 @@ text = "0"
 horizontal_alignment = 1
 
 [node name="TroopIndexPanel" type="Panel" parent="TroopCountPanel"]
+layout_mode = 0
 offset_left = 18.1818
 offset_top = -36.3636
 offset_right = 48.1818
