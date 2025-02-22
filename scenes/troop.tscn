@@ -32,6 +32,7 @@ flag = NodePath("Flag")
 healthBar = NodePath("Healthbar")
 
 [node name="Panel" type="Panel" parent="."]
+visible = false
 offset_left = -54.0
 offset_top = 17.0
 offset_right = 54.0

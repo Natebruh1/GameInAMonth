@@ -58,12 +58,19 @@ var armyStationedMultiplier=0.7
 @export var infantryBaseMaxHealth=24
 @export var infantryBaseArmour=0
 
+@export var cavalryBaseCost=22.0
+@export var cavalryBaseUpkeep=2.0
+@export var cavalryBaseDamage=[1,4]
+@export var cavalryBonusDamage=1
+@export var cavalryBaseMaxHealth=22
+@export var cavalryBaseArmour=0
+
 @export var artilleryBaseCost=50.0
 @export var artilleryBaseUpkeep=3.5
 @export var artilleryBaseDamage=[1,8]
 @export var artilleryBonusDamage=0
-@export var artilleryBaseMaxHealth=24
-@export var artilleryBaseArmour=16
+@export var artilleryBaseMaxHealth=18
+@export var artilleryBaseArmour=4
 
 
 @export_category("Missions")
@@ -118,6 +125,7 @@ var total_charisma=0
 var troopList:Array[troop]=[]
 
 func _ready():
+	
 	totalNations+=1
 	id=totalNations
 	#Add us to the list of known nations
@@ -324,7 +332,8 @@ func monthUpdate():
 	goldIncomeLastMonth = goldIncomeLastMonth * 100.0
 	goldIncomeLastMonth = floor(goldIncomeLastMonth)
 	goldIncomeLastMonth = goldIncomeLastMonth / 100.0
-	PlayerController.this.updateHUD()
+	if id==GameMode.player_nation:
+		PlayerController.this.updateHUD()
 	miltiaryGoldLastMonth=goldIncomeLastMonth
 	goldIncomeLastMonth=0.0
 	influenceIncomeLastMonth=0.0
@@ -340,11 +349,12 @@ func monthUpdate():
 			i.queue_free()
 		
 func transferProvinceToNewNation(prov:Province,nat:Nation):
-	owned_provinces.erase(prov)
-	prov.owner_id=nat.id
-	nat.owned_provinces.append(prov)
-	prov.updateDisplay(Settings.mapmode)
-	GAME_HUD.LogNewMessage(str(nat.nation_name)+" has conquered "+str(prov.province_name)+ " from "+str(nation_name))
+	if prov.owner_id!=nat.id:
+		owned_provinces.erase(prov)
+		prov.owner_id=nat.id
+		nat.owned_provinces.append(prov)
+		prov.updateDisplay(Settings.mapmode)
+		GAME_HUD.LogNewMessage(str(nat.nation_name)+" has conquered "+str(prov.province_name)+ " from "+str(nation_name))
 
 var miltiaryGoldLastMonth=0.0
 func buyProvince(prov:Province):
@@ -671,15 +681,23 @@ func aiChangeFocus(newFocus:FOCUS):
 				MILTYPE.OFFENCE:
 					if miltiaryGoldLastMonth>artilleryBaseUpkeep*1.0:
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Artillery")
+					elif miltiaryGoldLastMonth>cavalryBaseUpkeep*1.0:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Cavalry")
 					elif miltiaryGoldLastMonth>infantryBaseUpkeep*1.2:
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
 				MILTYPE.PIRATE:
 					if troopList.size()<owned_provinces.size()/2.0:
-						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+						if (randi_range(0,2)<1):
+							owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+						else:
+							owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Cavalry")
 					elif miltiaryGoldLastMonth>artilleryBaseUpkeep*1.2:
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Artillery")
 				MILTYPE.BARBARIAN:
-					owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+					if (randi_range(0,32)<1):
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+					else:
+						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Orc")
 			
 			
 			
@@ -720,6 +738,7 @@ func aiAction():
 			FOCUS.FIGHT:
 				match militaryType:
 					MILTYPE.DEFENCE:
+						if troopList.size()>3.5*owned_provinces.size(): militaryType=MILTYPE.OFFENCE
 						var occupiedProvinces=[]
 						for i in owned_provinces:
 							for Troop in i.troopList:
@@ -866,7 +885,7 @@ func aiAction():
 				#See if there are any active events
 				for i in range(eventProvinces.keys().size()):
 					# if we can't find an available event in our currently active events
-					if !(currentlyActiveEvents.has(eventProvinces.keys()[i])):
+					if !(currentlyActiveEvents.has(eventProvinces.keys()[i])) and currentlyActiveEvents.size()<ai_adminEfficiency:
 						startCompletingEvent(eventProvinces.values()[i]) #Start completing it
 			
 					

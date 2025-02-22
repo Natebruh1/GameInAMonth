@@ -8,7 +8,11 @@ class_name GAME_HUD
 
 var nationDisplayName="Name"
 var totalGold=0.0
-var goldLastMonth=0.0
+var goldLastMonth=0.0:
+	set(val):
+		if (totalGoldNode):
+			totalGoldNode.tooltip_text="Gold last month : " + str(val)
+		goldLastMonth=val
 var playerNation:int:
 	set(val):
 		playerNation=val
@@ -16,7 +20,11 @@ var playerNation:int:
 			nationDisplayName=Nation.Nations[val].name
 @export var totalInfluenceNode:Label
 var totalInfluence=0.0
-var influenceLastMonth=0.0
+var influenceLastMonth=0.0:
+	set(val):
+		if (totalInfluenceNode):
+			totalInfluenceNode.tooltip_text="Influence last month : " + str(val)
+		influenceLastMonth=val
 
 #Nation Points
 @export var nationAdmin:Label
@@ -107,10 +115,10 @@ var paused=true
 func _process(delta):
 	nationNameNode.text=Nation.Nations[playerNation].nation_name
 	totalGoldNode.text=str(Nation.Nations[playerNation].gold)
-	totalGoldNode.tooltip_text="Gold last month : " + str(goldLastMonth)
+	#totalGoldNode.tooltip_text="Gold last month : " + str(goldLastMonth)
 	
 	totalInfluenceNode.text=str(Nation.Nations[playerNation].influence)
-	totalInfluenceNode.tooltip_text="Influence last month : " + str(influenceLastMonth)
+	#totalInfluenceNode.tooltip_text="Influence last month : " + str(influenceLastMonth)
 	
 	#Update Date
 	
@@ -351,3 +359,7 @@ func _on_infantry_pressed():
 
 func _on_artillery_pressed():
 	targetedProvince.BuyTroop("Artillery")
+
+
+func _on_cavalry_pressed():
+	targetedProvince.BuyTroop("Cavalry")

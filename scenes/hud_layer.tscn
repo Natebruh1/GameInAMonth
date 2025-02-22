@@ -624,12 +624,18 @@ size_flags_vertical = 3
 
 [node name="Infantry" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "A basic Troop. Costs 10.0 gold and has an upkeep of 1.0 gold per month. Takes 12 days to build."
+tooltip_text = "A basic Troop. Costs 10.0 gold and has an upkeep of 1.0 gold per month. Good gold efficiency but weak overall."
 text = "Infantry"
+
+[node name="Cavalry" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "A basic Troop. Costs 22.0 gold and has an upkeep of 2.0 gold per month. Moves Twice as fast as all other troops."
+text = "Cavalry
+"
 
 [node name="Artillery" type="Button" parent="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "A basic Troop. Costs 50.0 gold and has an upkeep of 3.5 gold per month. Takes 12 days to build."
+tooltip_text = "A basic Troop. Costs 50.0 gold and has an upkeep of 3.5 gold per month. High armour and damage but low health."
 text = "Artillery"
 
 [node name="PlayButton" type="TextureButton" parent="Frame"]
@@ -828,5 +834,6 @@ clip_text = true
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Colonize/Colonize Button" to="." method="_on_colonize_button_pressed"]
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Event/RunEventButton" to="." method="_on_run_event_button_pressed"]
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer/Infantry" to="." method="_on_infantry_pressed"]
+[connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer/Cavalry" to="." method="_on_cavalry_pressed"]
 [connection signal="pressed" from="Frame/ProvincePanel/ProvincePanelTabs/ProvinceVerticalLayout_Build/Scroll_Troops/HBoxContainer/Artillery" to="." method="_on_artillery_pressed"]
 [connection signal="pressed" from="Frame/PlayButton" to="." method="_on_play_button_pressed"]

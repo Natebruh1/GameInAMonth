@@ -118,6 +118,11 @@ var beingSieged=false
 var provinceMaxHealth=80.0:
 	set(val):
 		provinceMaxHealth=val+calculateTotalDevelopment()
+	get:
+		if owner_id!=0 and Nation.Nations[owner_id].gold<0.0:
+			return provinceHealth + Nation.Nations[owner_id].gold
+		else:
+			return provinceHealth
 var provinceHealth=80.0
 
 func _ready():
@@ -193,6 +198,10 @@ func updateToTerrain(): #Texture the map to terrain
 			texture=preload("res://assets/field.jpg")
 		TERRAIN.MOUNTAIN:
 			texture=preload("res://assets/rock.png")
+		TERRAIN.HILL:
+			texture=preload("res://assets/hill.jpg")
+		TERRAIN.BONEFIELD:
+			texture=preload("res://assets/bonefield.jpg")
 
 static var z_level=1.0
 func _process(delta):
@@ -360,19 +369,30 @@ func BuyTroop(template:String):
 	
 	var nat:Nation=Nation.Nations[owner_id]
 	
-	
+	var specialT=template
 	var cost =0.0
 	match template:
 		"Infantry":
 			cost=nat.infantryBaseCost
+			if nat.id==5: #Troll nation
+				specialT="Troll"
+			if nat.id==7 or nat.id==9:
+				cost=nat.infantryBaseCost*1.5
+				specialT="Orc"
 		"Artillery":
 			cost=nat.artilleryBaseCost
 		"Dragon":
 			cost=0.0
+		"Orc":
+			cost=0.0
+		"Troll":
+			cost=0.0
+		"Cavalry":
+			cost=nat.cavalryBaseCost
 	if nat.gold>=cost:
 		nat.gold-=cost
 		var newTroop=troop.Factory()
-		match template:
+		match specialT:
 			"Infantry":
 				newTroop.monthlyCost=nat.infantryBaseUpkeep
 				newTroop.baseDamageRange=nat.infantryBaseDamage
@@ -405,6 +425,23 @@ func BuyTroop(template:String):
 				newTroop.TroopSprite.texture=preload("res://assets/artillery.png")
 				newTroop.TroopSprite.scale=Vector2(0.5,0.5)
 				get_parent().get_parent().get_node("Troops").add_child(newTroop)
+			"Cavalry":
+				newTroop.monthlyCost=nat.cavalryBaseUpkeep
+				newTroop.baseDamageRange=nat.cavalryBaseDamage
+				newTroop.bonusDamage=nat.troopBonusDamage+nat.cavalryBonusDamage
+				newTroop.maxHealth=nat.cavalryBaseMaxHealth
+				#DOn't set current health so that the troop regenerates some health
+				newTroop.armour=nat.cavalryBaseArmour
+				newTroop.maxArmour=nat.cavalryBaseArmour
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Cavalry"
+				newTroop.TroopSprite.texture=preload("res://assets/cavalry.png")
+				newTroop.TroopSprite.hframes=9
+				newTroop.TroopSprite.scale=Vector2(0.5,0.5)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)
 			"Dragon": #A special troop, available only via events
 				newTroop.monthlyCost=50.0
 				newTroop.baseDamageRange=[8,24]
@@ -420,4 +457,40 @@ func BuyTroop(template:String):
 				newTroop.TroopSprite.texture=preload("res://assets/flying_dragon-gold.png")
 				newTroop.TroopSprite.hframes=6
 				newTroop.TroopSprite.scale=Vector2(0.8,0.8)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)
+			"Orc": #A special troop, available only via events
+				newTroop.monthlyCost=1.8
+				newTroop.baseDamageRange=[1,6]
+				
+				newTroop.maxHealth=24
+				newTroop.armour=4.0
+				newTroop.maxArmour=4.0
+				
+				newTroop.bonusDamage=0
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Orc"
+				newTroop.TroopSprite.texture=preload("res://assets/orc1_idle.png")
+				newTroop.TroopSprite.hframes=4
+				newTroop.TroopSprite.scale=Vector2(0.8,0.8)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)
+			"Troll": #Troll's are available to troll nations and from events
+				newTroop.monthlyCost=nat.infantryBaseUpkeep
+				newTroop.baseDamageRange=nat.infantryBaseDamage
+				
+				newTroop.maxHealth=nat.infantryBaseMaxHealth-4.0
+				newTroop.armour=nat.infantryBaseArmour
+				newTroop.maxArmour=nat.infantryBaseArmour
+				
+				newTroop.bonusDamage=nat.infantryBonusDamage
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Troll"
+				newTroop.TroopSprite.texture=preload("res://assets/troll.png")
+				
+				newTroop.TroopSprite.scale=Vector2(0.6,0.6)
 				get_parent().get_parent().get_node("Troops").add_child(newTroop)

@@ -185,6 +185,7 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("ViewSplitTroops"):
 		#Hide the province HUD
+		$Panel.visible=true
 		$TroopCountPanel.visible=true
 		var totalInProvince=0
 		var totalInTeam=0
@@ -196,12 +197,13 @@ func _process(delta):
 	if Input.is_action_just_released("ViewSplitTroops"):
 		currentlySplitting=false
 		$TroopCountPanel.visible=false
+		$Panel.visible=false
 	
 	if (troopSplitProvince==inProvince):
 		$TroopCountPanel/TroopIndexPanel.visible=true
 		$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.text=str(troopSplitIndex)
 		if inProvince.troopList.size()>=troopSplitIndex-1:
-			if inProvince.troopList[troopSplitIndex].owning_nation.id==GameMode.player_nation:
+			if inProvince.troopList[troopSplitIndex-1].owning_nation.id==GameMode.player_nation:
 				$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.modulate=Color(0, 0.29019609093666, 1)
 			else:
 				$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.modulate=Color(0.74657118320465, 0.08975055068731, 0.19938540458679)
@@ -219,7 +221,7 @@ func moveToNewProvince(prov:Province):
 		if inProvince.get_node(i)==prov:
 			#Found in neighbours, move
 			movingToProvince=prov
-			moveDays=floor(prov.calculateTotalDevelopment()*3.0+12.0)
+			moveDays=floor(prov.calculateTotalDevelopment()*2.5+12.0 + prov.province_extra_cost)
 			return
 	for i in inProvince.neighbours:	
 		for n in inProvince.get_node(i).neighbours:
@@ -237,7 +239,7 @@ func incrementDay():
 			#Cavalry moves twice as fast
 			moveDays-=1
 		"Troll":
-			health+=randi_range(0,1)
+			health+=int(floor(randi_range(0,1)+((GameMode.year-1444)*0.02)))
 		_:
 			pass
 	
