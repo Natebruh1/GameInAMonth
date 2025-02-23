@@ -31,6 +31,7 @@ static var month:=0:
 		EventController.monthUpdate()
 		if month==0:
 			year+=1
+		print("----MONTH COMPLETE----")
 		
 #Year
 static var year:=1444

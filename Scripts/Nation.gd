@@ -81,6 +81,8 @@ var armyStationedMultiplier=0.7
 #PLAINS,HILL,DESERT,FOREST,BONEFIELD,OCEAN,MOUNTAIN
 @export var ProduceEfficiency=[1.0,1.0,1.0,1.0,1.0,1.0]
 
+var lostAProvinceThisMonth=false
+
 func totalProvinceDevelopment()->int:
 	var total=0
 	for i in owned_provinces:
@@ -122,7 +124,7 @@ var total_wisdom=0
 var total_charisma=0
 
 #Troops
-var troopList:Array[troop]=[]
+@export var troopList:Array[troop]=[]
 
 func _ready():
 	
@@ -166,6 +168,7 @@ func _ready():
 var withIncomeLogging:bool=false
 
 func monthUpdate():
+	lostAProvinceThisMonth=false
 	#Income
 	var totalGoldIncome=goldIncomeLastMonth
 	var totalInfluenceIncome=influenceIncomeLastMonth
@@ -276,7 +279,7 @@ func monthUpdate():
 		#Adventurer Costs
 	var advisorCost=(advisorPool.size()+1)*advisorPool.size()*(Settings.game_gamemode.year/8000.0)
 	var explorerCost=(explorerPool.size()-0.25)*explorerPool.size()*(Settings.game_gamemode.year/8000.0)
-	print("Advisor Size :"+str(advisorPool.size()))
+	#print("Advisor Size :"+str(advisorPool.size()))
 	totalInfluenceIncome-=advisorCost
 	totalInfluenceIncome-=explorerCost
 		#Army Costs
@@ -349,12 +352,18 @@ func monthUpdate():
 			i.queue_free()
 		
 func transferProvinceToNewNation(prov:Province,nat:Nation):
-	if prov.owner_id!=nat.id:
+	if prov.owner_id!=nat.id and nat!=null:
 		owned_provinces.erase(prov)
 		prov.owner_id=nat.id
 		nat.owned_provinces.append(prov)
 		prov.updateDisplay(Settings.mapmode)
 		GAME_HUD.LogNewMessage(str(nat.nation_name)+" has conquered "+str(prov.province_name)+ " from "+str(nation_name))
+	if nat==null:
+		GAME_HUD.LogNewMessage(str(nation_name)+" has lost control of "+str(prov.province_name))
+		owned_provinces.erase(prov)
+		prov.owner_id=0
+		
+		prov.updateDisplay(Settings.mapmode)
 
 var miltiaryGoldLastMonth=0.0
 func buyProvince(prov:Province):
@@ -462,16 +471,18 @@ func addEvent(e:Event):
 			eventableProvinces.append(prov)
 			for provNeighbour in prov.neighbours:
 				if randi_range(1,4)==2:
-					var a = get_node(provNeighbour)
-					if get_node(provNeighbour):
+					var a = prov.get_node(provNeighbour)
+					if prov.get_node(provNeighbour):
 						
-						if get_node(provNeighbour).province_terrain!=Province.TERRAIN.OCEAN:
-							if get_node(provNeighbour).owner_id==0 or get_node(provNeighbour).owner_id==id:
-								eventableProvinces.append(get_node(provNeighbour))
+						if prov.get_node(provNeighbour).province_terrain!=Province.TERRAIN.OCEAN:
+							if prov.get_node(provNeighbour).owner_id==0 or prov.get_node(provNeighbour).owner_id==id:
+								eventableProvinces.append(prov.get_node(provNeighbour))
 		var randIndex=randi_range(0,eventableProvinces.size()-1)
-		e.inProvince=eventableProvinces[randIndex].province_id
-	Province.Provinces[e.inProvince].hasEvent=true
-	eventProvinces[e]=Province.Provinces[e.inProvince]
+		if randIndex>=0:
+			e.inProvince=eventableProvinces[randIndex].province_id
+	if Province.Provinces.has(e.inProvince):
+		Province.Provinces[e.inProvince].hasEvent=true
+		eventProvinces[e]=Province.Provinces[e.inProvince]
 
 
 
@@ -685,6 +696,7 @@ func aiChangeFocus(newFocus:FOCUS):
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Cavalry")
 					elif miltiaryGoldLastMonth>infantryBaseUpkeep*1.2:
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
+					
 				MILTYPE.PIRATE:
 					if troopList.size()<owned_provinces.size()/2.0:
 						if (randi_range(0,2)<1):
@@ -694,7 +706,7 @@ func aiChangeFocus(newFocus:FOCUS):
 					elif miltiaryGoldLastMonth>artilleryBaseUpkeep*1.2:
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Artillery")
 				MILTYPE.BARBARIAN:
-					if (randi_range(0,32)<1):
+					if (randi_range(0,32)>1):
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Infantry")
 					else:
 						owned_provinces[randi_range(0,owned_provinces.size()-1)].BuyTroop("Orc")
@@ -738,7 +750,7 @@ func aiAction():
 			FOCUS.FIGHT:
 				match militaryType:
 					MILTYPE.DEFENCE:
-						if troopList.size()>3.5*owned_provinces.size(): militaryType=MILTYPE.OFFENCE
+						if troopList.size()>3.5*owned_provinces.size() or gold>15.0*owned_provinces.size(): militaryType=MILTYPE.OFFENCE
 						var occupiedProvinces=[]
 						for i in owned_provinces:
 							for Troop in i.troopList:
@@ -752,6 +764,7 @@ func aiAction():
 							for Troop in troopList:
 								Troop.moveToNewProvince(occupiedProvinces[0])
 					MILTYPE.OFFENCE:
+						if gold<(-30.0)-(4.0*owned_provinces.size()): militaryType=MILTYPE.DEFENCE
 						var occupiedProvinces=[]
 						for i in owned_provinces:
 							for Troop in i.troopList:
@@ -769,6 +782,7 @@ func aiAction():
 										borderedProvince=borderProvinceList[0].get_node(i)
 							
 							for Troop in troopList:
+								if Troop.movingToProvince!=null: continue
 								if borderedProvince!=null:
 									if Troop.inProvince==borderedProvince and Troop.inProvince.troopList.size()>3:
 										#Move troops to enemy neighbour province in groups of at least 3
@@ -781,6 +795,8 @@ func aiAction():
 												if borderedProvince.get_node(i).province_terrain!=Province.TERRAIN.OCEAN:
 													#Try move to our neighbour
 													Troop.moveToNewProvince(borderedProvince.get_node(i))
+										if Troop.movingToProvince==null:
+											Troop.moveToNewProvince(owned_provinces[randi_range(0,owned_provinces.size()-1)])
 									
 										
 								else:
@@ -790,6 +806,7 @@ func aiAction():
 											var nP:Province=prov.get_node(neighbourProv)
 											if nP.province_terrain!=Province.TERRAIN.OCEAN and nP.owner_id!=id:
 												Troop.moveToNewProvince(prov)
+							
 							aiChangeFocus(selectAIFocus())
 					MILTYPE.PIRATE:
 						for Troop in troopList:

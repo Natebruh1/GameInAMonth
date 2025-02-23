@@ -118,6 +118,9 @@ var beingSieged=false
 var provinceMaxHealth=80.0:
 	set(val):
 		provinceMaxHealth=val+calculateTotalDevelopment()
+		if owner_id!=0 and val+calculateTotalDevelopment()<0.0 and Nation.Nations[owner_id].lostAProvinceThisMonth==false:
+			Nation.Nations[owner_id].transferProvinceToNewNation(self,null)
+			Nation.Nations[owner_id].lostAProvinceThisMonth=true
 	get:
 		if owner_id!=0 and Nation.Nations[owner_id].gold<0.0:
 			return provinceHealth + Nation.Nations[owner_id].gold
@@ -374,13 +377,19 @@ func BuyTroop(template:String):
 	match template:
 		"Infantry":
 			cost=nat.infantryBaseCost
-			if nat.id==5: #Troll nation
+			if nat.id==5 or nat.id==16 or nat.id==17: #Troll nations
 				specialT="Troll"
-			if nat.id==7 or nat.id==9:
+				#Troll's get more expensive in larger armies
+				cost=nat.infantryBaseCost/max(1.0,(10.0-troopList.size()*2.0))
+			elif nat.id==7 or nat.id==9 or nat.id==15: #Orc Nations
 				cost=nat.infantryBaseCost*1.5
 				specialT="Orc"
 		"Artillery":
 			cost=nat.artilleryBaseCost
+			if nat.id==14 and randi_range(1,20)==20:#Kobolds roll a nat 20
+				#Then they get a dragon :/
+				specialT="Dragon"
+				
 		"Dragon":
 			cost=0.0
 		"Orc":
@@ -389,6 +398,8 @@ func BuyTroop(template:String):
 			cost=0.0
 		"Cavalry":
 			cost=nat.cavalryBaseCost
+		"Treant":
+			cost=0.0
 	if nat.gold>=cost:
 		nat.gold-=cost
 		var newTroop=troop.Factory()
@@ -444,6 +455,7 @@ func BuyTroop(template:String):
 				get_parent().get_parent().get_node("Troops").add_child(newTroop)
 			"Dragon": #A special troop, available only via events
 				newTroop.monthlyCost=50.0
+				if nat.id==14: newTroop.monthlyCost=35.0 #Cost Reduction for kobolds
 				newTroop.baseDamageRange=[8,24]
 				newTroop.bonusDamage=0
 				newTroop.maxHealth=120
@@ -493,4 +505,22 @@ func BuyTroop(template:String):
 				newTroop.TroopSprite.texture=preload("res://assets/troll.png")
 				
 				newTroop.TroopSprite.scale=Vector2(0.6,0.6)
+				get_parent().get_parent().get_node("Troops").add_child(newTroop)
+			"Treant": #Treant is a special unit given to Embernest at the start
+				newTroop.monthlyCost=nat.infantryBaseUpkeep
+				newTroop.baseDamageRange=nat.infantryBaseDamage
+				
+				newTroop.maxHealth=320.0
+				newTroop.armour=4.0
+				newTroop.maxArmour=4.0
+				
+				newTroop.bonusDamage=0.0
+				#Set Owner and Province
+				newTroop.owning_nation=nat
+				newTroop.inProvince=self
+				#Set Texture and Scale
+				newTroop.troopName="Treant"
+				newTroop.TroopSprite.texture=preload("res://assets/treantSheet.png")
+				newTroop.TroopSprite.hframes=29
+				newTroop.TroopSprite.scale=Vector2(1.0,1.0)
 				get_parent().get_parent().get_node("Troops").add_child(newTroop)

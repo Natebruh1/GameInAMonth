@@ -2,6 +2,7 @@ extends Node2D
 class_name troop
 
 # # # Troop Stats # # #
+@export_category("Stats")
 var maxHealth=24:
 	set(val):
 		var healthPercent=float(health)/float(maxHealth)
@@ -31,6 +32,7 @@ var bonusDamage=0:
 		return bonusDamage+spawnBonus
 
 var spawnBonus=3
+@export_category("Spawn")
 @export var owning_nation:Nation:
 	set(val):
 		if val==null:
@@ -86,7 +88,7 @@ var currentlySplitting=false
 var moveDays=0:
 	set(val):
 		moveDays=val
-		if moveDays==0 and movingToProvince!=null:
+		if moveDays<=0 and movingToProvince!=null:
 			actuallyMove(movingToProvince)
 			
 			movingToProvince=null
@@ -234,6 +236,7 @@ func moveToNewProvince(prov:Province):
 func incrementDay():
 	moveDays-=1
 	spawnBonus=max(spawnBonus-1,0)
+	
 	match troopName:
 		"Cavalry":
 			#Cavalry moves twice as fast

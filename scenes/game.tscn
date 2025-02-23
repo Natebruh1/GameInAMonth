@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfua8nd3qp0fr"]
+[gd_scene load_steps=10 format=3 uid="uid://dfua8nd3qp0fr"]
 
 [ext_resource type="Script" path="res://Scripts/province.gd" id="1_wgkm6"]
 [ext_resource type="Script" path="res://Scripts/Nation.gd" id="2_5bhou"]
 [ext_resource type="Script" path="res://Scripts/PlayerController.gd" id="3_ryhga"]
+[ext_resource type="Script" path="res://Scripts/EmbernessStartup.gd" id="3_uheyj"]
+[ext_resource type="Script" path="res://Scripts/HoveyStartup.gd" id="3_xe50e"]
 [ext_resource type="PackedScene" uid="uid://urirnikyn1n3" path="res://scenes/hud_layer.tscn" id="4_upoi3"]
 [ext_resource type="Script" path="res://Scripts/GameMode.gd" id="5_ojht8"]
 [ext_resource type="Script" path="res://Scripts/adventurer.gd" id="6_glmga"]
@@ -85,6 +87,7 @@ militaryType = 1
 script = ExtResource("2_5bhou")
 NationColor = Color(0, 0.333333, 0.396078, 1)
 nation_name = "Tr'All'ita mor"
+portraitStyles = "Orc"
 gold = 15.0
 influence = 12.0
 adminPoints = 32
@@ -107,6 +110,8 @@ script = ExtResource("2_5bhou")
 NationColor = Color(0.878431, 0, 0.521569, 1)
 nation_name = "Hovey"
 portraitStyles = "Human_Female"
+infantryBaseCost = 8.0
+infantryBaseUpkeep = 0.8
 owned_provinces = [NodePath("../../Map/Hovey\'s Folley")]
 startingAdventurers = [NodePath("../../Adventurers/Songbird")]
 national_adventurer_bonus = 1
@@ -114,6 +119,9 @@ ai_level = 6
 ai_complexity = 3
 ai_adminEfficiency = 3.0
 aiBias = [1, 1, 3, 3]
+
+[node name="Startup" type="Node" parent="Nations/Hovey"]
+script = ExtResource("3_xe50e")
 
 [node name="Orokai" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
 script = ExtResource("2_5bhou")
@@ -175,6 +183,88 @@ nation_name = "Swampclove"
 owned_provinces = [NodePath("../../Map/Swa Valleys")]
 startingAdventurers = [NodePath("../../Adventurers/Archdruid Toad")]
 aiBias = [1, 1, 5, 5]
+
+[node name="Emberness" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
+script = ExtResource("2_5bhou")
+nation_name = "Emberness"
+magic_ratio = 1.5
+troopBonusDamage = 5
+infantryBaseCost = 5.0
+infantryBaseUpkeep = 1.5
+cavalryBaseCost = 44.0
+cavalryBaseUpkeep = 3.0
+artilleryBaseCost = 200.0
+owned_provinces = [NodePath("../../Map/Embernest")]
+ProduceEfficiency = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+startingAdventurers = [NodePath("../../Adventurers/Archdruid Sinji")]
+national_adventurer_bonus = 1
+national_strength_modifier = 1
+national_wisdom_modifier = 1
+ai_level = 3
+ai_complexity = 2
+aiBias = [0, 150, 150, 15]
+
+[node name="Startup" type="Node" parent="Nations/Emberness"]
+script = ExtResource("3_uheyj")
+
+[node name="Aszina" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
+script = ExtResource("2_5bhou")
+NationColor = Color(1, 0, 0.176471, 1)
+nation_name = "Aszina"
+infantryBaseMaxHealth = 28
+artilleryBaseDamage = [1, 7]
+owned_provinces = [NodePath("../../Map/Aszina")]
+startingAdventurers = [NodePath("../../Adventurers/Asz")]
+national_strength_modifier = 2
+ai_level = 10
+ai_complexity = 2
+militaryType = 1
+aiBias = [4, 3, 3, 1]
+
+[node name="Kobozan" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0.776471, 0.145098, 0, 1)
+nation_name = "Kobozan"
+portraitStyles = "Kobold"
+infantryBaseCost = 8.0
+infantryBaseUpkeep = 1.1
+infantryBaseMaxHealth = 20
+artilleryBaseUpkeep = 2.2
+artilleryBaseDamage = [1, 6]
+artilleryBaseMaxHealth = 16
+artilleryBaseArmour = 2
+owned_provinces = [NodePath("../../Map/Kobozan"), NodePath("../../Map/Hekili Sheerhills")]
+ai_level = 9
+ai_complexity = 2
+militaryType = 1
+aiBias = [5, 5, 3, 3]
+
+[node name="Rose Horde" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+script = ExtResource("2_5bhou")
+NationColor = Color(1, 0.219608, 0.333333, 1)
+nation_name = "Rose Horde"
+portraitStyles = "Orc"
+owned_provinces = [NodePath("../../Map/Mo\'Ti")]
+ai_level = 14
+militaryType = 3
+
+[node name="Lokotan" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0.752941, 1, 1, 1)
+nation_name = "Lokotan"
+portraitStyles = "Orc"
+troopBonusDamage = 2
+owned_provinces = [NodePath("../../Map/Lokatoa")]
+
+[node name="Anv\'ar" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0.396078, 0.396078, 0.396078, 1)
+nation_name = "Anv'ar"
+portraitStyles = "Orc"
+owned_provinces = [NodePath("../../Map/Anvilwrought")]
+ai_level = 16
+militaryType = 3
+aiBias = [3, 5, 0, 0]
 
 [node name="Map" type="Node" parent="."]
 
@@ -381,7 +471,7 @@ color = Color(0.294118, 0.0196078, 0, 1)
 polygon = PackedVector2Array(401, 271, 404, 247, 382, 224, 443, 221, 431, 247, 436, 262, 433, 264)
 script = ExtResource("1_wgkm6")
 province_name = "Creeksarm"
-neighbours = Array[NodePath]([NodePath("../Cutlet Bay"), NodePath("../Palmtip"), NodePath("../Palmevire"), NodePath("../Creeksflank")])
+neighbours = Array[NodePath]([NodePath("../Cutlet Bay"), NodePath("../Palmtip"), NodePath("../Palmevire"), NodePath("../Creeksflank"), NodePath("../Nortsway")])
 province_terrain = 6
 province_produce = 1
 province_extra_cost = 4.0
@@ -394,7 +484,7 @@ color = Color(0.133333, 0.0196078, 0.0117647, 1)
 polygon = PackedVector2Array(445, 287, 438, 264, 436, 262, 431, 247, 443, 221, 452, 203, 457, 222, 448, 245)
 script = ExtResource("1_wgkm6")
 province_name = "Creeksflank"
-neighbours = Array[NodePath]([NodePath("../Creeksarm"), NodePath("../Palmevire"), NodePath("../Hovey\'s Folley"), NodePath("../Hovey\'s Lane"), NodePath("../Lowmount"), NodePath("../Swa Valleys")])
+neighbours = Array[NodePath]([NodePath("../Creeksarm"), NodePath("../Palmevire"), NodePath("../Hovey\'s Folley"), NodePath("../Hovey\'s Lane"), NodePath("../Lowmount"), NodePath("../Swa Valleys"), NodePath("../Nortsway")])
 province_terrain = 6
 province_produce = 1
 province_extra_cost = 25.0
@@ -424,7 +514,7 @@ color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(334.996, 408.135, 362.056, 393.635, 374.734, 370.266, 391, 344, 413, 336, 427, 313, 429, 321, 429, 338, 411, 354, 388, 369, 371, 393)
 script = ExtResource("1_wgkm6")
 province_name = "Mauna Hekili Westcliff"
-neighbours = Array[NodePath]([NodePath("../Creekscusp"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Palmresin"), NodePath("../Whisperia East"), NodePath("../Whisperia South")])
+neighbours = Array[NodePath]([NodePath("../Creekscusp"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Palmresin"), NodePath("../Whisperia East"), NodePath("../Whisperia South"), NodePath("../Mauna Hekili Southcliff"), NodePath("../Deadrock"), NodePath("../Is\'o"), NodePath("../Mo\'Ti")])
 province_terrain = 6
 province_produce = 1
 province_extra_cost = 100.0
@@ -441,7 +531,7 @@ color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 polygon = PackedVector2Array(429, 321, 429, 338, 441, 343, 472, 350, 493, 361, 502, 380, 506, 350, 482, 325)
 script = ExtResource("1_wgkm6")
 province_name = "Mauna Hekili Northcliff"
-neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Daisyvile"), NodePath("../Compass Carpet"), NodePath("../Orthill"), NodePath("../Creekshard")])
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Daisyvile"), NodePath("../Compass Carpet"), NodePath("../Orthill"), NodePath("../Creekshard"), NodePath("../Elfwretch"), NodePath("../Sanguire"), NodePath("../Anvilwrought")])
 province_terrain = 6
 province_produce = 5
 province_extra_cost = 100.0
@@ -560,11 +650,12 @@ province_terrain = 1
 province_produce = 5
 province_extra_cost = 20.0
 owner_id = 9
+base_vigor = 1
 endIndex = 3
 
 [node name="South Creekscliff" type="Polygon2D" parent="Map"]
 color = Color(0.176471, 0.0666667, 0, 1)
-polygon = PackedVector2Array(504.654, 360.043, 505.993, 349.934, 510, 331, 506, 313, 511, 264, 520, 275, 527, 306, 523, 335)
+polygon = PackedVector2Array(504.654, 360.043, 505.993, 349.934, 510, 331, 506, 313, 511, 264, 515.374, 269.346, 520, 275, 527, 306, 523, 335, 514.297, 346.881)
 script = ExtResource("1_wgkm6")
 province_name = "South Creekscliff"
 neighbours = Array[NodePath]([NodePath("../Creekshard"), NodePath("../Mauna Hekili Northcliff"), NodePath("../The Slip"), NodePath("../North Creekscliff")])
@@ -572,6 +663,8 @@ province_terrain = 6
 province_produce = 1
 province_extra_cost = 25.0
 base_industry = 4
+startIndex = 9
+endIndex = 5
 
 [node name="The Slip" type="Polygon2D" parent="Map"]
 color = Color(0.745098, 0.854902, 0.639216, 1)
@@ -642,7 +735,7 @@ color = Color(0.137255, 0.286275, 1, 1)
 polygon = PackedVector2Array(457, 222, 452, 203, 448, 211, 436, 196, 442, 178, 458, 172, 483, 181, 492, 194, 488, 207, 476, 218)
 script = ExtResource("1_wgkm6")
 province_name = "Freshcurrent"
-neighbours = Array[NodePath]([NodePath("../Creeksflank"), NodePath("../The Claw")])
+neighbours = Array[NodePath]([NodePath("../Creeksflank"), NodePath("../The Claw"), NodePath("../Nortsway")])
 province_terrain = 5
 startIndex = 3
 endIndex = 7
@@ -695,6 +788,508 @@ base_wealth = 1
 base_industry = 1
 base_magic = 1
 endIndex = 3
+
+[node name="Nortsway" type="Polygon2D" parent="Map"]
+color = Color(0.262745, 0.168627, 0.117647, 1)
+polygon = PackedVector2Array(443, 221, 448, 211, 441.66, 203.076, 436, 196, 411, 203, 405, 223)
+script = ExtResource("1_wgkm6")
+province_name = "Nortsway"
+neighbours = Array[NodePath]([NodePath("../Freshcurrent"), NodePath("../Creeksarm"), NodePath("../Creeksflank"), NodePath("../Embernest"), NodePath(".")])
+province_terrain = 6
+province_produce = 2
+base_wealth = 1
+startIndex = 5
+endIndex = 2
+
+[node name="Greenik" type="Polygon2D" parent="Map"]
+color = Color(0.203922, 0.423529, 0.219608, 1)
+polygon = PackedVector2Array(382, 224, 405, 223, 411, 203, 393, 187, 377, 196, 371, 209)
+script = ExtResource("1_wgkm6")
+province_name = "Greenik"
+neighbours = Array[NodePath]([NodePath("../Nortsway"), NodePath("../Creeksarm"), NodePath("../Cutlore"), NodePath("../Witchwilt"), NodePath("../Embernest")])
+province_terrain = 3
+province_produce = 3
+base_industry = 1
+startIndex = 5
+endIndex = 2
+
+[node name="Cutlore" type="Polygon2D" parent="Map"]
+color = Color(0.443137, 0.690196, 0.27451, 1)
+polygon = PackedVector2Array(382, 224, 371, 209, 377, 196, 365, 195, 356, 193, 349, 204, 364, 231)
+script = ExtResource("1_wgkm6")
+province_name = "Cutlore"
+neighbours = Array[NodePath]([NodePath("../Greenik"), NodePath("."), NodePath("../Witchwilt")])
+province_terrain = 3
+province_produce = 3
+startIndex = 4
+endIndex = 0
+
+[node name="Garys" type="Polygon2D" parent="Map"]
+color = Color(0.266667, 0.521569, 0.305882, 1)
+polygon = PackedVector2Array(349, 204, 356, 193, 344, 186, 328, 184, 311, 192, 317, 202, 335, 202)
+script = ExtResource("1_wgkm6")
+province_name = "Garys"
+neighbours = Array[NodePath]([NodePath("../Cutlore"), NodePath("../Aszina"), NodePath("../Iberox Peninsula"), NodePath("../Witchwilt")])
+base_wealth = 1
+startIndex = 5
+endIndex = 1
+
+[node name="Aszina" type="Polygon2D" parent="Map"]
+color = Color(0.792157, 1, 0.8, 1)
+polygon = PackedVector2Array(314, 210, 317, 202, 336, 202, 333, 234, 325, 230, 322, 216)
+script = ExtResource("1_wgkm6")
+province_name = "Aszina"
+neighbours = Array[NodePath]([NodePath("../Garys"), NodePath("../Iberox Peninsula")])
+province_terrain = 1
+owner_id = 13
+base_vigor = 3
+startIndex = 1
+endIndex = 3
+
+[node name="Iberox Peninsula" type="Polygon2D" parent="Map"]
+color = Color(0.733333, 0.733333, 0.733333, 1)
+polygon = PackedVector2Array(311, 192, 317, 202, 314, 210, 315, 232, 290.966, 235.294, 271, 238, 289, 213, 308, 207, 309, 200)
+script = ExtResource("1_wgkm6")
+province_name = "Iberox Peninsula"
+neighbours = Array[NodePath]([NodePath("../Aszina"), NodePath("../Garys"), NodePath("../Westpike")])
+province_terrain = 4
+province_produce = 5
+base_wealth = 4
+base_industry = 4
+base_vigor = 4
+startIndex = 5
+endIndex = 1
+
+[node name="Westpike" type="Polygon2D" parent="Map"]
+color = Color(0.278431, 0.686275, 0.537255, 1)
+polygon = PackedVector2Array(289, 213, 308, 207, 311, 192, 289, 173, 270, 169, 271, 184)
+script = ExtResource("1_wgkm6")
+province_name = "Westpike"
+neighbours = Array[NodePath]([NodePath("../Iberox Peninsula")])
+province_terrain = 3
+province_produce = 3
+base_industry = 2
+magic_ratio = 1.5
+startIndex = 4
+endIndex = 1
+
+[node name="Witchwilt" type="Polygon2D" parent="Map"]
+color = Color(0.25098, 0.486275, 0.403922, 1)
+polygon = PackedVector2Array(344, 186, 364, 180, 377, 180, 393, 187, 377, 196, 365, 195, 356, 193)
+script = ExtResource("1_wgkm6")
+province_name = "Witchwilt"
+neighbours = Array[NodePath]([NodePath("../Garys"), NodePath("../Cutlore"), NodePath("../Greenik")])
+province_terrain = 1
+province_produce = 2
+province_extra_cost = 5.0
+base_vigor = 1
+
+[node name="Embernest" type="Polygon2D" parent="Map"]
+color = Color(0, 0.388235, 0.0941176, 1)
+polygon = PackedVector2Array(393, 187, 411, 203, 436, 196, 442, 178, 435, 147, 429, 143, 427, 171, 405, 173)
+script = ExtResource("1_wgkm6")
+province_name = "Embernest"
+neighbours = Array[NodePath]([NodePath("../Greenik"), NodePath("../Nortsway")])
+province_terrain = 3
+province_produce = 3
+province_extra_cost = 1000.0
+owner_id = 12
+base_wealth = 4
+base_industry = 4
+base_vigor = 4
+endIndex = 3
+
+[node name="Westish" type="Polygon2D" parent="Map"]
+color = Color(0.278431, 0.32549, 1, 1)
+polygon = PackedVector2Array(271, 238, 289, 213, 271, 184, 270, 169, 250, 160, 240, 188, 257, 217)
+script = ExtResource("1_wgkm6")
+province_name = "Westish"
+province_terrain = 5
+startIndex = 4
+endIndex = 0
+
+[node name="Northbay" type="Polygon2D" parent="Map"]
+color = Color(0.345098, 0.309804, 1, 1)
+polygon = PackedVector2Array(250, 160, 270, 169, 289, 173, 311, 192, 328, 184, 338, 159, 337, 137, 313, 123, 274, 123, 252, 131)
+script = ExtResource("1_wgkm6")
+province_name = "Northbay"
+province_terrain = 5
+startIndex = 9
+
+[node name="Gutlegore" type="Polygon2D" parent="Map"]
+color = Color(0.364706, 0.2, 1, 1)
+polygon = PackedVector2Array(328, 184, 338, 159, 337, 137, 371, 150, 400, 140, 418, 124, 429, 143, 427, 171, 407, 173, 405, 173, 393, 187, 377, 180, 364, 180, 344, 186)
+script = ExtResource("1_wgkm6")
+province_name = "Gutlegore"
+province_terrain = 5
+startIndex = 1
+endIndex = 9
+
+[node name="Marish Sea" type="Polygon2D" parent="Map"]
+color = Color(0.109804, 0.34902, 1, 1)
+polygon = PackedVector2Array(240, 188, 271, 238, 270, 277, 234, 292, 207, 258, 211, 204)
+script = ExtResource("1_wgkm6")
+province_name = "Marish Sea"
+province_terrain = 5
+startIndex = 5
+endIndex = 2
+
+[node name="Windle Sea" type="Polygon2D" parent="Map"]
+color = Color(0.34902, 0.258824, 1, 1)
+polygon = PackedVector2Array(418, 124, 429, 143, 435, 147, 438.638, 163.109, 442, 178, 458, 172, 483, 181, 492, 194, 504, 187, 516, 163, 513, 127, 479, 104, 453, 102)
+script = ExtResource("1_wgkm6")
+province_name = "Windle Sea"
+province_terrain = 5
+startIndex = 3
+endIndex = 9
+
+[node name="Mauna Hekili Southcliff" type="Polygon2D" parent="Map"]
+color = Color(0.101961, 0.101961, 0.101961, 1)
+polygon = PackedVector2Array(371, 393, 375, 423, 405, 449, 477, 455, 502, 440, 492, 461, 483.921, 466.925, 477, 472, 442.256, 472.511, 409, 473, 366, 446, 356.451, 434.295, 335, 408)
+script = ExtResource("1_wgkm6")
+province_name = "Mauna Hekili Southcliff"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Hekili Sheerhills"), NodePath("../Olive Bend"), NodePath("../Lokatoa"), NodePath("../Gi\'a"), NodePath("../Is\'o")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 100.0
+base_wealth = 4
+base_industry = 4
+base_magic = 8
+startIndex = 10
+endIndex = 8
+
+[node name="Mauna Hekili Eastcliff" type="Polygon2D" parent="Map"]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(492, 461, 502, 440, 521, 417, 522, 403, 502, 380, 504.664, 360.016, 512.782, 348.624, 523, 335, 539, 360, 550, 383, 547, 431, 537.972, 439.207, 525, 451)
+script = ExtResource("1_wgkm6")
+province_name = "Mauna Hekili Eastcliff"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Southcliff"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Kobozan"), NodePath("../Hekili Sheerhills")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 100.0
+base_industry = 8
+base_vigor = 12
+startIndex = 6
+endIndex = 11
+
+[node name="Kobozan" type="Polygon2D" parent="Map"]
+color = Color(0.592157, 0.513726, 0, 1)
+polygon = PackedVector2Array(522, 403, 502, 380, 497.887, 388.74, 494, 397, 507, 415, 521, 417)
+script = ExtResource("1_wgkm6")
+province_name = "Kobozan"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Eastcliff"), NodePath("../Hekili Sheerhills"), NodePath("../Clysmos"), NodePath("../Dragontin")])
+province_terrain = 1
+province_produce = 1
+owner_id = 14
+base_wealth = 1
+base_industry = 2
+startIndex = 2
+endIndex = 5
+
+[node name="Hekili Sheerhills" type="Polygon2D" parent="Map"]
+color = Color(0.478431, 0.478431, 0.478431, 1)
+polygon = PackedVector2Array(507, 415, 516.176, 416.311, 521, 417, 502, 440, 477, 455, 497, 430)
+script = ExtResource("1_wgkm6")
+province_name = "Hekili Sheerhills"
+neighbours = Array[NodePath]([NodePath("../Kobozan"), NodePath("../Mauna Hekili Southcliff"), NodePath("../Mauna Hekili Eastcliff"), NodePath("../Steelflat"), NodePath("../Clysmos")])
+province_terrain = 1
+province_produce = 3
+owner_id = 14
+base_industry = 1
+base_vigor = 1
+startIndex = 4
+endIndex = 1
+
+[node name="Clysmos" type="Polygon2D" parent="Map"]
+color = Color(0.494118, 0.705882, 0.494118, 1)
+polygon = PackedVector2Array(494, 397, 500.733, 406.323, 507, 415, 497, 430, 483, 426, 482, 408)
+script = ExtResource("1_wgkm6")
+province_name = "Clysmos"
+neighbours = Array[NodePath]([NodePath("../Kobozan"), NodePath("../Hekili Sheerhills"), NodePath("../Steelflat"), NodePath("../Hypire"), NodePath("../Dragontin")])
+province_terrain = 1
+province_produce = 1
+startIndex = 4
+endIndex = 1
+
+[node name="Steelflat" type="Polygon2D" parent="Map"]
+color = Color(0.427451, 0.611765, 0.611765, 1)
+polygon = PackedVector2Array(483, 426, 489.391, 427.826, 497, 430, 477, 455, 477, 435)
+script = ExtResource("1_wgkm6")
+province_name = "Steelflat"
+neighbours = Array[NodePath]([NodePath("../Clysmos"), NodePath("../Hekili Sheerhills"), NodePath("../Hypire"), NodePath("../Olive Bend")])
+province_produce = 1
+base_industry = 10
+startIndex = 3
+endIndex = 1
+
+[node name="Hypire" type="Polygon2D" parent="Map"]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(477, 435, 483, 426, 482, 408, 476, 413, 475, 425)
+script = ExtResource("1_wgkm6")
+province_name = "Hypire"
+neighbours = Array[NodePath]([NodePath("../Steelflat"), NodePath("../Clysmos"), NodePath("../Magister\'s Prance")])
+province_terrain = 6
+province_produce = 1
+base_industry = 8
+endIndex = 2
+
+[node name="Olive Bend" type="Polygon2D" parent="Map"]
+color = Color(0.713726, 1, 0.6, 1)
+polygon = PackedVector2Array(477, 435, 477, 455, 405, 449, 411, 434, 442, 436)
+script = ExtResource("1_wgkm6")
+province_name = "Olive Bend"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Southcliff"), NodePath("../Steelflat"), NodePath("../Magister\'s Prance"), NodePath("../Orcsmat"), NodePath("../Lokatoa")])
+province_produce = 2
+base_industry = 1
+startIndex = 2
+endIndex = 0
+
+[node name="Magister\'s Prance" type="Polygon2D" parent="Map"]
+color = Color(0.490196, 0.490196, 0.490196, 1)
+polygon = PackedVector2Array(482, 408, 476, 413, 475, 425, 477, 435, 446, 436, 443, 426, 445, 411, 463, 404)
+script = ExtResource("1_wgkm6")
+province_name = "Magister's Prance"
+neighbours = Array[NodePath]([NodePath("../Olive Bend"), NodePath("../Hypire"), NodePath("../Peak"), NodePath("../Dragontin"), NodePath("../Obsidian"), NodePath("../Orcsmat")])
+province_terrain = 6
+province_produce = 1
+base_wealth = 1
+base_industry = 2
+startIndex = 4
+endIndex = 0
+
+[node name="Peak" type="Polygon2D" parent="Map"]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(445, 411, 463, 404, 470, 388, 469, 374, 456, 377, 448, 383, 442, 394)
+script = ExtResource("1_wgkm6")
+province_name = "Peak"
+neighbours = Array[NodePath]([NodePath("../Magister\'s Prance"), NodePath("../Dragontin"), NodePath("../Elfwretch"), NodePath("../Elvas"), NodePath("../The Meek"), NodePath("../Obsidian")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 500.0
+base_wealth = 50
+base_industry = 50
+base_vigor = 50
+base_magic = 50
+magic_ratio = 5.0
+startIndex = 6
+endIndex = 2
+
+[node name="Dragontin" type="Polygon2D" parent="Map"]
+color = Color(0.815686, 0.815686, 0.815686, 1)
+polygon = PackedVector2Array(470, 388, 463, 404, 482, 408, 494, 397, 502, 380, 488, 381)
+script = ExtResource("1_wgkm6")
+province_name = "Dragontin"
+neighbours = Array[NodePath]([NodePath("../Peak"), NodePath("../Magister\'s Prance"), NodePath("../Clysmos"), NodePath("../Elfwretch")])
+province_terrain = 6
+province_produce = 1
+base_industry = 1
+base_vigor = 1
+startIndex = 1
+
+[node name="Elfwretch" type="Polygon2D" parent="Map"]
+color = Color(0, 0.141176, 0.145098, 1)
+polygon = PackedVector2Array(469, 374, 470, 388, 488, 381, 502, 380, 493, 361, 480, 363)
+script = ExtResource("1_wgkm6")
+province_name = "Elfwretch"
+neighbours = Array[NodePath]([NodePath("../Peak"), NodePath("../Dragontin"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Sanguire")])
+province_terrain = 6
+province_produce = 4
+endIndex = 3
+
+[node name="Sanguire" type="Polygon2D" parent="Map"]
+color = Color(1, 0.721569, 0.631373, 1)
+polygon = PackedVector2Array(469, 374, 480, 363, 493, 361, 472, 350, 460, 355, 459, 366)
+script = ExtResource("1_wgkm6")
+province_name = "Sanguire"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Northcliff"), NodePath("../Elfwretch"), NodePath("../Elvas"), NodePath("../Anvilwrought")])
+province_terrain = 6
+province_produce = 1
+base_wealth = 4
+startIndex = 5
+endIndex = 2
+
+[node name="Elvas" type="Polygon2D" parent="Map"]
+color = Color(0.0470588, 0.133333, 0.0980392, 1)
+polygon = PackedVector2Array(459, 366, 469, 374, 456, 377, 448, 383, 441, 379, 439, 371, 446, 366)
+script = ExtResource("1_wgkm6")
+province_name = "Elvas"
+neighbours = Array[NodePath]([NodePath("../Peak"), NodePath("../Sanguire"), NodePath("../Anvilwrought"), NodePath("../Wedge"), NodePath("../The Meek")])
+province_terrain = 1
+province_produce = 1
+province_extra_cost = 5.0
+base_industry = 1
+
+[node name="Anvilwrought" type="Polygon2D" parent="Map"]
+color = Color(0.847059, 0.847059, 0.847059, 1)
+polygon = PackedVector2Array(429, 338, 472, 350, 460, 355, 459, 366, 446, 366, 443, 355)
+script = ExtResource("1_wgkm6")
+province_name = "Anvilwrought"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Northcliff"), NodePath("../Sanguire"), NodePath("../Elvas"), NodePath("../Wedge")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 15.0
+owner_id = 16
+base_industry = 4
+endIndex = 3
+
+[node name="Wedge" type="Polygon2D" parent="Map"]
+color = Color(0.2, 0.0941176, 0.0941176, 1)
+polygon = PackedVector2Array(429, 338, 443, 355, 446, 366, 442.657, 368.388, 439, 371, 431, 361)
+script = ExtResource("1_wgkm6")
+province_name = "Wedge"
+neighbours = Array[NodePath]([NodePath("../Anvilwrought"), NodePath("../Elvas"), NodePath("../Deadrock"), NodePath("../The Meek")])
+province_terrain = 6
+province_produce = 5
+province_extra_cost = 25.0
+base_wealth = 1
+base_industry = 2
+endIndex = 3
+
+[node name="Deadrock" type="Polygon2D" parent="Map"]
+color = Color(0.470588, 0.239216, 0.239216, 1)
+polygon = PackedVector2Array(429, 338, 411, 354, 402, 360, 410.718, 366.667, 419, 373, 431, 361, 429.979, 349.26)
+script = ExtResource("1_wgkm6")
+province_name = "Deadrock"
+neighbours = Array[NodePath]([NodePath("../Wedge"), NodePath("../Mauna Hekili Westcliff"), NodePath("../The Meek"), NodePath("../Mo\'Ti")])
+province_terrain = 4
+province_produce = 5
+magic_ratio = 0.2
+startIndex = 3
+endIndex = 6
+
+[node name="The Meek" type="Polygon2D" parent="Map"]
+color = Color(0.156863, 0.156863, 0.156863, 1)
+polygon = PackedVector2Array(419, 373, 424.986, 367.014, 431, 361, 439, 371, 441, 379, 448, 383, 445.311, 387.93, 442, 394, 436, 385, 422, 379)
+script = ExtResource("1_wgkm6")
+province_name = "The Meek"
+neighbours = Array[NodePath]([NodePath("../Deadrock"), NodePath("../Wedge"), NodePath("../Elvas"), NodePath("../Peak"), NodePath("../Obsidian"), NodePath("../So\'ahi")])
+province_terrain = 6
+province_produce = 5
+province_extra_cost = 25.0
+startIndex = 1
+endIndex = 6
+
+[node name="Obsidian" type="Polygon2D" parent="Map"]
+color = Color(0.0745098, 0.0745098, 0.145098, 1)
+polygon = PackedVector2Array(422, 379, 436, 385, 442, 394, 445, 411, 443, 425, 432, 414, 424, 402, 421, 389)
+script = ExtResource("1_wgkm6")
+province_name = "Obisidian"
+neighbours = Array[NodePath]([NodePath("../The Meek"), NodePath("../Peak"), NodePath("../Magister\'s Prance"), NodePath("../Orcsmat"), NodePath("../Ve\'e"), NodePath("../So\'ahi")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = -3.0
+base_wealth = 1
+base_industry = 2
+base_vigor = 1
+base_magic = 1
+
+[node name="Orcsmat" type="Polygon2D" parent="Map"]
+color = Color(0.352941, 0.337255, 0.352941, 1)
+polygon = PackedVector2Array(411, 434, 442, 436, 446, 436, 443, 425, 432, 414, 413, 420, 411.844, 428.094)
+script = ExtResource("1_wgkm6")
+province_name = "Orcsmat"
+neighbours = Array[NodePath]([NodePath("../Obsidian"), NodePath("../Magister\'s Prance"), NodePath("../Olive Bend"), NodePath("../Lokatoa")])
+province_terrain = 1
+province_produce = 1
+startIndex = 6
+endIndex = 3
+
+[node name="Lokatoa" type="Polygon2D" parent="Map"]
+color = Color(0.67451, 0.67451, 0.741176, 1)
+polygon = PackedVector2Array(413, 420, 411, 434, 405, 449, 375, 423)
+script = ExtResource("1_wgkm6")
+province_name = "Lokatoa"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Southcliff"), NodePath("../Olive Bend"), NodePath("../Orcsmat"), NodePath("../Gi\'a")])
+province_terrain = 6
+province_produce = 1
+owner_id = 16
+base_wealth = 1
+base_industry = 1
+startIndex = 3
+endIndex = 1
+
+[node name="O\'a" type="Polygon2D" parent="Map"]
+color = Color(0.215686, 0.129412, 0.501961, 1)
+polygon = PackedVector2Array(413, 420, 432, 414, 424, 402, 417, 400, 412, 407)
+script = ExtResource("1_wgkm6")
+province_name = "O'a"
+province_terrain = 5
+startIndex = 4
+endIndex = 1
+
+[node name="Gi\'a" type="Polygon2D" parent="Map"]
+color = Color(0.764706, 0.537255, 0.537255, 1)
+polygon = PackedVector2Array(412, 407, 412.643, 415.358, 413, 420, 375, 423, 373, 409, 391, 404)
+script = ExtResource("1_wgkm6")
+province_name = "Gi'a"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Southcliff"), NodePath("../Lokatoa"), NodePath("../Is\'o"), NodePath("../Ka\'ti")])
+province_terrain = 6
+province_produce = 1
+base_industry = 1
+startIndex = 3
+endIndex = 1
+
+[node name="Is\'o" type="Polygon2D" parent="Map"]
+color = Color(0.196078, 0.196078, 0.196078, 1)
+polygon = PackedVector2Array(371, 393, 373, 409, 391, 404, 395, 393, 388, 369)
+script = ExtResource("1_wgkm6")
+province_name = "Is'o"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Mauna Hekili Southcliff"), NodePath("../Gi\'a"), NodePath("../Ka\'ti"), NodePath("../Mo\'Ti")])
+province_terrain = 6
+province_produce = 1
+endIndex = 3
+
+[node name="Ka\'ti" type="Polygon2D" parent="Map"]
+color = Color(0.792157, 0.792157, 0.792157, 1)
+polygon = PackedVector2Array(391, 404, 395, 393, 417, 400, 412, 407)
+script = ExtResource("1_wgkm6")
+province_name = "Ka'ti"
+neighbours = Array[NodePath]([NodePath("../Is\'o"), NodePath("../Gi\'a"), NodePath("../Ve\'e")])
+province_terrain = 6
+province_produce = 4
+endIndex = 2
+
+[node name="Ve\'e" type="Polygon2D" parent="Map"]
+color = Color(0.698039, 0.470588, 0.470588, 1)
+polygon = PackedVector2Array(395, 393, 405, 389, 421, 389, 423, 396, 424, 402, 417, 400)
+script = ExtResource("1_wgkm6")
+province_name = "Ve'e"
+neighbours = Array[NodePath]([NodePath("../Obsidian"), NodePath("../Ka\'ti"), NodePath("../So\'ahi"), NodePath("../Ky\'lua")])
+province_terrain = 6
+province_produce = 1
+endIndex = 3
+
+[node name="So\'ahi" type="Polygon2D" parent="Map"]
+color = Color(0.101961, 0, 0.109804, 1)
+polygon = PackedVector2Array(405, 389, 407, 381, 412, 374, 419, 373, 420.257, 375.514, 422, 379, 421, 389)
+script = ExtResource("1_wgkm6")
+province_name = "So'ahi"
+neighbours = Array[NodePath]([NodePath("../The Meek"), NodePath("../Obsidian"), NodePath("../Ve\'e"), NodePath("../Ky\'lua"), NodePath("../Mo\'Ti")])
+province_terrain = 6
+province_produce = 5
+
+[node name="Ky\'lua" type="Polygon2D" parent="Map"]
+color = Color(0.133333, 0.101961, 0.0627451, 1)
+polygon = PackedVector2Array(407, 381, 395, 378, 390, 376, 395, 393, 405, 389)
+script = ExtResource("1_wgkm6")
+province_name = "Ky'lua"
+neighbours = Array[NodePath]([NodePath("../So\'ahi"), NodePath("../Ve\'e"), NodePath("../Is\'o"), NodePath("."), NodePath("../Mo\'Ti")])
+province_terrain = 6
+province_produce = 1
+startIndex = 2
+
+[node name="Mo\'Ti" type="Polygon2D" parent="Map"]
+color = Color(0.294118, 0.227451, 0.227451, 1)
+polygon = PackedVector2Array(388, 369, 402, 360, 419, 373, 412, 374, 407, 381, 395, 378, 390, 376)
+script = ExtResource("1_wgkm6")
+province_name = "Mo'Ti"
+neighbours = Array[NodePath]([NodePath("../Deadrock"), NodePath("../So\'ahi"), NodePath("../Ky\'lua"), NodePath("../Is\'o"), NodePath("../Mauna Hekili Westcliff")])
+province_terrain = 6
+province_produce = 1
+owner_id = 15
+base_wealth = 1
+base_industry = 1
+endIndex = 2
 
 [node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("HUD", "cam")]
 script = ExtResource("3_ryhga")
@@ -784,6 +1379,24 @@ strength = -1
 wisdom = 2
 charisma = 1
 adventurer_name = "Archdruid Toad"
+
+[node name="Archdruid Sinji" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+strength = 1
+intelligence = 1
+wisdom = 1
+charisma = -2
+adventurer_name = "Archdruid Sinji"
+
+[node name="Asz" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+wisdom = 1
+charisma = 1
+adventurer_name = "Asz"
 
 [node name="Events" type="Node" parent="."]
 script = ExtResource("7_ygju6")
