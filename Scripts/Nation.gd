@@ -469,14 +469,14 @@ func addEvent(e:Event):
 		var eventableProvinces:Array[Province]=[]
 		for prov in owned_provinces:
 			eventableProvinces.append(prov)
-			for provNeighbour in prov.neighbours:
-				if randi_range(1,4)==2:
-					var a = prov.get_node(provNeighbour)
-					if prov.get_node(provNeighbour):
-						
-						if prov.get_node(provNeighbour).province_terrain!=Province.TERRAIN.OCEAN:
-							if prov.get_node(provNeighbour).owner_id==0 or prov.get_node(provNeighbour).owner_id==id:
-								eventableProvinces.append(prov.get_node(provNeighbour))
+			#for provNeighbour in prov.neighbours:
+				#if randi_range(1,6)==2:
+					#var a = prov.get_node(provNeighbour)
+					#if a!=null:
+						#
+						#if a.province_terrain!=Province.TERRAIN.OCEAN:
+							#if a.owner_id==0 or a==id:
+								#eventableProvinces.append(a)
 		var randIndex=randi_range(0,eventableProvinces.size()-1)
 		if randIndex>=0:
 			e.inProvince=eventableProvinces[randIndex].province_id
@@ -727,8 +727,9 @@ func aiChangeFocus(newFocus:FOCUS):
 				advisorPool.erase(adv)
 				adventurerPool.append(adv)
 			for adv in adventurerPool:
-				adventurerPool.erase(adv)
-				explorerPool.append(adv)
+				if adv.strength+adv.wisdom+adv.charisma+adv.intelligence>-2:
+					adventurerPool.erase(adv)
+					explorerPool.append(adv)
 func aiAction():
 	if owned_provinces.size()>0:
 		match ai_focus:
@@ -818,8 +819,8 @@ func aiAction():
 								for prov in borderProvinceList:
 									if prov.siegeMonths<1:
 										Troop.moveToNewProvince(prov)
-						if miltiaryGoldLastMonth<1.0:
-							aiChangeFocus(selectAIFocus(0,1.0))
+						if miltiaryGoldLastMonth<1.0 or runningChangesWithoutSwitchingFocus>100.0:
+							aiChangeFocus(selectAIFocus(0,100.0))
 					MILTYPE.BARBARIAN:
 						var hordes={}
 						for Troop in troopList:

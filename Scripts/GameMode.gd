@@ -38,7 +38,7 @@ static var year:=1444
 static var this:GameMode
 func _ready():
 	this=self
-	player_nation=chosen_nation
+	player_nation=Settings.startingPlayer
 	DateTimer.timeout.connect(incrementDay)
 	HUD.playerNation=player_nation
 	Settings.game_gamemode=self

@@ -6,7 +6,7 @@ class_name EventController
 static var ignoredEvents=[]
 static var eventController:EventController
 static func monthUpdate():
-	var totalEvents = randi_range(0,3)
+	var totalEvents = max(0,randi_range(0,4)+randi_range(-1,2))
 	print("Starting "+ str(totalEvents) + " events!")
 	for i in range(totalEvents):
 		var idx=randi_range(0,Event.totalEvents)

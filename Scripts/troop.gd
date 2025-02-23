@@ -235,6 +235,7 @@ func moveToNewProvince(prov:Province):
 					
 func incrementDay():
 	moveDays-=1
+	
 	spawnBonus=max(spawnBonus-1,0)
 	
 	match troopName:
@@ -243,6 +244,10 @@ func incrementDay():
 			moveDays-=1
 		"Troll":
 			health+=int(floor(randi_range(0,1)+((GameMode.year-1444)*0.02)))
+		"Treant":
+			moveDays+=1
+			movingToProvince=null
+			movingToProvinceSecondary=null
 		_:
 			pass
 	

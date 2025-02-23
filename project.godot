@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GameInAMonth"
-run/main_scene="res://scenes/game.tscn"
+run/main_scene="res://scenes/start_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -98,3 +98,4 @@ BuildInProvince={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.219608, 0.301961, 0.909804, 1)

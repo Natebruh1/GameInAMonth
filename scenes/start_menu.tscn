@@ -1,0 +1,1311 @@
+[gd_scene load_steps=3 format=3 uid="uid://chpkjaekwphq5"]
+
+[ext_resource type="Script" path="res://Scripts/start_menu.gd" id="1_e1a43"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7b4rj"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[node name="StartMenu" type="Node2D"]
+script = ExtResource("1_e1a43")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BackPanel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7b4rj")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/BackPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NationsContainer" type="VBoxContainer" parent="Control/BackPanel/ScrollContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Info" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+offset_right = 1272.0
+offset_bottom = 64.0
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Name"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Region/Race"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strengths"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Weaknesses"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Ai Type"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Play" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Panel/Info"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Toar" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Toar
+"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Palms/Human"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Leader, Havensfield Event"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Potential Rebellion"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Neutral Defensive"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayToar" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Toar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator2" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Whispine" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Whispine"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Palms/Human"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Leader, Iron and Wood Industry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Potential Rebellion"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive Skirmisher"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayWhispine" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Whispine"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator3" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Lokotan" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Lokotan
+"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Hekili/Troll
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Troll Infantry, Stronger Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Weak Production"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Skirmisher"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayLokotan" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator4" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Hovey" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Hovey"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Creek/Human"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Good Leader, Capital has extra health."
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Surrounded by Barbarians"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive Administrator"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayHovey" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Hovey"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator5" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Orokai" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Orokai
+"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Creek/Orc
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Orc Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Surrounded by Barbarians"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Barbarian"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayOrokai" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Orokai"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator6" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Kobozan" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Kobozan"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Hekili/Kobold
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Buying artillery has chance to create dragon."
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Weak but cheap Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayKobozan" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator7" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Blackork" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Blackork"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Creek/Orc
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Orc Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Surrounded by Barbarians"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Barbarian"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayBlackork" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Blackork"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator8" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Piscinia" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Piscinia"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Creek/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Fish Economy, Defensive Position"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Weak Starting Province"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Defensive Pirate"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayPiscinia" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator9" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Swampclove" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Swampclove"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Creek/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Powerful Leader"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Slow starting economy"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Economists"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlaySwampclove" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator10" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Emberness" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Emberness"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Aszinia/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Unique Treant starting unit"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Cannot Produce from Industry"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Isolationists"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayEmberness" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Emberness"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator11" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Aszina" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Aszina"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Aszinia/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Great Location, Strong Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Slightly weaker Artillery"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayAszina" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Aszina"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator12" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Arborine" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Arborine"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Creek/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Powerful Leader, Cheap Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Weak Production, Slightly weak Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Skirmishers"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayArborine" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Arborine"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator13" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Rose Horde" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Rose Horde"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Hekili/Orc
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Orc Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Weak Magic"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Barbarian"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayRoseHorde" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator14" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="The Call of Bone" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "The Call of Bone"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Palms/Human"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Bone Economy"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Bad Starting Position"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Pirate"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayBone" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator15" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Anv\'ar" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Anv'ar
+"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Hekili/Troll
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Troll Infantry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Rough Location"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Barbarian"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayAnvar" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Anv\'ar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator16" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Preolia" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Preolia"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Preole/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Military"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Expensive Military, No Magic"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive Skirmsher"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayPreolia" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Preolia"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator17" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Richness" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Richness"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Preole/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Industry"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Bad Location"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive Skirmisher"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayRichness" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Richness"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="HSeparator18" type="HSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+layout_mode = 2
+
+[node name="Envy" type="HBoxContainer" parent="Control/BackPanel/ScrollContainer/NationsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Name Label" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Envy"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Region" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Preole/Human
+"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Strengths" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Strong Leader"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Weaknesses" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Bad Location"
+horizontal_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AiType" type="Label" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Expansive Skirmisher"
+horizontal_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayEnvy" type="Button" parent="Control/BackPanel/ScrollContainer/NationsContainer/Envy"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play
+"
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -251.0
+offset_top = 1.0
+offset_right = 246.0
+offset_bottom = 176.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 128
+text = "ODESYA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Toar/PlayToar" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Whispine/PlayWhispine" to="." method="_on_play_whispine_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Lokotan/PlayLokotan" to="." method="_on_play_lokotan_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Hovey/PlayHovey" to="." method="_on_play_hovey_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Orokai/PlayOrokai" to="." method="_on_play_orokai_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Kobozan/PlayKobozan" to="." method="_on_play_kobozan_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Blackork/PlayBlackork" to="." method="_on_play_blackork_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Piscinia/PlayPiscinia" to="." method="_on_play_piscinia_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Swampclove/PlaySwampclove" to="." method="_on_play_swampclove_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Emberness/PlayEmberness" to="." method="_on_play_emberness_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Aszina/PlayAszina" to="." method="_on_play_aszina_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Arborine/PlayArborine" to="." method="_on_play_arborine_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Rose Horde/PlayRoseHorde" to="." method="_on_play_rose_horde_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/The Call of Bone/PlayBone" to="." method="_on_play_bone_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Anv'ar/PlayAnvar" to="." method="_on_play_anvar_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Preolia/PlayPreolia" to="." method="_on_play_preolia_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Richness/PlayRichness" to="." method="_on_play_richness_pressed"]
+[connection signal="pressed" from="Control/BackPanel/ScrollContainer/NationsContainer/Envy/PlayEnvy" to="." method="_on_play_envy_pressed"]

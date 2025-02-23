@@ -114,7 +114,7 @@ func startEvent(prov=-1):
 						#In future we should give a function to the nation getting the event
 						randomNation[i].addEvent(self)
 		
-const totalEvents=15
+const totalEvents=18
 static func factoryEvent(idx:int) -> Event:
 	var retVal:=Event.new()
 	match idx:
@@ -145,6 +145,7 @@ static func factoryEvent(idx:int) -> Event:
 			retVal.reward_args=[Province.PRODUCE.WOOD]
 			retVal.reward="changeProvinceProduce"
 			retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+			
 		3:
 			retVal.event_name="Fields of Fish"
 			retVal.event_description="The distant nation of Piscinia have offered us a deal as part of their 'Grand Fish Plan' - they will give us unlimited fish in this province."
@@ -153,6 +154,7 @@ static func factoryEvent(idx:int) -> Event:
 			retVal.reward_args=[Province.PRODUCE.FISH]
 			retVal.reward="changeProvinceProduce"
 			retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+			retVal.receive_event_stat=explorerStatSearch.CHARISMA
 		4:
 			retVal.event_name="The mole"
 			retVal.event_description="Rumour has it, a mole is selling our military secrets to our neighbours."
@@ -196,6 +198,7 @@ static func factoryEvent(idx:int) -> Event:
 			retVal.total_intelligence=350+(3*(GameMode.year-1444))
 			retVal.reward_args=[prodIncrease,prodDecrease,prodChange]
 			retVal.reward="adjustMarkets"
+			retVal.receive_event_stat=explorerStatSearch.WISDOM
 		7:
 			var prodIncrease=randi_range(0,5)
 			var prodIncreaseString=""
@@ -222,6 +225,7 @@ static func factoryEvent(idx:int) -> Event:
 			retVal.total_intelligence=350+(3*(GameMode.year-1444))
 			retVal.reward_args=[prodIncrease,prodDecrease,prodChange]
 			retVal.reward="adjustMarketsFail"
+			retVal.receive_event_stat=explorerStatSearch.WISDOM
 		8:
 			retVal.event_name="Adventurers Wanted!"
 			retVal.event_description="The world gets more and more dangerous each day! We should prepare by training the next generation of adventurers"
@@ -232,6 +236,7 @@ static func factoryEvent(idx:int) -> Event:
 			retVal.total_charisma=750+(2*(GameMode.year-1444))
 			retVal.reward_args=[1]
 			retVal.reward="increaseAdventurerBonus"
+			retVal.receive_event_stat=explorerStatSearch.INTELLIGENCE
 		9:
 			retVal.event_name="Level Up"
 			retVal.event_description="One of our adventurers feels they are ready to train to the next level. We shouldn't let this opportunity go to waste!"
@@ -277,6 +282,7 @@ static func factoryEvent(idx:int) -> Event:
 			var reward=(randi_range(0,2)<1)
 			retVal.reward_args=[reward]
 			retVal.reward="increaseNationalWisdomModifier"
+			retVal.receive_event_stat=explorerStatSearch.WISDOM
 		13:
 			retVal.event_name="Rally the Bards"
 			retVal.event_description="Our adventurers have grown repulsive!"
@@ -288,6 +294,7 @@ static func factoryEvent(idx:int) -> Event:
 			var reward=(randi_range(0,2)<1)
 			retVal.reward_args=[reward]
 			retVal.reward="increaseNationalCharismaModifier"
+			retVal.receive_event_stat=explorerStatSearch.CHARISMA
 		14:
 			retVal.event_name="Rally the Wizards"
 			retVal.event_description="Our adventurers have grown stupid!"
@@ -299,6 +306,7 @@ static func factoryEvent(idx:int) -> Event:
 			var reward=(randi_range(0,2)<1)
 			retVal.reward_args=[reward]
 			retVal.reward="increaseNationalIntelligenceModifier"
+			retVal.receive_event_stat=explorerStatSearch.INTELLIGENCE
 		15:
 			retVal.event_name="The Farmer's Collective"
 			retVal.event_description="A new group called The Farmer's Collective has risen in Havensfield. While they promote free discussion - many of these discussions talk about independence"
@@ -313,6 +321,7 @@ static func factoryEvent(idx:int) -> Event:
 				retVal.reward_args=[Province.Provinces[5],Nation.Nations[4]]
 				retVal.reward="transferProvinceToNewNation"
 			retVal.inProvince=5
+			retVal.receive_event_stat=explorerStatSearch.WISDOM
 		16:
 			retVal.event_name="Reparations of the Trolls"
 			retVal.event_description="After the last great Troll War, the trolls begrudgingly must pay reparations of a spare soldier every so often. Taking these soldiers often causes mass unrest in their tribes however."
@@ -327,7 +336,39 @@ static func factoryEvent(idx:int) -> Event:
 				retVal.reward="BuyTroop"
 				retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
 			retVal.inProvince=11
+		17:
+			retVal.event_name="Sanguire : Blood Sacrifice"
+			retVal.event_description="The wild vampires of Sanguire have made us an offer - feed them one of our troops in order to strengthen the rest of our troops in Sanguire with blood magic."
+			retVal.event_button="Sacrifice them!"
+			retVal.reward="eventScript1"
+			retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+			retVal.inProvince=70
+			retVal.receive_event_stat=explorerStatSearch.CHARISMA
+		18:
+			retVal.event_name="Mage Slaves"
+			retVal.total_strength=(GameMode.year-1444)*5.0
+			retVal.total_wisdom=(GameMode.year-1444)*5.0
+			retVal.event_description="The Deadplains are an are of great potential - if we use some our prisoner mages, we can make it great!"
+			retVal.event_button="Use the mages!"
+			var reward = randi_range(1,10)
+			if reward<4:
+				retVal.reward_args=[2]
+				retVal.reward="increaseProvinceVigor"
+				retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+			elif reward<7:
+				retVal.reward_args=[2]
+				retVal.reward="increaseProvinceIndustry"
+				retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+			elif reward<10:
+				retVal.reward_args=[2]
+				retVal.reward="increaseProvinceWealth"
+				retVal.event_flags+=flags.REWARD_TARGET_IS_PROVINCE
+			else:
+				retVal.reward_args=[Province.Provinces[100],Nation.Nations[21]]
+				retVal.reward="transferProvinceToNewNation"
 			
+			retVal.inProvince=100
+			retVal.receive_event_stat=explorerStatSearch.INTELLIGENCE
 			
 	retVal.eventID=idx
 	return retVal

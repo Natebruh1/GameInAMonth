@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfua8nd3qp0fr"]
+[gd_scene load_steps=11 format=3 uid="uid://dfua8nd3qp0fr"]
 
 [ext_resource type="Script" path="res://Scripts/province.gd" id="1_wgkm6"]
 [ext_resource type="Script" path="res://Scripts/Nation.gd" id="2_5bhou"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://urirnikyn1n3" path="res://scenes/hud_layer.tscn" id="4_upoi3"]
 [ext_resource type="Script" path="res://Scripts/GameMode.gd" id="5_ojht8"]
 [ext_resource type="Script" path="res://Scripts/adventurer.gd" id="6_glmga"]
+[ext_resource type="Script" path="res://Scripts/Event Scripts/Sanguire Events.gd" id="6_q8lnv"]
 [ext_resource type="Script" path="res://Scripts/EventsController.gd" id="7_ygju6"]
 
 [node name="Game" type="Node2D"]
@@ -180,6 +181,7 @@ militaryType = 2
 script = ExtResource("2_5bhou")
 NationColor = Color(0.254902, 0.254902, 0.00392157, 1)
 nation_name = "Swampclove"
+magic_ratio = 0.25
 owned_provinces = [NodePath("../../Map/Swa Valleys")]
 startingAdventurers = [NodePath("../../Adventurers/Archdruid Toad")]
 aiBias = [1, 1, 5, 5]
@@ -221,7 +223,7 @@ ai_complexity = 2
 militaryType = 1
 aiBias = [4, 3, 3, 1]
 
-[node name="Kobozan" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+[node name="Kobozan" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
 script = ExtResource("2_5bhou")
 NationColor = Color(0.776471, 0.145098, 0, 1)
 nation_name = "Kobozan"
@@ -234,6 +236,7 @@ artilleryBaseDamage = [1, 6]
 artilleryBaseMaxHealth = 16
 artilleryBaseArmour = 2
 owned_provinces = [NodePath("../../Map/Kobozan"), NodePath("../../Map/Hekili Sheerhills")]
+startingAdventurers = [NodePath("../../Adventurers/Highrogue Spout")]
 ai_level = 9
 ai_complexity = 2
 militaryType = 1
@@ -244,6 +247,7 @@ script = ExtResource("2_5bhou")
 NationColor = Color(1, 0.219608, 0.333333, 1)
 nation_name = "Rose Horde"
 portraitStyles = "Orc"
+magic_ratio = 0.1
 owned_provinces = [NodePath("../../Map/Mo\'Ti")]
 ai_level = 14
 militaryType = 3
@@ -253,8 +257,9 @@ script = ExtResource("2_5bhou")
 NationColor = Color(0.752941, 1, 1, 1)
 nation_name = "Lokotan"
 portraitStyles = "Orc"
-troopBonusDamage = 2
+troopBonusDamage = 1
 owned_provinces = [NodePath("../../Map/Lokatoa")]
+ProduceEfficiency = [0.8, 0.8, 1.0, 1.0, 1.0, 0.8]
 
 [node name="Anv\'ar" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
 script = ExtResource("2_5bhou")
@@ -265,6 +270,62 @@ owned_provinces = [NodePath("../../Map/Anvilwrought")]
 ai_level = 16
 militaryType = 3
 aiBias = [3, 5, 0, 0]
+
+[node name="Preolia" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0, 0.45098, 0.45098, 1)
+nation_name = "Preolia"
+magic_ratio = 0.0
+troopBonusDamage = 1
+infantryBaseCost = 12.0
+infantryBaseUpkeep = 1.2
+infantryBaseDamage = [1, 5]
+infantryBaseMaxHealth = 26
+cavalryBaseCost = 24.0
+cavalryBaseUpkeep = 2.2
+cavalryBonusDamage = 0
+cavalryBaseMaxHealth = 24
+cavalryBaseArmour = 2
+artilleryBaseCost = 70.0
+artilleryBaseUpkeep = 4.0
+artilleryBonusDamage = 2
+artilleryBaseMaxHealth = 24
+artilleryBaseArmour = 6
+owned_provinces = [NodePath("../../Map/Preole")]
+ai_level = 10
+ai_complexity = 2
+militaryType = 1
+
+[node name="Richness" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces")]
+script = ExtResource("2_5bhou")
+NationColor = Color(1, 1, 0.494118, 1)
+nation_name = "Richness"
+gold = 50.0
+owned_provinces = [NodePath("../../Map/Richplain")]
+ProduceEfficiency = [1.2, 1.2, 1.2, 1.2, 1.2, 1.2]
+ai_level = 13
+militaryType = 1
+
+[node name="Envy" type="Node" parent="Nations" node_paths=PackedStringArray("owned_provinces", "startingAdventurers")]
+script = ExtResource("2_5bhou")
+NationColor = Color(0.113725, 0.141176, 0.262745, 1)
+nation_name = "Envy"
+owned_provinces = [NodePath("../../Map/Enclave")]
+startingAdventurers = [NodePath("../../Adventurers/Emperor E")]
+militaryType = 1
+
+[node name="Magent" type="Node" parent="Nations"]
+script = ExtResource("2_5bhou")
+NationColor = Color(1, 0.345098, 1, 1)
+nation_name = "Magent"
+gold = 150.0
+influence = 150.0
+diplomacyPoints = 250
+manaPoints = 250
+troopBonusDamage = 3
+ai_level = 4
+ai_complexity = 4
+militaryType = 1
 
 [node name="Map" type="Node" parent="."]
 
@@ -294,7 +355,7 @@ color = Color(0.658824, 0.686275, 0, 1)
 polygon = PackedVector2Array(332, 355, 306, 352, 273, 370, 265, 391, 269, 428, 266, 462, 282, 468, 293, 443, 295, 415, 307, 409, 328, 395, 335, 368)
 script = ExtResource("1_wgkm6")
 province_name = "The Jade Strip"
-neighbours = Array[NodePath]([NodePath("../Alatir"), NodePath("../Sea of Sarys"), NodePath("../Whisperia Heart"), NodePath("../Chip")])
+neighbours = Array[NodePath]([NodePath("../Alatir"), NodePath("../Sea of Sarys"), NodePath("../Whisperia Heart"), NodePath("../Chip"), NodePath("../Roclove"), NodePath("../Jade Pike")])
 province_produce = 1
 startIndex = 3
 endIndex = 11
@@ -517,7 +578,7 @@ province_name = "Mauna Hekili Westcliff"
 neighbours = Array[NodePath]([NodePath("../Creekscusp"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Palmresin"), NodePath("../Whisperia East"), NodePath("../Whisperia South"), NodePath("../Mauna Hekili Southcliff"), NodePath("../Deadrock"), NodePath("../Is\'o"), NodePath("../Mo\'Ti")])
 province_terrain = 6
 province_produce = 1
-province_extra_cost = 100.0
+province_extra_cost = 150.0
 base_wealth = 5
 base_industry = 5
 base_vigor = 5
@@ -534,7 +595,7 @@ province_name = "Mauna Hekili Northcliff"
 neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Daisyvile"), NodePath("../Compass Carpet"), NodePath("../Orthill"), NodePath("../Creekshard"), NodePath("../Elfwretch"), NodePath("../Sanguire"), NodePath("../Anvilwrought")])
 province_terrain = 6
 province_produce = 5
-province_extra_cost = 100.0
+province_extra_cost = 150.0
 base_wealth = 4
 base_industry = 4
 base_vigor = 4
@@ -707,7 +768,7 @@ color = Color(0.768627, 1, 0.952941, 1)
 polygon = PackedVector2Array(502, 257, 483, 253, 495, 234, 502, 236, 510, 234)
 script = ExtResource("1_wgkm6")
 province_name = "Marshette"
-neighbours = Array[NodePath]([NodePath("../North Creekscliff"), NodePath("../The Dead"), NodePath("../Piscitte"), NodePath("../Floodire")])
+neighbours = Array[NodePath]([NodePath("../Piscitte"), NodePath("../North Creekscliff"), NodePath("../The Dead"), NodePath("../Floodire")])
 base_industry = 1
 startIndex = 1
 
@@ -948,10 +1009,10 @@ color = Color(0.101961, 0.101961, 0.101961, 1)
 polygon = PackedVector2Array(371, 393, 375, 423, 405, 449, 477, 455, 502, 440, 492, 461, 483.921, 466.925, 477, 472, 442.256, 472.511, 409, 473, 366, 446, 356.451, 434.295, 335, 408)
 script = ExtResource("1_wgkm6")
 province_name = "Mauna Hekili Southcliff"
-neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Hekili Sheerhills"), NodePath("../Olive Bend"), NodePath("../Lokatoa"), NodePath("../Gi\'a"), NodePath("../Is\'o")])
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Westcliff"), NodePath("../Hekili Sheerhills"), NodePath("../Olive Bend"), NodePath("../Lokatoa"), NodePath("../Gi\'a"), NodePath("../Is\'o"), NodePath("../Richplain"), NodePath("../Una"), NodePath("../Saltcliff"), NodePath("../Preole")])
 province_terrain = 6
 province_produce = 1
-province_extra_cost = 100.0
+province_extra_cost = 150.0
 base_wealth = 4
 base_industry = 4
 base_magic = 8
@@ -966,7 +1027,7 @@ province_name = "Mauna Hekili Eastcliff"
 neighbours = Array[NodePath]([NodePath("../Mauna Hekili Southcliff"), NodePath("../Mauna Hekili Northcliff"), NodePath("../Kobozan"), NodePath("../Hekili Sheerhills")])
 province_terrain = 6
 province_produce = 1
-province_extra_cost = 100.0
+province_extra_cost = 150.0
 base_industry = 8
 base_vigor = 12
 startIndex = 6
@@ -1108,6 +1169,9 @@ base_wealth = 4
 startIndex = 5
 endIndex = 2
 
+[node name="Scripts" type="Node" parent="Map/Sanguire"]
+script = ExtResource("6_q8lnv")
+
 [node name="Elvas" type="Polygon2D" parent="Map"]
 color = Color(0.0470588, 0.133333, 0.0980392, 1)
 polygon = PackedVector2Array(459, 366, 469, 374, 456, 377, 448, 383, 441, 379, 439, 371, 446, 366)
@@ -1128,7 +1192,7 @@ neighbours = Array[NodePath]([NodePath("../Mauna Hekili Northcliff"), NodePath("
 province_terrain = 6
 province_produce = 1
 province_extra_cost = 15.0
-owner_id = 16
+owner_id = 17
 base_industry = 4
 endIndex = 3
 
@@ -1291,6 +1355,176 @@ base_wealth = 1
 base_industry = 1
 endIndex = 2
 
+[node name="Jewel Lake" type="Polygon2D" parent="Map"]
+color = Color(0.596078, 0.745098, 1, 1)
+polygon = PackedVector2Array(328, 395, 307, 409, 295, 415, 293, 443, 319, 445, 335, 408, 331.187, 400.919)
+script = ExtResource("1_wgkm6")
+province_name = "Jewel Lake"
+province_terrain = 5
+startIndex = 3
+endIndex = 6
+
+[node name="Roclove" type="Polygon2D" parent="Map"]
+color = Color(0.286275, 0, 0.00392157, 1)
+polygon = PackedVector2Array(293, 443, 319, 445, 325, 463, 301, 475, 282, 468)
+script = ExtResource("1_wgkm6")
+province_name = "Roclove"
+neighbours = Array[NodePath]([NodePath("../Jade Strip"), NodePath("../Slurry"), NodePath("../Jade Pike")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 50.0
+
+[node name="Gravelan" type="Polygon2D" parent="Map"]
+color = Color(0.34902, 0.180392, 0.180392, 1)
+polygon = PackedVector2Array(329, 465, 320, 482, 331, 492, 347, 487, 362, 465)
+script = ExtResource("1_wgkm6")
+province_name = "Gravelan"
+neighbours = Array[NodePath]([NodePath("../Slurry"), NodePath("../Enclave"), NodePath("../Dnys"), NodePath("../Occit Slip")])
+province_terrain = 6
+province_produce = 1
+province_extra_cost = 50.0
+startIndex = 1
+
+[node name="Emass" type="Polygon2D" parent="Map"]
+color = Color(0.270588, 0.203922, 0.203922, 1)
+polygon = PackedVector2Array(328, 442, 328, 459, 339, 461, 352, 452, 348, 435, 336, 432)
+script = ExtResource("1_wgkm6")
+province_name = "Emass"
+neighbours = Array[NodePath]([NodePath("../Slurry"), NodePath("../Richplain"), NodePath("../Una")])
+province_terrain = 6
+province_produce = 2
+province_extra_cost = 50.0
+startIndex = 1
+
+[node name="Slurry" type="Polygon2D" parent="Map"]
+color = Color(0.0470588, 0.439216, 0, 1)
+polygon = PackedVector2Array(301, 475, 320, 482, 329, 465, 362, 465, 352, 452, 339, 461, 328, 459, 328, 442, 336, 432, 325.922, 428.992, 319, 445, 325, 463)
+script = ExtResource("1_wgkm6")
+province_name = "Slurry"
+neighbours = Array[NodePath]([NodePath("../Emass"), NodePath("../Gravelan"), NodePath("../Roclove"), NodePath("../Richplain"), NodePath("../Una"), NodePath("../Enclave")])
+province_terrain = 3
+province_produce = 2
+province_extra_cost = -1.0
+
+[node name="Jade Pike" type="Polygon2D" parent="Map"]
+color = Color(0.027451, 0.407843, 0.192157, 1)
+polygon = PackedVector2Array(266, 462, 254, 512, 301, 475, 282, 468)
+script = ExtResource("1_wgkm6")
+province_name = "Jade Pike"
+neighbours = Array[NodePath]([NodePath("../Roclove"), NodePath("../Jade Strip"), NodePath("../Enclave")])
+province_terrain = 3
+province_produce = 3
+startIndex = 1
+endIndex = 3
+
+[node name="Richplain" type="Polygon2D" parent="Map"]
+color = Color(0.721569, 1, 0.756863, 1)
+polygon = PackedVector2Array(325.938, 428.977, 330.396, 418.657, 335, 408, 358, 436, 348, 435, 335.992, 432.003)
+script = ExtResource("1_wgkm6")
+province_name = "Richplain"
+neighbours = Array[NodePath]([NodePath("../Emass"), NodePath("../Slurry"), NodePath("../Una"), NodePath("../Mauna Hekili Southcliff")])
+owner_id = 19
+startIndex = 1
+endIndex = 3
+
+[node name="Una" type="Polygon2D" parent="Map"]
+color = Color(0.827451, 1, 0.65098, 1)
+polygon = PackedVector2Array(348, 435, 358, 436, 366, 446, 367, 454, 362, 465, 352, 452)
+script = ExtResource("1_wgkm6")
+province_name = "Una"
+neighbours = Array[NodePath]([NodePath("../Richplain"), NodePath("../Slurry"), NodePath("../Emass"), NodePath("../Mauna Hekili Southcliff"), NodePath("../Saltcliff")])
+province_produce = 2
+base_industry = 1
+endIndex = 3
+
+[node name="Enclave" type="Polygon2D" parent="Map"]
+color = Color(0.227451, 0.45098, 0.227451, 1)
+polygon = PackedVector2Array(301, 475, 268, 501, 288, 499, 301, 503, 331, 492, 320, 482)
+script = ExtResource("1_wgkm6")
+province_name = "Enclave"
+neighbours = Array[NodePath]([NodePath("../Jade Pike"), NodePath("../Slurry"), NodePath("../Gravelan"), NodePath("../Occit Slip")])
+owner_id = 20
+base_vigor = 1
+startIndex = 1
+
+[node name="Saltcliff" type="Polygon2D" parent="Map"]
+color = Color(0.541176, 0.666667, 0.666667, 1)
+polygon = PackedVector2Array(366, 446, 367, 454, 362, 465, 377, 472, 409, 473)
+script = ExtResource("1_wgkm6")
+province_name = "Saltcliff"
+neighbours = Array[NodePath]([NodePath("../Dnys"), NodePath("../Una"), NodePath("../Mauna Hekili Southcliff"), NodePath("../East Preole")])
+province_terrain = 6
+province_produce = 1
+startIndex = 1
+
+[node name="Dnys" type="Polygon2D" parent="Map"]
+color = Color(0, 0.717647, 0.372549, 1)
+polygon = PackedVector2Array(362, 465, 347, 487, 377, 472, 368.57, 468.066)
+script = ExtResource("1_wgkm6")
+province_name = "Dnys"
+neighbours = Array[NodePath]([NodePath("../Saltcliff"), NodePath("../Gravelan"), NodePath("../Deadplains")])
+province_produce = 2
+endIndex = 3
+
+[node name="East Preole" type="Polygon2D" parent="Map"]
+color = Color(0.690196, 0.690196, 0.690196, 1)
+polygon = PackedVector2Array(377, 472, 396, 509, 409, 515, 402, 495, 409, 473)
+script = ExtResource("1_wgkm6")
+province_name = "East Preole"
+neighbours = Array[NodePath]([NodePath("../Saltcliff"), NodePath("../Preole"), NodePath("../Deadplains")])
+province_produce = 2
+base_industry = 2
+endIndex = 2
+
+[node name="Preole" type="Polygon2D" parent="Map"]
+color = Color(0.54902, 0.470588, 0.470588, 1)
+polygon = PackedVector2Array(409, 473, 402, 495, 409, 515, 428, 520, 449, 515, 451, 496, 442.162, 472.508)
+script = ExtResource("1_wgkm6")
+province_name = "Preole"
+neighbours = Array[NodePath]([NodePath("../Mauna Hekili Southcliff"), NodePath("../East Preole")])
+province_produce = 5
+owner_id = 18
+base_wealth = 1
+base_industry = 1
+base_vigor = 1
+
+[node name="Deadplains" type="Polygon2D" parent="Map"]
+color = Color(0.560784, 0.560784, 0.372549, 1)
+polygon = PackedVector2Array(377, 472, 347, 487, 361, 505, 396, 509)
+script = ExtResource("1_wgkm6")
+province_name = "Deadplains"
+neighbours = Array[NodePath]([NodePath("../Dnys"), NodePath("../East Preole"), NodePath("../Occit Slip")])
+province_produce = 5
+startIndex = 1
+endIndex = 3
+
+[node name="Occit Slip" type="Polygon2D" parent="Map"]
+color = Color(0.262745, 0.552941, 0, 1)
+polygon = PackedVector2Array(347, 487, 331, 492, 312, 499, 338, 506, 361, 505)
+script = ExtResource("1_wgkm6")
+province_name = "Occit Slip"
+neighbours = Array[NodePath]([NodePath("../Deadplains"), NodePath("../Gravelan"), NodePath("../Enclave")])
+province_extra_cost = 1.0
+startIndex = 2
+
+[node name="Westsea" type="Polygon2D" parent="Map"]
+color = Color(0, 0.396078, 0.54902, 1)
+polygon = PackedVector2Array(244, 352, 273, 370, 265, 391, 269, 429, 266, 461, 254, 512, 204, 540, 151, 507, 142, 429, 170.922, 380.587, 188, 352)
+script = ExtResource("1_wgkm6")
+province_name = "Westsea"
+province_terrain = 5
+startIndex = 9
+endIndex = 2
+
+[node name="Southsea" type="Polygon2D" parent="Map"]
+color = Color(0.309804, 0.341176, 0.886275, 1)
+polygon = PackedVector2Array(204, 540, 254, 512, 268, 501, 288, 499, 301, 503, 312, 499, 338, 506, 361, 505, 396, 509, 409, 515, 428, 520, 449, 515, 440, 529, 421, 538, 394, 551, 283, 570, 238, 560)
+script = ExtResource("1_wgkm6")
+province_name = "Southsea"
+province_terrain = 5
+startIndex = 6
+endIndex = 14
+
 [node name="PlayerController" type="Node2D" parent="." node_paths=PackedStringArray("HUD", "cam")]
 script = ExtResource("3_ryhga")
 HUD = NodePath("HUDLayer")
@@ -1359,7 +1593,10 @@ adventurer_name = "Songbird"
 offset_right = 8.0
 offset_bottom = 8.0
 script = ExtResource("6_glmga")
+strength = 1
+intelligence = 3
 wisdom = 3
+charisma = 1
 adventurer_name = "Archdruid Casta"
 
 [node name="Fishking Arr" type="Button" parent="Adventurers"]
@@ -1397,6 +1634,23 @@ script = ExtResource("6_glmga")
 wisdom = 1
 charisma = 1
 adventurer_name = "Asz"
+
+[node name="Emperor E" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+intelligence = -1
+wisdom = 1
+charisma = 2
+adventurer_name = "Emperor E"
+
+[node name="Highrogue Spout" type="Button" parent="Adventurers"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("6_glmga")
+strength = 1
+charisma = 1
+adventurer_name = "Highrogue Spout"
 
 [node name="Events" type="Node" parent="."]
 script = ExtResource("7_ygju6")

@@ -366,6 +366,10 @@ func slayDragon(x:int):
 	#1 in 8 chance to capture the dragon instead
 	GAME_HUD.LogNewMessage(str(Nation.Nations[owner_id])+" has captured a dragon in "+str(province_name))
 	BuyTroop("Dragon")
+#Province specific event Awards
+func eventScript1():
+	$"./Scripts".eventScript1()
+
 
 # # # Troops # # #
 func BuyTroop(template:String):
@@ -455,7 +459,7 @@ func BuyTroop(template:String):
 				get_parent().get_parent().get_node("Troops").add_child(newTroop)
 			"Dragon": #A special troop, available only via events
 				newTroop.monthlyCost=50.0
-				if nat.id==14: newTroop.monthlyCost=35.0 #Cost Reduction for kobolds
+				if nat.id==14: newTroop.monthlyCost=15.0 #Cost Reduction for kobolds
 				newTroop.baseDamageRange=[8,24]
 				newTroop.bonusDamage=0
 				newTroop.maxHealth=120
