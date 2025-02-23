@@ -204,7 +204,7 @@ func _process(delta):
 	if (troopSplitProvince==inProvince):
 		$TroopCountPanel/TroopIndexPanel.visible=true
 		$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.text=str(troopSplitIndex)
-		if inProvince.troopList.size()>=troopSplitIndex-1:
+		if inProvince.troopList.size()-1>=troopSplitIndex:
 			if inProvince.troopList[troopSplitIndex-1].owning_nation.id==GameMode.player_nation:
 				$TroopCountPanel/TroopIndexPanel/TroopIndexLabel.modulate=Color(0, 0.29019609093666, 1)
 			else:
